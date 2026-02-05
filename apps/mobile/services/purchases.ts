@@ -4,6 +4,7 @@ import Purchases, {
   type PurchasesPackage,
   LOG_LEVEL,
 } from 'react-native-purchases';
+import Constants from 'expo-constants';
 
 const RC_IOS_KEY = process.env.EXPO_PUBLIC_RC_IOS_KEY ?? '';
 const RC_ANDROID_KEY = process.env.EXPO_PUBLIC_RC_ANDROID_KEY ?? '';
@@ -13,6 +14,12 @@ const RC_ANDROID_KEY = process.env.EXPO_PUBLIC_RC_ANDROID_KEY ?? '';
  * Call this in the root _layout.tsx
  */
 export async function initPurchases(userId?: string): Promise<void> {
+  // Graceful exit for Expo Go or web
+  if (Constants.appOwnership === 'expo' || Platform.OS === 'web') {
+    if (__DEV__) console.log('[RevenueCat] Skipping init in Expo Go/Web');
+    return;
+  }
+
   if (__DEV__) {
     Purchases.setLogLevel(LOG_LEVEL.DEBUG);
   }
@@ -24,10 +31,13 @@ export async function initPurchases(userId?: string): Promise<void> {
     return;
   }
 
-  Purchases.configure({ apiKey });
-
-  if (userId) {
-    await Purchases.logIn(userId);
+  try {
+    await Purchases.configure({ apiKey });
+    if (userId) {
+      await Purchases.logIn(userId);
+    }
+  } catch (e) {
+    console.warn('RevenueCat init failed:', e);
   }
 }
 
