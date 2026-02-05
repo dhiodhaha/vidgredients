@@ -7,7 +7,7 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "ignore": ["node_modules", ".expo", "dist", "build", ".wrangler", "*.generated.*"]
+    "ignore": ["node_modules", ".expo", "dist", "build", ".wrangler", "*.generated.*", ".turbo"]
   },
   "formatter": {
     "enabled": true,
