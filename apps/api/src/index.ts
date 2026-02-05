@@ -2,12 +2,14 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { analyze } from './routes/analyze';
+import { authRoute } from './routes/auth';
 import { health } from './routes/health';
 
 type Bindings = {
   DATABASE_URL: string;
   OPENAI_API_KEY: string;
   SCRAPECREATORS_API_KEY: string;
+  BETTER_AUTH_SECRET: string;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -26,6 +28,7 @@ app.use(
 // Routes
 app.route('/health', health);
 app.route('/analyze', analyze);
+app.route('/api/auth', authRoute);
 
 // Default route
 app.get('/', (c) => {
