@@ -1,0 +1,6 @@
+# Development environment variables
+# Copy this to .dev.vars and fill in your values
+
+DATABASE_URL=postgresql://user:password@ep-xxx.us-east-1.aws.neon.tech/neondb?sslmode=require
+OPENAI_API_KEY=sk-xxx
+SCRAPECREATORS_API_KEY=xxx

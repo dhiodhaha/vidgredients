@@ -1,0 +1,39 @@
+import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import { logger } from 'hono/logger';
+import { analyze } from './routes/analyze';
+import { health } from './routes/health';
+
+type Bindings = {
+  DATABASE_URL: string;
+  OPENAI_API_KEY: string;
+  SCRAPECREATORS_API_KEY: string;
+};
+
+const app = new Hono<{ Bindings: Bindings }>();
+
+// Middleware
+app.use('*', logger());
+app.use(
+  '*',
+  cors({
+    origin: '*',
+    allowMethods: ['GET', 'POST', 'OPTIONS'],
+    allowHeaders: ['Content-Type', 'Authorization'],
+  })
+);
+
+// Routes
+app.route('/health', health);
+app.route('/analyze', analyze);
+
+// Default route
+app.get('/', (c) => {
+  return c.json({
+    name: 'Video to Ingredients API',
+    version: '1.0.0',
+    status: 'healthy',
+  });
+});
+
+export default app;
