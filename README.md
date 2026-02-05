@@ -80,6 +80,9 @@ npm run dev
 # Terminal 2: Mobile
 cd apps/mobile
 npm start
+
+# For iOS Simulator testing, see:
+# [iOS Testing & Environment Setup Guide](./iOS_TESTING_SETUP.md)
 ```
 
 ## Features

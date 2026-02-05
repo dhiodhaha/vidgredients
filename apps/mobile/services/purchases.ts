@@ -1,10 +1,10 @@
+import Constants from 'expo-constants';
 import { Platform } from 'react-native';
 import Purchases, {
   type CustomerInfo,
   type PurchasesPackage,
   LOG_LEVEL,
 } from 'react-native-purchases';
-import Constants from 'expo-constants';
 
 const RC_IOS_KEY = process.env.EXPO_PUBLIC_RC_IOS_KEY ?? '';
 const RC_ANDROID_KEY = process.env.EXPO_PUBLIC_RC_ANDROID_KEY ?? '';
