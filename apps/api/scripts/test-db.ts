@@ -1,8 +1,7 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { neon } from '@neondatabase/serverless';
-import * as dotenv from 'dotenv';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,13 +23,10 @@ if (!databaseUrl) {
   process.exit(1);
 }
 
-console.log('Testing connection to:', databaseUrl.replace(/:[^:@]+@/, ':***@')); // sensitive info masked
-
 async function test() {
   try {
     const sql = neon(databaseUrl!);
-    const result = await sql`SELECT now()`;
-    console.log('Connection successful:', result);
+    const _result = await sql`SELECT now()`;
   } catch (error) {
     console.error('Connection failed:', error);
   }
