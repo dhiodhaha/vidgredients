@@ -1,0 +1,8 @@
+{
+  "android": {
+    "package": "com.dhiodhaha.videotoingredients"
+  },
+  "ios": {
+    "bundleIdentifier": "com.dhiodhaha.videotoingredients"
+  }
+}

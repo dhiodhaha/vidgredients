@@ -1,5 +1,6 @@
 import * as Clipboard from 'expo-clipboard';
 import { router } from 'expo-router';
+import { InstagramLogo, TiktokLogo, YoutubeLogo } from 'phosphor-react-native';
 import { useCallback, useState } from 'react';
 import {
   ActivityIndicator,
@@ -53,7 +54,7 @@ export default function HomeScreen() {
 
     try {
       const recipeId = await analyzeVideo(url);
-      router.push(`/(main)/recipe/${recipeId}`);
+      router.push(`/recipe/${recipeId}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to analyze video');
     } finally {
@@ -120,9 +121,18 @@ export default function HomeScreen() {
         <View style={styles.supportedPlatforms}>
           <Text style={styles.supportedTitle}>Supported platforms</Text>
           <View style={styles.platformIcons}>
-            <Text style={styles.platformIcon}>📺 YouTube</Text>
-            <Text style={styles.platformIcon}>🎵 TikTok</Text>
-            <Text style={styles.platformIcon}>📸 Instagram</Text>
+            <View style={styles.platformIconWrapper}>
+              <YoutubeLogo size={24} color="#FF0000" weight="fill" />
+              <Text style={styles.platformName}>YouTube</Text>
+            </View>
+            <View style={styles.platformIconWrapper}>
+              <TiktokLogo size={24} color="#000000" weight="fill" />
+              <Text style={styles.platformName}>TikTok</Text>
+            </View>
+            <View style={styles.platformIconWrapper}>
+              <InstagramLogo size={24} color="#C13584" weight="fill" />
+              <Text style={styles.platformName}>Instagram</Text>
+            </View>
           </View>
         </View>
       </View>
@@ -226,10 +236,15 @@ const styles = StyleSheet.create({
   },
   platformIcons: {
     flexDirection: 'row',
-    gap: 16,
+    gap: 24,
   },
-  platformIcon: {
-    fontSize: 13,
+  platformIconWrapper: {
+    alignItems: 'center',
+    gap: 4,
+  },
+  platformName: {
+    fontSize: 12,
     color: '#757575',
+    fontWeight: '500',
   },
 });

@@ -4,7 +4,7 @@ import { z } from 'zod';
 const ingredientSchema = z.object({
   name: z.string(),
   quantity: z.string(),
-  unit: z.string().optional(),
+  unit: z.string().nullable().optional(),
 });
 
 const stepSchema = z.object({
@@ -14,10 +14,10 @@ const stepSchema = z.object({
 });
 
 const nutritionSchema = z.object({
-  calories: z.number().optional(),
-  protein: z.number().optional(),
-  carbs: z.number().optional(),
-  fat: z.number().optional(),
+  calories: z.number().nullable().optional(),
+  protein: z.number().nullable().optional(),
+  carbs: z.number().nullable().optional(),
+  fat: z.number().nullable().optional(),
 });
 
 const recipeSchema = z.object({
@@ -25,7 +25,7 @@ const recipeSchema = z.object({
   servings: z.number(),
   ingredients: z.array(ingredientSchema),
   steps: z.array(stepSchema),
-  nutrition: nutritionSchema.optional(),
+  nutrition: nutritionSchema.nullable().optional(),
 });
 
 export type ParsedRecipe = z.infer<typeof recipeSchema>;
@@ -82,7 +82,7 @@ export async function parseTranscript(transcript: string, apiKey: string): Promi
     ],
     response_format: { type: 'json_object' },
     temperature: 0.3,
-    max_tokens: 4096,
+    max_completion_tokens: 4096,
   });
 
   const content = response.choices[0]?.message?.content;

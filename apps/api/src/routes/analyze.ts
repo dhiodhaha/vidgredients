@@ -14,12 +14,13 @@ type Bindings = {
 
 const analyzeSchema = z.object({
   url: z.string().url(),
+  language: z.string().length(2).optional().default('en'),
 });
 
 export const analyze = new Hono<{ Bindings: Bindings }>();
 
 analyze.post('/', zValidator('json', analyzeSchema), async (c) => {
-  const { url } = c.req.valid('json');
+  const { url, language } = c.req.valid('json');
   const urlHash = hashUrl(url);
 
   try {
@@ -41,7 +42,7 @@ analyze.post('/', zValidator('json', analyzeSchema), async (c) => {
     }
 
     // Step 2: Extract transcript using Scrapecreators API
-    const transcriptData = await extractTranscript(url, c.env.SCRAPECREATORS_API_KEY);
+    const transcriptData = await extractTranscript(url, c.env.SCRAPECREATORS_API_KEY, language);
 
     // Step 3: Parse transcript using GPT-5.2
     const parsedRecipe = await parseTranscript(transcriptData.transcript, c.env.OPENAI_API_KEY);
@@ -54,9 +55,19 @@ analyze.post('/', zValidator('json', analyzeSchema), async (c) => {
       title: transcriptData.title ?? parsedRecipe.title,
       thumbnailUrl: transcriptData.thumbnail,
       servings: parsedRecipe.servings,
-      ingredients: parsedRecipe.ingredients,
+      ingredients: parsedRecipe.ingredients.map((i) => ({
+        ...i,
+        unit: i.unit ?? undefined,
+      })),
       steps: parsedRecipe.steps,
-      nutrition: parsedRecipe.nutrition,
+      nutrition: parsedRecipe.nutrition
+        ? {
+            calories: parsedRecipe.nutrition.calories ?? undefined,
+            protein: parsedRecipe.nutrition.protein ?? undefined,
+            carbs: parsedRecipe.nutrition.carbs ?? undefined,
+            fat: parsedRecipe.nutrition.fat ?? undefined,
+          }
+        : undefined,
       rawTranscript: transcriptData.transcript,
     });
 

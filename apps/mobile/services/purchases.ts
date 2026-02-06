@@ -1,19 +1,24 @@
-import Constants from 'expo-constants';
-import { Platform } from 'react-native';
-import Purchases, {
-  type CustomerInfo,
-  type PurchasesPackage,
-  LOG_LEVEL,
-} from 'react-native-purchases';
+// import Purchases, {
+//   type CustomerInfo,
+//   type PurchasesPackage,
+//   LOG_LEVEL,
+// } from 'react-native-purchases';
 
-const RC_IOS_KEY = process.env.EXPO_PUBLIC_RC_IOS_KEY ?? '';
-const RC_ANDROID_KEY = process.env.EXPO_PUBLIC_RC_ANDROID_KEY ?? '';
+// Define partial types to avoid importing from the library
+export type CustomerInfo = unknown;
+export type PurchasesPackage = unknown;
+
+const _RC_IOS_KEY = process.env.EXPO_PUBLIC_RC_IOS_KEY ?? '';
+const _RC_ANDROID_KEY = process.env.EXPO_PUBLIC_RC_ANDROID_KEY ?? '';
 
 /**
  * Initialize RevenueCat SDK
  * Call this in the root _layout.tsx
  */
-export async function initPurchases(userId?: string): Promise<void> {
+export async function initPurchases(_userId?: string): Promise<void> {
+  console.log('[Mock] RevenueCat initialization disabled');
+  return;
+  /*
   // Graceful exit for Expo Go or web
   if (Constants.appOwnership === 'expo' || Platform.OS === 'web') {
     if (__DEV__) console.log('[RevenueCat] Skipping init in Expo Go/Web');
@@ -39,12 +44,16 @@ export async function initPurchases(userId?: string): Promise<void> {
   } catch (e) {
     console.warn('RevenueCat init failed:', e);
   }
+  */
 }
 
 /**
  * Check if the user has premium access
  */
 export async function checkPremiumStatus(): Promise<boolean> {
+  console.log('[Mock] checkPremiumStatus returning false');
+  return false;
+  /*
   try {
     const customerInfo = await Purchases.getCustomerInfo();
     return customerInfo.entitlements.active.premium !== undefined;
@@ -52,12 +61,16 @@ export async function checkPremiumStatus(): Promise<boolean> {
     console.error('Failed to check premium status:', error);
     return false;
   }
+  */
 }
 
 /**
  * Get available subscription packages
  */
 export async function getOfferings(): Promise<PurchasesPackage[]> {
+  console.log('[Mock] getOfferings returning empty array');
+  return [];
+  /*
   try {
     const offerings = await Purchases.getOfferings();
     return offerings.current?.availablePackages ?? [];
@@ -65,33 +78,48 @@ export async function getOfferings(): Promise<PurchasesPackage[]> {
     console.error('Failed to get offerings:', error);
     return [];
   }
+  */
 }
 
 /**
  * Purchase a subscription package
  */
-export async function purchasePackage(pkg: PurchasesPackage): Promise<CustomerInfo> {
+export async function purchasePackage(_pkg: PurchasesPackage): Promise<CustomerInfo> {
+  console.warn('[Mock] purchasePackage called but disabled');
+  throw new Error('Purchases are currently disabled');
+  /*
   const { customerInfo } = await Purchases.purchasePackage(pkg);
   return customerInfo;
+  */
 }
 
 /**
  * Restore previous purchases
  */
 export async function restorePurchases(): Promise<CustomerInfo> {
+  console.log('[Mock] restorePurchases called');
+  return {} as unknown as CustomerInfo;
+  /*
   return await Purchases.restorePurchases();
+  */
 }
 
 /**
  * Log in user to RevenueCat
  */
-export async function loginUser(userId: string): Promise<void> {
+export async function loginUser(_userId: string): Promise<void> {
+  console.log('[Mock] loginUser called');
+  /*
   await Purchases.logIn(userId);
+  */
 }
 
 /**
  * Log out user from RevenueCat
  */
 export async function logoutUser(): Promise<void> {
+  console.log('[Mock] logoutUser called');
+  /*
   await Purchases.logOut();
+  */
 }

@@ -15,7 +15,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourcompany.videotoingredients"
+      "bundleIdentifier": "com.yourcompany.videotoingredients",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -38,8 +41,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "your-project-id"
+        "projectId": "d7de5351-0f41-4670-ae0c-0d9612158a9c"
       }
-    }
+    },
+    "owner": "dhiodhaha"
   }
 }

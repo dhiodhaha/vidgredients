@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { memo } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
 interface IngredientItemProps {
   id: string;
@@ -13,7 +13,6 @@ interface IngredientItemProps {
 }
 
 export const IngredientItem = memo(function IngredientItem({
-  id,
   quantity,
   name,
   unit,
@@ -92,14 +91,16 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   quantity: {
-    fontSize: 14,
-    color: '#6B7280',
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#be185d', // Deep Pink/Magenta for contrast
     minWidth: 60,
   },
   name: {
     fontSize: 16,
-    color: '#111827',
+    color: '#064e3b', // Deep Emerald
     flex: 1,
+    fontFamily: Platform.select({ ios: 'Georgia', android: 'serif' }),
   },
   nameLink: {
     textDecorationLine: 'underline',
