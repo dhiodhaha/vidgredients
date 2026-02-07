@@ -1,5 +1,5 @@
-import { defineConfig } from 'drizzle-kit';
 import * as dotenv from 'dotenv';
+import { defineConfig } from 'drizzle-kit';
 
 // Load environment variables from .dev.vars if present, or system env
 dotenv.config({ path: '.dev.vars' });

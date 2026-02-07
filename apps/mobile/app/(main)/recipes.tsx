@@ -1,13 +1,13 @@
 import { FlashList } from '@shopify/flash-list';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { Clock } from 'phosphor-react-native';
+import { Clock } from 'lucide-react-native';
 import { useCallback, useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRecipeStore } from '../../stores/recipe';
 
-export default function SavedScreen() {
+export default function RecipesScreen() {
   const recipesMap = useRecipeStore((state) => state.recipes);
   const recipes = useMemo(() => Object.values(recipesMap).reverse(), [recipesMap]);
 

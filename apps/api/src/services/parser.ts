@@ -26,6 +26,12 @@ const recipeSchema = z.object({
   ingredients: z.array(ingredientSchema),
   steps: z.array(stepSchema),
   nutrition: nutritionSchema.nullable().optional(),
+  // Filter fields - AI estimates these from transcript analysis
+  cookTimeMinutes: z.number().nullable().optional(),
+  difficulty: z.enum(['easy', 'medium', 'hard']).nullable().optional(),
+  isVegetarian: z.boolean().default(false),
+  isVegan: z.boolean().default(false),
+  isGlutenFree: z.boolean().default(false),
 });
 
 export type ParsedRecipe = z.infer<typeof recipeSchema>;
@@ -38,6 +44,12 @@ Given a transcript from a cooking video, extract:
 3. Ingredients: List of all ingredients with quantities and units
 4. Steps: Ordered cooking instructions with ingredient references highlighted
 5. Nutrition (optional): Estimated nutritional information if mentioned
+6. Cook Time: Estimate total cooking time in minutes based on steps described
+7. Difficulty: Assess as "easy" (1-5 simple steps, common ingredients), "medium" (6-10 steps, some technique required), or "hard" (complex techniques, many steps)
+8. Dietary Info: Analyze ingredients to determine:
+   - isVegetarian: true if no meat/fish
+   - isVegan: true if no animal products (meat, dairy, eggs, honey)
+   - isGlutenFree: true if no wheat, barley, rye, or gluten-containing ingredients
 
 For each step, identify and list ingredient names mentioned in the description as "highlightedWords".
 
@@ -45,6 +57,11 @@ Respond in JSON format matching this structure:
 {
   "title": "Recipe Name",
   "servings": 4,
+  "cookTimeMinutes": 25,
+  "difficulty": "easy",
+  "isVegetarian": false,
+  "isVegan": false,
+  "isGlutenFree": true,
   "ingredients": [
     { "name": "chicken breast", "quantity": "500", "unit": "g" }
   ],

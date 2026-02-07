@@ -1,4 +1,5 @@
 export type Platform = 'youtube' | 'tiktok' | 'instagram';
+export type Difficulty = 'easy' | 'medium' | 'hard';
 
 export interface Ingredient {
   id: string;
@@ -31,6 +32,20 @@ export interface Recipe {
   ingredients: Ingredient[];
   steps: Step[];
   nutrition?: Nutrition;
+  // Filter fields
+  cookTimeMinutes?: number;
+  difficulty?: Difficulty;
+  isVegetarian?: boolean;
+  isVegan?: boolean;
+  isGlutenFree?: boolean;
+}
+
+export interface RecipeFilters {
+  maxCookTime?: number; // null = no filter
+  difficulty?: Difficulty;
+  isVegetarian?: boolean;
+  isVegan?: boolean;
+  isGlutenFree?: boolean;
 }
 
 export interface AnalyzeRequest {

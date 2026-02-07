@@ -67,6 +67,7 @@ export const verification = pgTable('verification', {
 
 export const platformEnum = pgEnum('platform', ['youtube', 'tiktok', 'instagram']);
 export const subscriptionPlanEnum = pgEnum('subscription_plan', ['monthly', 'yearly', 'lifetime']);
+export const difficultyEnum = pgEnum('difficulty', ['easy', 'medium', 'hard']);
 
 export const recipes = pgTable(
   'recipes',
@@ -82,12 +83,19 @@ export const recipes = pgTable(
     steps: jsonb('steps').notNull(),
     nutrition: jsonb('nutrition'),
     rawTranscript: text('raw_transcript'),
+    // Filter fields
+    cookTimeMinutes: integer('cook_time_minutes'),
+    difficulty: difficultyEnum('difficulty'),
+    isVegetarian: boolean('is_vegetarian').default(false),
+    isVegan: boolean('is_vegan').default(false),
+    isGlutenFree: boolean('is_gluten_free').default(false),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
   },
   (table) => ({
     urlHashIdx: index('idx_recipes_url_hash').on(table.urlHash),
     platformIdx: index('idx_recipes_platform').on(table.platform),
+    cookTimeIdx: index('idx_recipes_cook_time').on(table.cookTimeMinutes),
   })
 );
 

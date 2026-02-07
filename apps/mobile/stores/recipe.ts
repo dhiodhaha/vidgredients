@@ -33,6 +33,12 @@ export interface Recipe {
   ingredients: Ingredient[];
   steps: Step[];
   nutrition?: Nutrition;
+  // Filter fields
+  cookTimeMinutes?: number;
+  difficulty?: 'easy' | 'medium' | 'hard';
+  isVegetarian?: boolean;
+  isVegan?: boolean;
+  isGlutenFree?: boolean;
 }
 
 interface RecipeState {
@@ -101,6 +107,12 @@ export const useRecipeStore = create<RecipeState>()(
               })
             ),
             nutrition: data.nutrition,
+            // Filter fields from API
+            cookTimeMinutes: data.cookTimeMinutes,
+            difficulty: data.difficulty,
+            isVegetarian: data.isVegetarian ?? false,
+            isVegan: data.isVegan ?? false,
+            isGlutenFree: data.isGlutenFree ?? false,
           };
 
           set((state) => ({

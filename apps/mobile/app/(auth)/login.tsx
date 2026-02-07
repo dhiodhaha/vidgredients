@@ -1,6 +1,16 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GreetingCard } from '../../components/home/GreetingCard';
 import { signIn, signUp } from '../../stores/auth';
@@ -48,63 +58,76 @@ export default function LoginScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <GreetingCard />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardView}
+      >
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.content}>
+            <GreetingCard />
 
-        <View style={styles.hero}>
-          <Text style={styles.title}>Video to Ingredients</Text>
-          <Text style={styles.subtitle}>
-            Extract ingredients and cooking steps from any cooking video
-          </Text>
-        </View>
+            <View style={styles.hero}>
+              <Text style={styles.title}>Video to Ingredients</Text>
+              <Text style={styles.subtitle}>
+                Extract ingredients and cooking steps from any cooking video
+              </Text>
+            </View>
 
-        <View style={styles.form}>
-          {isSignUp && (
-            <TextInput
-              style={styles.input}
-              placeholder="Name"
-              value={name}
-              onChangeText={setName}
-              autoCapitalize="words"
-            />
-          )}
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
+            <View style={styles.form}>
+              {isSignUp && (
+                <TextInput
+                  style={styles.input}
+                  placeholder="Name"
+                  value={name}
+                  onChangeText={setName}
+                  autoCapitalize="words"
+                />
+              )}
+              <TextInput
+                style={styles.input}
+                placeholder="Email"
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+              />
 
-          {error && <Text style={styles.errorText}>{error}</Text>}
+              {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-          <Pressable
-            style={({ pressed }) => [styles.loginButton, pressed && styles.loginButtonPressed]}
-            onPress={handleSubmit}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <ActivityIndicator color="#FFFFFF" />
-            ) : (
-              <Text style={styles.loginButtonText}>{isSignUp ? 'Create Account' : 'Sign In'}</Text>
-            )}
-          </Pressable>
+              <Pressable
+                style={({ pressed }) => [styles.loginButton, pressed && styles.loginButtonPressed]}
+                onPress={handleSubmit}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <ActivityIndicator color="#FFFFFF" />
+                ) : (
+                  <Text style={styles.loginButtonText}>
+                    {isSignUp ? 'Create Account' : 'Sign In'}
+                  </Text>
+                )}
+              </Pressable>
 
-          <Pressable style={styles.switchButton} onPress={() => setIsSignUp(!isSignUp)}>
-            <Text style={styles.switchButtonText}>
-              {isSignUp ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
-            </Text>
-          </Pressable>
-        </View>
-      </View>
+              <Pressable style={styles.switchButton} onPress={() => setIsSignUp(!isSignUp)}>
+                <Text style={styles.switchButtonText}>
+                  {isSignUp ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
+                </Text>
+              </Pressable>
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -114,10 +137,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F1F8E9',
   },
-  content: {
+  keyboardView: {
     flex: 1,
-    padding: 24,
+  },
+  scrollContent: {
+    flexGrow: 1,
     justifyContent: 'center',
+  },
+  content: {
+    padding: 24,
   },
   hero: {
     marginTop: 32,

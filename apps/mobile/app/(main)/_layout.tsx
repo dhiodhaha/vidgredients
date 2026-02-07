@@ -1,17 +1,38 @@
 import { Tabs } from 'expo-router';
-import { House, SquaresFour } from 'phosphor-react-native';
-import { StyleSheet, View } from 'react-native';
+import { BookOpen, House, ShoppingBag, User } from 'lucide-react-native';
+import { StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function MainLayout() {
+  const insets = useSafeAreaInsets();
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#4CAF50',
-        tabBarInactiveTintColor: '#9E9E9E',
-        tabBarStyle: styles.tabBar,
+        tabBarActiveTintColor: '#064e3b', // Dark emerald green
+        tabBarInactiveTintColor: '#9ca3af', // Gray 400
+        tabBarStyle: {
+          display: 'none', // Hidden while we revamp the navigation
+          position: 'absolute',
+          bottom: 20 + insets.bottom, // Floating above home indicator
+          left: 24,
+          right: 24,
+          backgroundColor: '#FFFFFF',
+          borderRadius: 32, // Pill shape
+          height: 64,
+          borderTopWidth: 0,
+          elevation: 10, // Android shadow
+          shadowColor: '#000', // iOS shadow
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.1,
+          shadowRadius: 12,
+          paddingBottom: 0, // Reset padding
+        },
+        tabBarItemStyle: {
+          paddingTop: 8, // Center icons vertically in the pill
+        },
         tabBarShowLabel: false,
-        tabBarBackground: () => <View style={styles.tabBackground} />,
       }}
     >
       <Tabs.Screen
@@ -19,16 +40,40 @@ export default function MainLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <House size={24} color={color} weight={focused ? 'fill' : 'regular'} />
+            <House size={28} color={color} strokeWidth={focused ? 2.5 : 2} />
           ),
         }}
       />
       <Tabs.Screen
-        name="saved"
+        name="recipes"
         options={{
-          title: 'Saved',
+          title: 'Recipes',
+          href: null, // Disabled for now
           tabBarIcon: ({ color, focused }) => (
-            <SquaresFour size={24} color={color} weight={focused ? 'fill' : 'regular'} />
+            <BookOpen size={28} color={color} strokeWidth={focused ? 2.5 : 2} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="grocery"
+        options={{
+          title: 'Grocery',
+          tabBarIcon: ({ color, focused }) => (
+            <View>
+              <ShoppingBag size={28} color={color} strokeWidth={focused ? 2.5 : 2} />
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>2</Text>
+              </View>
+            </View>
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, focused }) => (
+            <User size={28} color={color} strokeWidth={focused ? 2.5 : 2} />
           ),
         }}
       />
@@ -37,28 +82,22 @@ export default function MainLayout() {
 }
 
 const styles = StyleSheet.create({
-  tabBar: {
+  badge: {
     position: 'absolute',
-    bottom: 30,
-    left: 20,
-    right: 20,
-    elevation: 0,
-    backgroundColor: 'transparent',
-    borderTopWidth: 0,
-    height: 60,
+    top: -4,
+    right: -4,
+    backgroundColor: '#be185d', // Deep pink/magenta
+    borderRadius: 10,
+    width: 16,
+    height: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: '#FFFFFF',
   },
-  tabBackground: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 8,
+  badgeText: {
+    color: '#FFFFFF',
+    fontSize: 10,
+    fontWeight: 'bold',
   },
 });

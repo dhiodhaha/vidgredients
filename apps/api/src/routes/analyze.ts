@@ -37,6 +37,11 @@ analyze.post('/', zValidator('json', analyzeSchema), async (c) => {
         ingredients: cached.ingredients,
         steps: cached.steps,
         nutrition: cached.nutrition,
+        cookTimeMinutes: cached.cookTimeMinutes,
+        difficulty: cached.difficulty,
+        isVegetarian: cached.isVegetarian,
+        isVegan: cached.isVegan,
+        isGlutenFree: cached.isGlutenFree,
         cached: true,
       });
     }
@@ -69,6 +74,12 @@ analyze.post('/', zValidator('json', analyzeSchema), async (c) => {
           }
         : undefined,
       rawTranscript: transcriptData.transcript,
+      // Filter fields from AI extraction
+      cookTimeMinutes: parsedRecipe.cookTimeMinutes ?? undefined,
+      difficulty: parsedRecipe.difficulty ?? undefined,
+      isVegetarian: parsedRecipe.isVegetarian,
+      isVegan: parsedRecipe.isVegan,
+      isGlutenFree: parsedRecipe.isGlutenFree,
     });
 
     return c.json({
@@ -80,6 +91,11 @@ analyze.post('/', zValidator('json', analyzeSchema), async (c) => {
       ingredients: recipe.ingredients,
       steps: recipe.steps,
       nutrition: recipe.nutrition,
+      cookTimeMinutes: recipe.cookTimeMinutes,
+      difficulty: recipe.difficulty,
+      isVegetarian: recipe.isVegetarian,
+      isVegan: recipe.isVegan,
+      isGlutenFree: recipe.isGlutenFree,
       cached: false,
     });
   } catch (error) {

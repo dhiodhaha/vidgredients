@@ -2,10 +2,7 @@
   "name": "video-to-ingredients",
   "version": "1.0.0",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "workspaces": ["apps/*", "packages/*"],
   "scripts": {
     "dev": "turbo run dev",
     "dev:api": "turbo run dev --filter=api",

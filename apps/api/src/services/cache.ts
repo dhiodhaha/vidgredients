@@ -24,6 +24,12 @@ export interface CachedRecipe {
     carbs?: number;
     fat?: number;
   };
+  // Filter fields
+  cookTimeMinutes?: number;
+  difficulty?: 'easy' | 'medium' | 'hard';
+  isVegetarian?: boolean;
+  isVegan?: boolean;
+  isGlutenFree?: boolean;
 }
 
 /**
@@ -46,7 +52,12 @@ export async function getCachedRecipe(
       servings,
       ingredients,
       steps,
-      nutrition
+      nutrition,
+      cook_time_minutes as "cookTimeMinutes",
+      difficulty,
+      is_vegetarian as "isVegetarian",
+      is_vegan as "isVegan",
+      is_gluten_free as "isGlutenFree"
     FROM recipes
     WHERE url_hash = ${urlHash}
     LIMIT 1
@@ -69,6 +80,11 @@ export async function getCachedRecipe(
     ingredients: row.ingredients as CachedRecipe['ingredients'],
     steps: row.steps as CachedRecipe['steps'],
     nutrition: row.nutrition as CachedRecipe['nutrition'],
+    cookTimeMinutes: row.cookTimeMinutes ?? undefined,
+    difficulty: row.difficulty ?? undefined,
+    isVegetarian: row.isVegetarian ?? false,
+    isVegan: row.isVegan ?? false,
+    isGlutenFree: row.isGlutenFree ?? false,
   };
 }
 
@@ -83,6 +99,12 @@ interface RecipeData {
   steps: CachedRecipe['steps'];
   nutrition?: CachedRecipe['nutrition'];
   rawTranscript: string;
+  // Filter fields
+  cookTimeMinutes?: number;
+  difficulty?: 'easy' | 'medium' | 'hard';
+  isVegetarian?: boolean;
+  isVegan?: boolean;
+  isGlutenFree?: boolean;
 }
 
 /**
@@ -102,7 +124,12 @@ export async function cacheRecipe(databaseUrl: string, data: RecipeData): Promis
       ingredients,
       steps,
       nutrition,
-      raw_transcript
+      raw_transcript,
+      cook_time_minutes,
+      difficulty,
+      is_vegetarian,
+      is_vegan,
+      is_gluten_free
     ) VALUES (
       ${data.url},
       ${data.urlHash},
@@ -113,7 +140,12 @@ export async function cacheRecipe(databaseUrl: string, data: RecipeData): Promis
       ${JSON.stringify(data.ingredients)},
       ${JSON.stringify(data.steps)},
       ${data.nutrition ? JSON.stringify(data.nutrition) : null},
-      ${data.rawTranscript}
+      ${data.rawTranscript},
+      ${data.cookTimeMinutes ?? null},
+      ${data.difficulty ?? null},
+      ${data.isVegetarian ?? false},
+      ${data.isVegan ?? false},
+      ${data.isGlutenFree ?? false}
     )
     RETURNING 
       id,
@@ -125,7 +157,12 @@ export async function cacheRecipe(databaseUrl: string, data: RecipeData): Promis
       servings,
       ingredients,
       steps,
-      nutrition
+      nutrition,
+      cook_time_minutes as "cookTimeMinutes",
+      difficulty,
+      is_vegetarian as "isVegetarian",
+      is_vegan as "isVegan",
+      is_gluten_free as "isGlutenFree"
   `;
 
   const row = result[0];
@@ -141,5 +178,10 @@ export async function cacheRecipe(databaseUrl: string, data: RecipeData): Promis
     ingredients: row.ingredients as CachedRecipe['ingredients'],
     steps: row.steps as CachedRecipe['steps'],
     nutrition: row.nutrition as CachedRecipe['nutrition'],
+    cookTimeMinutes: row.cookTimeMinutes ?? undefined,
+    difficulty: row.difficulty ?? undefined,
+    isVegetarian: row.isVegetarian ?? false,
+    isVegan: row.isVegan ?? false,
+    isGlutenFree: row.isGlutenFree ?? false,
   };
 }

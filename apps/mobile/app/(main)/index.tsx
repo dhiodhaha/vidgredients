@@ -1,141 +1,139 @@
-import * as Clipboard from 'expo-clipboard';
 import { router } from 'expo-router';
-import { InstagramLogo, TiktokLogo, YoutubeLogo } from 'phosphor-react-native';
-import { useCallback, useState } from 'react';
-import {
-  ActivityIndicator,
-  Keyboard,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { useCallback, useMemo, useState } from 'react';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { GreetingCard } from '../../components/home/GreetingCard';
-import { PlatformBadge } from '../../components/home/PlatformBadge';
-import { detectPlatform } from '../../lib/platform';
-import { useRecipeStore } from '../../stores/recipe';
+import { AddVideoModal } from '../../components/home/AddVideoModal';
+import { EmptyState } from '../../components/home/EmptyState';
+import { FloatingActionButton } from '../../components/home/FloatingActionButton';
+import { Header } from '../../components/home/Header';
+import { MasonryGrid } from '../../components/home/MasonryGrid';
+import { MoodFilters, type RecipeFilter } from '../../components/home/MoodFilters';
+import { COLORS } from '../../lib/theme';
+import { type Recipe, useRecipeStore } from '../../stores/recipe';
+
+// Filter definitions matching MoodFilters component
+const FILTER_CONFIG: Record<string, RecipeFilter> = {
+  'quick-15': { id: 'quick-15', label: 'Quick', emoji: '⚡', category: 'time', value: 15 },
+  'medium-30': { id: 'medium-30', label: '30 min', emoji: '⏱️', category: 'time', value: 30 },
+  easy: { id: 'easy', label: 'Easy', emoji: '🍳', category: 'difficulty', value: 'easy' },
+  medium: { id: 'medium', label: 'Medium', emoji: '👩‍🍳', category: 'difficulty', value: 'medium' },
+  vegetarian: {
+    id: 'vegetarian',
+    label: 'Vegetarian',
+    emoji: '🥗',
+    category: 'dietary',
+    value: 'vegetarian',
+  },
+  vegan: { id: 'vegan', label: 'Vegan', emoji: '🌱', category: 'dietary', value: 'vegan' },
+  'gluten-free': {
+    id: 'gluten-free',
+    label: 'GF',
+    emoji: '🌾',
+    category: 'dietary',
+    value: 'gluten-free',
+  },
+};
+
+// Helper function to filter recipes
+function filterRecipes(recipes: Recipe[], filterId: string | null): Recipe[] {
+  if (!filterId) return recipes;
+
+  const filterConfig = FILTER_CONFIG[filterId];
+  if (!filterConfig) return recipes;
+
+  return recipes.filter((recipe) => {
+    switch (filterConfig.category) {
+      case 'time':
+        // Filter by cook time (show recipes faster or equal to selected time)
+        return (
+          recipe.cookTimeMinutes != null && recipe.cookTimeMinutes <= (filterConfig.value as number)
+        );
+      case 'difficulty':
+        // Filter by exact difficulty
+        return recipe.difficulty === filterConfig.value;
+      case 'dietary':
+        // Filter by dietary restriction
+        if (filterConfig.value === 'vegetarian') return recipe.isVegetarian === true;
+        if (filterConfig.value === 'vegan') return recipe.isVegan === true;
+        if (filterConfig.value === 'gluten-free') return recipe.isGlutenFree === true;
+        return true;
+      default:
+        return true;
+    }
+  });
+}
 
 export default function HomeScreen() {
-  const [url, setUrl] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const recipes = useRecipeStore((state) => state.recipes);
   const analyzeVideo = useRecipeStore((state) => state.analyzeVideo);
 
-  const platform = url ? detectPlatform(url) : null;
+  // Convert recipes record to array and apply filter
+  const recipeList = useMemo(() => {
+    const allRecipes = Object.values(recipes);
+    return filterRecipes(allRecipes, activeFilter);
+  }, [recipes, activeFilter]);
 
-  const handlePaste = useCallback(async () => {
-    try {
-      const text = await Clipboard.getStringAsync();
-      if (text) {
-        setUrl(text);
-        setError(null);
-      }
-    } catch (err) {
-      console.error('Failed to paste:', err);
-    }
+  const handleMealPlanSelect = useCallback((days: number) => {
+    // TODO: Implement meal plan generation
+    Alert.alert(
+      '🍽️ Coming Soon',
+      `Auto-generating a ${days}-day meal plan from your saved recipes will be available soon!`
+    );
   }, []);
 
-  const handleAnalyze = useCallback(async () => {
-    if (!url.trim()) {
-      setError('Please enter a video URL');
-      return;
-    }
+  const handleRecipePress = useCallback((recipeId: string) => {
+    router.push(`/recipe/${recipeId}`);
+  }, []);
 
-    if (!platform) {
-      setError('Unsupported platform. Please use YouTube, TikTok, or Instagram.');
-      return;
-    }
-
-    Keyboard.dismiss();
-    setIsLoading(true);
-    setError(null);
-
-    try {
+  const handleAddVideo = useCallback(
+    async (url: string) => {
       const recipeId = await analyzeVideo(url);
       router.push(`/recipe/${recipeId}`);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to analyze video');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [url, platform, analyzeVideo]);
+    },
+    [analyzeVideo]
+  );
+
+  const handleOpenModal = useCallback(() => {
+    setModalVisible(true);
+  }, []);
+
+  const handleCloseModal = useCallback(() => {
+    setModalVisible(false);
+  }, []);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <GreetingCard />
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Header with title and meal plan button */}
+        <Header onMealPlanSelect={handleMealPlanSelect} />
 
-        <View style={styles.inputSection}>
-          <Text style={styles.sectionTitle}>Analyze a cooking video</Text>
+        {/* Mood filters */}
+        <MoodFilters activeFilter={activeFilter} onFilterChange={setActiveFilter} />
 
-          <View style={styles.inputContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Paste video URL here..."
-              placeholderTextColor="#9E9E9E"
-              value={url}
-              onChangeText={(text) => {
-                setUrl(text);
-                setError(null);
-              }}
-              autoCapitalize="none"
-              autoCorrect={false}
-              keyboardType="url"
-            />
+        {/* Recipe grid or empty state */}
+        {recipeList.length > 0 ? (
+          <MasonryGrid recipes={recipeList} onRecipePress={handleRecipePress} />
+        ) : (
+          <EmptyState />
+        )}
+      </ScrollView>
 
-            <Pressable
-              style={({ pressed }) => [styles.pasteButton, pressed && styles.buttonPressed]}
-              onPress={handlePaste}
-            >
-              <Text style={styles.pasteButtonText}>Paste</Text>
-            </Pressable>
-          </View>
+      {/* Floating Action Button */}
+      <FloatingActionButton onPress={handleOpenModal} />
 
-          {platform ? (
-            <View style={styles.platformContainer}>
-              <PlatformBadge platform={platform} />
-            </View>
-          ) : null}
-
-          {error ? <Text style={styles.errorText}>{error}</Text> : null}
-
-          <Pressable
-            style={({ pressed }) => [
-              styles.analyzeButton,
-              pressed && styles.buttonPressed,
-              isLoading && styles.analyzeButtonDisabled,
-            ]}
-            onPress={handleAnalyze}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <ActivityIndicator color="#FFFFFF" />
-            ) : (
-              <Text style={styles.analyzeButtonText}>Extract Ingredients</Text>
-            )}
-          </Pressable>
-        </View>
-
-        <View style={styles.supportedPlatforms}>
-          <Text style={styles.supportedTitle}>Supported platforms</Text>
-          <View style={styles.platformIcons}>
-            <View style={styles.platformIconWrapper}>
-              <YoutubeLogo size={24} color="#FF0000" weight="fill" />
-              <Text style={styles.platformName}>YouTube</Text>
-            </View>
-            <View style={styles.platformIconWrapper}>
-              <TiktokLogo size={24} color="#000000" weight="fill" />
-              <Text style={styles.platformName}>TikTok</Text>
-            </View>
-            <View style={styles.platformIconWrapper}>
-              <InstagramLogo size={24} color="#C13584" weight="fill" />
-              <Text style={styles.platformName}>Instagram</Text>
-            </View>
-          </View>
-        </View>
-      </View>
+      {/* Add Video Modal */}
+      <AddVideoModal
+        visible={isModalVisible}
+        onClose={handleCloseModal}
+        onSubmit={handleAddVideo}
+      />
     </SafeAreaView>
   );
 }
@@ -143,108 +141,12 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAFAFA',
+    backgroundColor: COLORS.background,
   },
-  content: {
+  scrollView: {
     flex: 1,
-    padding: 20,
   },
-  inputSection: {
-    marginTop: 24,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 12,
-    elevation: 3,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#212121',
-    marginBottom: 16,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  input: {
-    flex: 1,
-    height: 48,
-    backgroundColor: '#F5F5F5',
-    borderRadius: 10,
-    paddingHorizontal: 16,
-    fontSize: 16,
-    color: '#212121',
-  },
-  pasteButton: {
-    height: 48,
-    paddingHorizontal: 16,
-    backgroundColor: '#E8F5E9',
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  pasteButtonText: {
-    color: '#4CAF50',
-    fontWeight: '600',
-    fontSize: 14,
-  },
-  buttonPressed: {
-    opacity: 0.8,
-    transform: [{ scale: 0.98 }],
-  },
-  platformContainer: {
-    marginTop: 12,
-  },
-  errorText: {
-    marginTop: 12,
-    color: '#D32F2F',
-    fontSize: 14,
-  },
-  analyzeButton: {
-    marginTop: 20,
-    height: 52,
-    backgroundColor: '#4CAF50',
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#4CAF50',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  analyzeButtonDisabled: {
-    backgroundColor: '#A5D6A7',
-  },
-  analyzeButtonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  supportedPlatforms: {
-    marginTop: 32,
-    alignItems: 'center',
-  },
-  supportedTitle: {
-    fontSize: 14,
-    color: '#9E9E9E',
-    marginBottom: 12,
-  },
-  platformIcons: {
-    flexDirection: 'row',
-    gap: 24,
-  },
-  platformIconWrapper: {
-    alignItems: 'center',
-    gap: 4,
-  },
-  platformName: {
-    fontSize: 12,
-    color: '#757575',
-    fontWeight: '500',
+  scrollContent: {
+    paddingBottom: 120, // Space for FAB
   },
 });

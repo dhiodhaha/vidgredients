@@ -73,6 +73,7 @@ export const StepItem = memo(function StepItem({
             (word) => word.toLowerCase() === part.toLowerCase()
           );
           return isHighlighted ? (
+            // biome-ignore lint/suspicious/noArrayIndexKey: static split text parts
             <Text key={`${part}-${index}`} style={styles.highlightedText}>
               {part}
             </Text>
