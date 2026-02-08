@@ -5,11 +5,13 @@ import { hashUrl } from '../lib/utils';
 import { cacheRecipe, getCachedRecipe } from '../services/cache';
 import { parseTranscript } from '../services/parser';
 import { extractTranscript } from '../services/scraper';
+import { getRecipeThumbnail, type RecipeCategory } from '../services/image';
 
 type Bindings = {
   DATABASE_URL: string;
   OPENAI_API_KEY: string;
   SCRAPECREATORS_API_KEY: string;
+  UNSPLASH_ACCESS_KEY?: string;
 };
 
 const analyzeSchema = z.object({
@@ -42,6 +44,7 @@ analyze.post('/', zValidator('json', analyzeSchema), async (c) => {
         isVegetarian: cached.isVegetarian,
         isVegan: cached.isVegan,
         isGlutenFree: cached.isGlutenFree,
+        category: cached.category,
         cached: true,
       });
     }
@@ -52,13 +55,21 @@ analyze.post('/', zValidator('json', analyzeSchema), async (c) => {
     // Step 3: Parse transcript using GPT-5.2
     const parsedRecipe = await parseTranscript(transcriptData.transcript, c.env.OPENAI_API_KEY);
 
-    // Step 4: Cache the result
+    // Step 4: Get high-quality thumbnail from Unsplash (or fallback)
+    const thumbnailUrl = await getRecipeThumbnail(
+      parsedRecipe.title,
+      parsedRecipe.category as RecipeCategory,
+      c.env.UNSPLASH_ACCESS_KEY,
+      parsedRecipe.thumbnailQuery // AI-extracted clean search term for accuracy
+    );
+
+    // Step 5: Cache the result
     const recipe = await cacheRecipe(c.env.DATABASE_URL, {
       url,
       urlHash,
       platform: transcriptData.platform,
       title: transcriptData.title ?? parsedRecipe.title,
-      thumbnailUrl: transcriptData.thumbnail,
+      thumbnailUrl: thumbnailUrl,
       servings: parsedRecipe.servings,
       ingredients: parsedRecipe.ingredients.map((i) => ({
         ...i,
@@ -80,6 +91,7 @@ analyze.post('/', zValidator('json', analyzeSchema), async (c) => {
       isVegetarian: parsedRecipe.isVegetarian,
       isVegan: parsedRecipe.isVegan,
       isGlutenFree: parsedRecipe.isGlutenFree,
+      category: parsedRecipe.category,
     });
 
     return c.json({
@@ -96,6 +108,7 @@ analyze.post('/', zValidator('json', analyzeSchema), async (c) => {
       isVegetarian: recipe.isVegetarian,
       isVegan: recipe.isVegan,
       isGlutenFree: recipe.isGlutenFree,
+      category: recipe.category,
       cached: false,
     });
   } catch (error) {

@@ -68,6 +68,21 @@ export const verification = pgTable('verification', {
 export const platformEnum = pgEnum('platform', ['youtube', 'tiktok', 'instagram']);
 export const subscriptionPlanEnum = pgEnum('subscription_plan', ['monthly', 'yearly', 'lifetime']);
 export const difficultyEnum = pgEnum('difficulty', ['easy', 'medium', 'hard']);
+export const categoryEnum = pgEnum('category', [
+  'Pasta',
+  'Salad',
+  'Soup',
+  'Dessert',
+  'Meat',
+  'Seafood',
+  'Breakfast',
+  'Drink',
+  'Main Course',
+  'Appetizer',
+  'Snack',
+  'Bread',
+  'Vegetarian',
+]);
 
 export const recipes = pgTable(
   'recipes',
@@ -89,6 +104,7 @@ export const recipes = pgTable(
     isVegetarian: boolean('is_vegetarian').default(false),
     isVegan: boolean('is_vegan').default(false),
     isGlutenFree: boolean('is_gluten_free').default(false),
+    category: categoryEnum('category').default('Main Course'),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
   },

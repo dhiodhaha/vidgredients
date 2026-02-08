@@ -32,6 +32,23 @@ const recipeSchema = z.object({
   isVegetarian: z.boolean().default(false),
   isVegan: z.boolean().default(false),
   isGlutenFree: z.boolean().default(false),
+  category: z.enum([
+    'Pasta',
+    'Salad',
+    'Soup',
+    'Dessert',
+    'Meat',
+    'Seafood',
+    'Breakfast',
+    'Drink',
+    'Main Course',
+    'Appetizer',
+    'Snack',
+    'Bread',
+    'Vegetarian', // Specific category if it's the main focus
+  ]).default('Main Course'),
+  // Clean search term for thumbnail image search (1-3 words)
+  thumbnailQuery: z.string().optional(),
 });
 
 export type ParsedRecipe = z.infer<typeof recipeSchema>;
@@ -50,6 +67,8 @@ Given a transcript from a cooking video, extract:
    - isVegetarian: true if no meat/fish
    - isVegan: true if no animal products (meat, dairy, eggs, honey)
    - isGlutenFree: true if no wheat, barley, rye, or gluten-containing ingredients
+9. Category: Choose the most appropriate category from: Pasta, Salad, Soup, Dessert, Meat, Seafood, Breakfast, Drink, Main Course, Appetizer, Snack, Bread, Vegetarian.
+10. Thumbnail Query: Provide a clean 1-3 word search term for finding a matching food photo (e.g., "spaghetti carbonara", "chicken salad", "chocolate cake"). Just the dish name, no extra words.
 
 For each step, identify and list ingredient names mentioned in the description as "highlightedWords".
 
@@ -62,6 +81,8 @@ Respond in JSON format matching this structure:
   "isVegetarian": false,
   "isVegan": false,
   "isGlutenFree": true,
+  "category": "Main Course",
+  "thumbnailQuery": "grilled chicken",
   "ingredients": [
     { "name": "chicken breast", "quantity": "500", "unit": "g" }
   ],

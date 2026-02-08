@@ -10,6 +10,7 @@ type Bindings = {
   OPENAI_API_KEY: string;
   SCRAPECREATORS_API_KEY: string;
   BETTER_AUTH_SECRET: string;
+  UNSPLASH_ACCESS_KEY?: string;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();

@@ -30,6 +30,7 @@ export interface CachedRecipe {
   isVegetarian?: boolean;
   isVegan?: boolean;
   isGlutenFree?: boolean;
+  category?: string;
 }
 
 /**
@@ -57,7 +58,8 @@ export async function getCachedRecipe(
       difficulty,
       is_vegetarian as "isVegetarian",
       is_vegan as "isVegan",
-      is_gluten_free as "isGlutenFree"
+      is_gluten_free as "isGlutenFree",
+      category
     FROM recipes
     WHERE url_hash = ${urlHash}
     LIMIT 1
@@ -85,6 +87,7 @@ export async function getCachedRecipe(
     isVegetarian: row.isVegetarian ?? false,
     isVegan: row.isVegan ?? false,
     isGlutenFree: row.isGlutenFree ?? false,
+    category: row.category ?? undefined,
   };
 }
 
@@ -105,6 +108,7 @@ interface RecipeData {
   isVegetarian?: boolean;
   isVegan?: boolean;
   isGlutenFree?: boolean;
+  category?: string;
 }
 
 /**
@@ -129,7 +133,8 @@ export async function cacheRecipe(databaseUrl: string, data: RecipeData): Promis
       difficulty,
       is_vegetarian,
       is_vegan,
-      is_gluten_free
+      is_gluten_free,
+      category
     ) VALUES (
       ${data.url},
       ${data.urlHash},
@@ -145,7 +150,8 @@ export async function cacheRecipe(databaseUrl: string, data: RecipeData): Promis
       ${data.difficulty ?? null},
       ${data.isVegetarian ?? false},
       ${data.isVegan ?? false},
-      ${data.isGlutenFree ?? false}
+      ${data.isGlutenFree ?? false},
+      ${data.category ?? 'Main Course'}
     )
     RETURNING 
       id,
@@ -162,7 +168,8 @@ export async function cacheRecipe(databaseUrl: string, data: RecipeData): Promis
       difficulty,
       is_vegetarian as "isVegetarian",
       is_vegan as "isVegan",
-      is_gluten_free as "isGlutenFree"
+      is_gluten_free as "isGlutenFree",
+      category
   `;
 
   const row = result[0];
@@ -183,5 +190,6 @@ export async function cacheRecipe(databaseUrl: string, data: RecipeData): Promis
     isVegetarian: row.isVegetarian ?? false,
     isVegan: row.isVegan ?? false,
     isGlutenFree: row.isGlutenFree ?? false,
+    category: row.category ?? undefined,
   };
 }

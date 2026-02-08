@@ -90,12 +90,23 @@ EXCEPTION
   WHEN duplicate_object THEN null;
 END $$;
 
+-- Add category enum
+DO $$ BEGIN
+  CREATE TYPE category AS ENUM (
+    'Pasta', 'Salad', 'Soup', 'Dessert', 'Meat', 'Seafood', 
+    'Breakfast', 'Drink', 'Main Course', 'Appetizer', 'Snack', 'Bread', 'Vegetarian'
+  );
+EXCEPTION
+  WHEN duplicate_object THEN null;
+END $$;
+
 -- Add new filter columns
 ALTER TABLE recipes ADD COLUMN IF NOT EXISTS cook_time_minutes INTEGER;
 ALTER TABLE recipes ADD COLUMN IF NOT EXISTS difficulty difficulty;
 ALTER TABLE recipes ADD COLUMN IF NOT EXISTS is_vegetarian BOOLEAN DEFAULT FALSE;
 ALTER TABLE recipes ADD COLUMN IF NOT EXISTS is_vegan BOOLEAN DEFAULT FALSE;
 ALTER TABLE recipes ADD COLUMN IF NOT EXISTS is_gluten_free BOOLEAN DEFAULT FALSE;
+ALTER TABLE recipes ADD COLUMN IF NOT EXISTS category category DEFAULT 'Main Course';
 
 -- Add index for filtering by cook time
 CREATE INDEX IF NOT EXISTS idx_recipes_cook_time ON recipes(cook_time_minutes);
