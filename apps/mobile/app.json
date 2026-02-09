@@ -15,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourcompany.videotoingredients",
+      "bundleIdentifier": "com.videotoingredients.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -25,7 +25,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#4CAF50"
       },
-      "package": "com.yourcompany.videotoingredients"
+      "package": "com.videotoingredients.app"
     },
     "web": {
       "bundler": "metro",
