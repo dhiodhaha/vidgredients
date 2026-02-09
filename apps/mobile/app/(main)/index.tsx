@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
-import { Alert, ScrollView, StyleSheet } from 'react-native';
+import { ActivityIndicator, Alert, Modal, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AddVideoModal } from '../../components/home/AddVideoModal';
 import { EmptyState } from '../../components/home/EmptyState';
@@ -79,27 +79,41 @@ export default function HomeScreen() {
     return filterRecipes(allRecipes, activeFilter);
   }, [recipes, activeFilter]);
 
+  const [isGenerating, setIsGenerating] = useState(false);
+
   const handleMealPlanSelect = useCallback(
     async (days: number) => {
+      console.log('[MealPlan] Selected:', days, 'days');
+
       const isPremium = usePremiumStore.getState().isPremium;
+      console.log('[MealPlan] isPremium:', isPremium);
+
       if (!isPremium) {
         router.push('/paywall');
         return;
       }
 
       const recipeIds = Object.keys(recipes);
+      console.log('[MealPlan] Recipe IDs:', recipeIds.length);
+
       if (recipeIds.length === 0) {
         Alert.alert('No Recipes', 'Add some recipes first to generate a meal plan.');
         return;
       }
 
+      setIsGenerating(true);
       try {
+        console.log('[MealPlan] Generating...');
         const mealPlanId = await generate(recipeIds, { duration: days });
+        console.log('[MealPlan] Generated:', mealPlanId);
         // Navigate to the meal plan detail view
         router.push(`/meal-plans/${mealPlanId}`);
       } catch (error) {
+        console.error('[MealPlan] Error:', error);
         const message = error instanceof Error ? error.message : 'Something went wrong';
         Alert.alert('Error', message);
+      } finally {
+        setIsGenerating(false);
       }
     },
     [recipes, generate]
@@ -155,6 +169,16 @@ export default function HomeScreen() {
         onClose={handleCloseModal}
         onSubmit={handleAddVideo}
       />
+
+      {/* Loading Overlay for Meal Plan Generation */}
+      <Modal visible={isGenerating} transparent animationType="fade">
+        <View style={styles.loadingOverlay}>
+          <View style={styles.loadingCard}>
+            <ActivityIndicator size="large" color={COLORS.primary} />
+            <Text style={styles.loadingText}>Generating your meal plan...</Text>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -169,5 +193,23 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: 120, // Space for FAB
+  },
+  loadingOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingCard: {
+    backgroundColor: COLORS.surface,
+    borderRadius: 16,
+    padding: 32,
+    alignItems: 'center',
+    gap: 16,
+  },
+  loadingText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: COLORS.textPrimary,
   },
 });

@@ -10,6 +10,8 @@ interface PremiumState {
   clearUser: () => Promise<void>;
   restore: () => Promise<boolean>;
   clearError: () => void;
+  // DEV ONLY: Toggle premium for testing
+  setDevPremium: (value: boolean) => void;
 }
 
 export const usePremiumStore = create<PremiumState>()((set, get) => ({
@@ -61,6 +63,14 @@ export const usePremiumStore = create<PremiumState>()((set, get) => ({
   },
 
   clearError: () => set({ error: null }),
+
+  // DEV ONLY: Manually toggle premium for testing
+  setDevPremium: (value: boolean) => {
+    if (__DEV__) {
+      console.log(`[DEV] Premium set to: ${value}`);
+      set({ isPremium: value, isLoading: false });
+    }
+  },
 }));
 
 export const useHasPremium = () => usePremiumStore((s) => s.isPremium);

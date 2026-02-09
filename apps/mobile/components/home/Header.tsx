@@ -1,8 +1,10 @@
-import { Sparkles } from 'lucide-react-native';
+import { router } from 'expo-router';
+import { Sparkles, User } from 'lucide-react-native';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { ANIMATION, COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
+import { useHasPremium } from '../../stores/premium';
 
 interface HeaderProps {
   onMealPlanSelect?: (days: number) => void;
@@ -16,6 +18,7 @@ const MEAL_PLAN_OPTIONS = [
 
 export const Header = memo(function Header({ onMealPlanSelect }: HeaderProps) {
   const [showOptions, setShowOptions] = useState(false);
+  const isPremium = useHasPremium();
   const opacity = useSharedValue(0);
   const translateY = useSharedValue(10);
 
@@ -42,6 +45,10 @@ export const Header = memo(function Header({ onMealPlanSelect }: HeaderProps) {
     setShowOptions(true);
   }, []);
 
+  const handleProfilePress = useCallback(() => {
+    router.push('/profile');
+  }, []);
+
   const handleOptionSelect = useCallback(
     (days: number) => {
       setShowOptions(false);
@@ -55,14 +62,29 @@ export const Header = memo(function Header({ onMealPlanSelect }: HeaderProps) {
       <Animated.View style={[styles.container, animatedStyle]}>
         <View style={styles.topRow}>
           <Text style={styles.greeting}>{greeting}</Text>
-          <Pressable
-            onPress={handleSparklePress}
-            style={({ pressed }) => [styles.sparkleButton, pressed && styles.sparklePressed]}
-            accessibilityLabel="Auto-generate meal plan"
-            accessibilityRole="button"
-          >
-            <Sparkles size={24} color={COLORS.primary} strokeWidth={2} />
-          </Pressable>
+          <View style={styles.headerButtons}>
+            <Pressable
+              onPress={handleSparklePress}
+              style={({ pressed }) => [styles.iconButton, pressed && styles.iconButtonPressed]}
+              accessibilityLabel="Auto-generate meal plan"
+              accessibilityRole="button"
+            >
+              <Sparkles size={22} color={COLORS.primary} strokeWidth={2} />
+            </Pressable>
+            <Pressable
+              onPress={handleProfilePress}
+              style={({ pressed }) => [
+                styles.iconButton,
+                styles.profileButton,
+                pressed && styles.iconButtonPressed,
+              ]}
+              accessibilityLabel="Go to profile"
+              accessibilityRole="button"
+            >
+              <User size={22} color={COLORS.primary} strokeWidth={2} />
+              {isPremium && <View style={styles.premiumDot} />}
+            </Pressable>
+          </View>
         </View>
         <Text style={styles.title}>What are we eating?</Text>
       </Animated.View>
@@ -114,17 +136,36 @@ const styles = StyleSheet.create({
     color: COLORS.textMuted,
     fontWeight: '500',
   },
-  sparkleButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+  headerButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+  },
+  iconButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: COLORS.accentBackground,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  sparklePressed: {
+  iconButtonPressed: {
     opacity: 0.7,
     transform: [{ scale: 0.95 }],
+  },
+  profileButton: {
+    position: 'relative',
+  },
+  premiumDot: {
+    position: 'absolute',
+    top: 2,
+    right: 2,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: '#FCD34D',
+    borderWidth: 2,
+    borderColor: COLORS.accentBackground,
   },
   title: {
     fontSize: FONT_SIZES.displayLarge,

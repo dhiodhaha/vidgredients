@@ -83,12 +83,6 @@ export default function MainLayout() {
           href: null, // Not a tab, accessed via router.push
         }}
       />
-      <Tabs.Screen
-        name="meal-plans"
-        options={{
-          href: null, // Not a tab, accessed via router.push
-        }}
-      />
     </Tabs>
   );
 }

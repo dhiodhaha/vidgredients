@@ -1,10 +1,10 @@
-import { LinearGradient } from 'expo-linear-gradient';
+// LinearGradient removed - using solid color fallback
 import { router } from 'expo-router';
-import { ArrowRight, Crown, SignOut, Sparkle, User } from 'phosphor-react-native';
+import { ArrowLeft, ArrowRight, Crown, SignOut, Sparkle, User } from 'phosphor-react-native';
 import { useCallback } from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS, FONT_SIZES, GRADIENTS, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
+import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
 import { signOut, useIsAuthenticated } from '../../stores/auth';
 import { useHasPremium, usePremiumStore } from '../../stores/premium';
 
@@ -38,7 +38,14 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <Text style={styles.title}>Profile</Text>
+      {/* Header */}
+      <View style={styles.header}>
+        <Pressable onPress={() => router.back()} hitSlop={12} style={styles.backButton}>
+          <ArrowLeft size={24} color={COLORS.textPrimary} weight="bold" />
+        </Pressable>
+        <Text style={styles.title}>Profile</Text>
+        <View style={{ width: 40 }} />
+      </View>
 
       {/* User Card */}
       <View style={styles.card}>
@@ -62,37 +69,27 @@ export default function ProfileScreen() {
       {/* Premium Upsell or Status */}
       {isPremium ? (
         <View style={styles.premiumCard}>
-          <LinearGradient
-            colors={[...GRADIENTS.premiumDark]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.premiumGradient}
-          >
+          <View style={styles.premiumGradient}>
             <Crown size={24} color="#FCD34D" weight="fill" />
             <View style={styles.premiumInfo}>
               <Text style={styles.premiumTitle}>Premium Member</Text>
               <Text style={styles.premiumDesc}>You have access to all features</Text>
             </View>
-          </LinearGradient>
+          </View>
         </View>
       ) : (
         <Pressable
           onPress={() => router.push('/paywall')}
           style={({ pressed }) => [styles.upgradeCard, pressed && { opacity: 0.9 }]}
         >
-          <LinearGradient
-            colors={[...GRADIENTS.premium]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.upgradeGradient}
-          >
+          <View style={styles.upgradeGradient}>
             <Sparkle size={24} color="#FFFFFF" weight="fill" />
             <View style={styles.upgradeInfo}>
               <Text style={styles.upgradeTitle}>Upgrade to Premium</Text>
               <Text style={styles.upgradeDesc}>Unlock meal plans, unlimited saves & more</Text>
             </View>
             <ArrowRight size={20} color="#FFFFFF" weight="bold" />
-          </LinearGradient>
+          </View>
         </Pressable>
       )}
 
@@ -114,6 +111,22 @@ export default function ProfileScreen() {
           <SignOut size={20} color={COLORS.error} weight="bold" />
           <Text style={[styles.actionText, { color: COLORS.error }]}>Log Out</Text>
         </Pressable>
+
+        {/* DEV ONLY: Toggle premium for testing */}
+        {__DEV__ && (
+          <Pressable
+            onPress={() => usePremiumStore.getState().setDevPremium(!isPremium)}
+            style={({ pressed }) => [
+              styles.actionButton,
+              styles.devButton,
+              pressed && styles.actionPressed,
+            ]}
+          >
+            <Text style={styles.actionText}>
+              {isPremium ? '🔓 Dev: Disable Premium' : '🔒 Dev: Enable Premium'}
+            </Text>
+          </Pressable>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -125,8 +138,23 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
     paddingHorizontal: SPACING.lg,
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: SPACING.md,
+    marginBottom: SPACING.md,
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: COLORS.surface,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   title: {
-    fontSize: FONT_SIZES.displayMedium,
+    fontSize: FONT_SIZES.headingLarge,
     fontWeight: '700',
     color: COLORS.textPrimary,
     marginTop: SPACING.md,
@@ -193,6 +221,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: SPACING.lg,
     gap: SPACING.md,
+    backgroundColor: '#064e3b', // Solid fallback for LinearGradient
+    borderRadius: RADIUS.lg,
   },
   premiumInfo: {
     flex: 1,
@@ -218,6 +248,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: SPACING.lg,
     gap: SPACING.md,
+    backgroundColor: COLORS.primary, // Solid fallback for LinearGradient
+    borderRadius: RADIUS.lg,
   },
   upgradeInfo: {
     flex: 1,
@@ -251,5 +283,11 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZES.bodyLarge,
     fontWeight: '600',
     color: COLORS.textPrimary,
+  },
+  devButton: {
+    backgroundColor: '#FEF3C7', // Yellow tint to indicate dev feature
+    borderWidth: 2,
+    borderColor: '#F59E0B',
+    borderStyle: 'dashed',
   },
 });

@@ -33,6 +33,7 @@ export const useMealPlanStore = create<MealPlanState>()(
         set({ isLoading: true, error: null });
 
         try {
+          console.log('[MealPlanStore] Generating with:', request);
           const response = await fetch(`${API_BASE_URL}/meal-plans/generate`, {
             method: 'POST',
             headers: {
@@ -43,7 +44,10 @@ export const useMealPlanStore = create<MealPlanState>()(
           });
 
           if (!response.ok) {
-            throw new Error('Failed to generate meal plan');
+            const errorData = await response.json().catch(() => ({}));
+            const errorMessage =
+              (errorData as { details?: string }).details || `Server error (${response.status})`;
+            throw new Error(errorMessage);
           }
 
           const data: GenerateMealPlanResponse = await response.json();
@@ -64,7 +68,8 @@ export const useMealPlanStore = create<MealPlanState>()(
 
           return mealPlan.id;
         } catch (error) {
-          const message = error instanceof Error ? error.message : 'Unknown error';
+          const message = error instanceof Error ? error.message : 'Failed to generate meal plan';
+          console.error('[MealPlanStore] Error:', message);
           set({ isLoading: false, error: message });
           throw error;
         }

@@ -1,17 +1,10 @@
 import { router } from 'expo-router';
 import { Calendar, Trash2 } from 'lucide-react-native';
 import { useCallback } from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
-import { useMealPlanStore } from '../../stores/mealPlan';
+import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../../lib/theme';
+import { useMealPlanStore } from '../../../stores/mealPlan';
 
 export default function MealPlansScreen() {
   const { mealPlans, isLoading, deleteMealPlan } = useMealPlanStore();

@@ -1,4 +1,4 @@
-import { LinearGradient } from 'expo-linear-gradient';
+// LinearGradient removed - using solid color fallback
 import { router } from 'expo-router';
 import { ArrowLeft, Check, Crown, Sparkle } from 'phosphor-react-native';
 import { useCallback, useEffect, useState } from 'react';
@@ -20,7 +20,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GlowingBorder } from '../../components/ui/GlowingBorder';
-import { COLORS, FONT_SIZES, GRADIENTS, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
+import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
 import {
   type PurchasesPackage,
   getOfferings,
@@ -73,7 +73,8 @@ export default function PaywallScreen() {
       ]);
     } catch (err) {
       const msg = err instanceof Error ? err.message : 'Purchase failed';
-      if (!msg.includes('cancelled')) {
+      // Don't show error for cancelled purchases or test store simulations
+      if (!msg.includes('cancelled') && !msg.includes('simulated')) {
         Alert.alert('Purchase Failed', msg);
       }
     } finally {
@@ -111,18 +112,13 @@ export default function PaywallScreen() {
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {/* Hero */}
         <Animated.View entering={FadeInDown.delay(100).duration(500)} style={styles.hero}>
-          <LinearGradient
-            colors={[...GRADIENTS.premiumDark]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.heroGradient}
-          >
+          <View style={styles.heroGradient}>
             <Crown size={48} color="#FCD34D" weight="fill" />
             <Text style={styles.heroTitle}>Unlock Premium</Text>
             <Text style={styles.heroSubtitle}>
               Get the most out of your cooking with unlimited recipes and AI meal plans
             </Text>
-          </LinearGradient>
+          </View>
         </Animated.View>
 
         {/* Features */}
@@ -163,7 +159,6 @@ export default function PaywallScreen() {
                         <OfferingCard
                           title={product.product?.title || (isAnnual ? 'Annual' : 'Monthly')}
                           price={product.product?.priceString || ''}
-                          desc={product.product?.description || ''}
                           isSelected={isSelected}
                           badge={isAnnual ? 'Best Value' : undefined}
                         />
@@ -172,7 +167,6 @@ export default function PaywallScreen() {
                       <OfferingCard
                         title={product.product?.title || 'Monthly'}
                         price={product.product?.priceString || ''}
-                        desc={product.product?.description || ''}
                         isSelected={isSelected}
                       />
                     )}
@@ -205,29 +199,28 @@ export default function PaywallScreen() {
 function OfferingCard({
   title,
   price,
-  desc,
   isSelected,
   badge,
 }: {
   title: string;
   price: string;
-  desc: string;
   isSelected: boolean;
   badge?: string;
 }) {
   return (
     <View style={[styles.offeringCard, isSelected && styles.offeringSelected]}>
-      {badge && (
-        <View style={styles.offeringBadge}>
-          <Sparkle size={12} color="#FFFFFF" weight="fill" />
-          <Text style={styles.offeringBadgeText}>{badge}</Text>
-        </View>
-      )}
       <View style={styles.offeringContent}>
-        <Text style={[styles.offeringTitle, isSelected && styles.offeringTitleSelected]}>
-          {title}
-        </Text>
-        <Text style={[styles.offeringDesc, isSelected && styles.offeringDescSelected]}>{desc}</Text>
+        <View style={styles.offeringTitleRow}>
+          <Text style={[styles.offeringTitle, isSelected && styles.offeringTitleSelected]}>
+            {title}
+          </Text>
+          {badge && (
+            <View style={styles.offeringBadge}>
+              <Sparkle size={10} color="#FFFFFF" weight="fill" />
+              <Text style={styles.offeringBadgeText}>{badge}</Text>
+            </View>
+          )}
+        </View>
       </View>
       <Text style={[styles.offeringPrice, isSelected && styles.offeringPriceSelected]}>
         {price}
@@ -264,18 +257,13 @@ function PurchaseButton({
         onPressOut={handlePressOut}
         disabled={loading}
       >
-        <LinearGradient
-          colors={[...GRADIENTS.premium]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={styles.purchaseButton}
-        >
+        <View style={styles.purchaseButton}>
           {loading ? (
             <ActivityIndicator color="#FFFFFF" />
           ) : (
             <Text style={styles.purchaseButtonText}>Continue</Text>
           )}
-        </LinearGradient>
+        </View>
       </Pressable>
     </Animated.View>
   );
@@ -318,6 +306,7 @@ const styles = StyleSheet.create({
     padding: SPACING.xl,
     alignItems: 'center',
     gap: SPACING.md,
+    backgroundColor: '#064e3b', // Solid fallback for LinearGradient
   },
   heroTitle: {
     fontSize: FONT_SIZES.displayMedium,
@@ -382,25 +371,27 @@ const styles = StyleSheet.create({
     borderColor: COLORS.primaryLight,
     backgroundColor: COLORS.accentBackground,
   },
-  offeringBadge: {
-    position: 'absolute',
-    top: -10,
-    right: SPACING.md,
+  offeringContent: {
+    flex: 1,
+  },
+  offeringTitleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: SPACING.sm,
+  },
+  offeringBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
     backgroundColor: COLORS.primaryLight,
     paddingHorizontal: SPACING.sm,
-    paddingVertical: SPACING.xs,
+    paddingVertical: 3,
     borderRadius: RADIUS.sm,
   },
   offeringBadgeText: {
-    fontSize: FONT_SIZES.caption,
+    fontSize: 10,
     fontWeight: '700',
     color: '#FFFFFF',
-  },
-  offeringContent: {
-    flex: 1,
   },
   offeringTitle: {
     fontSize: FONT_SIZES.bodyLarge,
@@ -446,6 +437,7 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.lg,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: COLORS.primary, // Solid fallback for LinearGradient
   },
   purchaseButtonText: {
     fontSize: FONT_SIZES.bodyLarge,

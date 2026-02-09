@@ -70,7 +70,7 @@ export async function getMealPlan(databaseUrl: string, id: string): Promise<Meal
  */
 export async function generateMealPlanWithGPT(
   openaiKey: string,
-  recipeIds: string[],
+  _recipeIds: string[],
   recipes: Array<{
     id: string;
     title: string;
@@ -78,66 +78,86 @@ export async function generateMealPlanWithGPT(
     difficulty?: string;
   }>,
   duration: number,
-  preferences?: {
+  _preferences?: {
     vegetarian?: boolean;
     vegan?: boolean;
     glutenFree?: boolean;
     maxCookTime?: number;
   }
 ): Promise<MealPlanDay[]> {
-  const prompt = `You are a meal planning expert. Create a diverse ${duration}-day meal plan using the following recipes.
-
-Available Recipes:
-${recipes.map((r) => `- ${r.title} (${r.cookTimeMinutes || 'N/A'} min, ${r.difficulty || 'N/A'})`).join('\n')}
-
-Requirements:
-- Each day needs breakfast, lunch, and dinner
-- Vary the recipes throughout the plan
-- Avoid repeating the same recipe on consecutive days when possible
-- Consider nutritional variety
-${preferences?.maxCookTime ? `- Prefer recipes with max ${preferences.maxCookTime} min cook time` : ''}
-${preferences?.vegetarian ? '- All recipes should be vegetarian' : ''}
-${preferences?.vegan ? '- All recipes should be vegan' : ''}
-
-Return ONLY a JSON array (no markdown, no code blocks) with ${duration} objects. Each object must have this exact structure:
-{
-  "day": <number 1-${duration}>,
-  "breakfast": { "recipeId": "<recipe-id>", "servings": <number> },
-  "lunch": { "recipeId": "<recipe-id>", "servings": <number> },
-  "dinner": { "recipeId": "<recipe-id>", "servings": <number> },
-  "snacks": [{ "recipeId": "<recipe-id>", "servings": <number> }]
-}
-
-Use recipe IDs from this list: ${recipeIds.join(', ')}`;
-
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${openaiKey}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-      temperature: 0.7,
-      max_tokens: 2000,
-    }),
-  });
-
-  if (!response.ok) {
-    throw new Error(`GPT API error: ${response.statusText}`);
+  if (!openaiKey) {
+    throw new Error('OpenAI API key is not configured');
   }
 
-  const data = (await response.json()) as { choices: Array<{ message: { content: string } }> };
-  const content = data.choices[0].message.content.trim();
+  if (recipes.length === 0) {
+    throw new Error('No recipes available to generate meal plan');
+  }
 
-  // Parse the JSON array
-  const mealPlanDays: MealPlanDay[] = JSON.parse(content);
+  // Create a simpler, more reliable prompt
+  const recipeList = recipes.map((r) => `${r.id}:${r.title}`).join('\n');
 
-  return mealPlanDays;
+  const prompt = `Create a ${duration}-day meal plan using these recipes (use exact recipe IDs):
+${recipeList}
+
+Return ONLY valid JSON (no markdown) with this structure for each of ${duration} days:
+[{"day":1,"breakfast":{"recipeId":"<id>","servings":1},"lunch":{"recipeId":"<id>","servings":1},"dinner":{"recipeId":"<id>","servings":1},"snacks":[]}]`;
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
+
+  try {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${openaiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        temperature: 0.5,
+        max_tokens: 1500,
+      }),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[GPT] API error:', response.status, errorText);
+      throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = (await response.json()) as { choices: Array<{ message: { content: string } }> };
+    const content = data.choices[0]?.message?.content?.trim();
+
+    if (!content) {
+      throw new Error('No response from GPT');
+    }
+
+    // Extract JSON from response (in case it includes markdown)
+    const jsonMatch = content.match(/\[[\s\S]*\]/);
+    const jsonContent = jsonMatch ? jsonMatch[0] : content;
+
+    const mealPlanDays: MealPlanDay[] = JSON.parse(jsonContent);
+
+    if (!Array.isArray(mealPlanDays) || mealPlanDays.length !== duration) {
+      throw new Error(`Expected ${duration} days, got ${mealPlanDays.length}`);
+    }
+
+    return mealPlanDays;
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error('GPT request timeout (30s)');
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }

@@ -31,7 +31,6 @@ mealPlans.post('/generate', zValidator('json', generateSchema), async (c) => {
   try {
     // Fetch recipes from database
     const sql = neon(c.env.DATABASE_URL);
-
     const result = await sql`
       SELECT
         id,
@@ -44,7 +43,6 @@ mealPlans.post('/generate', zValidator('json', generateSchema), async (c) => {
       FROM recipes
       WHERE id = ANY(${recipeIds}::uuid[])
     `;
-
     if (result.length === 0) {
       return c.json(
         {
@@ -86,8 +84,6 @@ mealPlans.post('/generate', zValidator('json', generateSchema), async (c) => {
         400
       );
     }
-
-    // Generate meal plan using GPT
     const mealPlanDays = await generateMealPlanWithGPT(
       c.env.OPENAI_API_KEY,
       filteredRecipes.map((r: { id: string }) => r.id),
@@ -95,8 +91,6 @@ mealPlans.post('/generate', zValidator('json', generateSchema), async (c) => {
       duration,
       preferences
     );
-
-    // Save to database
     const mealPlan = await saveMealPlan(c.env.DATABASE_URL, {
       name: `${duration}-Day Meal Plan`,
       description: 'Generated meal plan',
@@ -113,7 +107,7 @@ mealPlans.post('/generate', zValidator('json', generateSchema), async (c) => {
 
     return c.json(response);
   } catch (error) {
-    console.error('Meal plan generation failed:', error);
+    console.error('[meal-plans] Error:', error);
 
     return c.json(
       {
