@@ -4,8 +4,9 @@ import { logger } from 'hono/logger';
 import { analyze } from './routes/analyze';
 import { authRoute } from './routes/auth';
 import { health } from './routes/health';
+import { mealPlans } from './routes/meal-plans';
 
-type Bindings = {
+export type Bindings = {
   DATABASE_URL: string;
   OPENAI_API_KEY: string;
   SCRAPECREATORS_API_KEY: string;
@@ -31,6 +32,7 @@ app.use(
 app.route('/health', health);
 app.route('/analyze', analyze);
 app.route('/api/auth', authRoute);
+app.route('/meal-plans', mealPlans);
 
 // Default route
 app.get('/', (c) => {

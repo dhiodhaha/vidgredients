@@ -389,8 +389,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-// Filter helper (referenced in component)
-function getVegetarianRecipes(recipes: Record<string, any>) {
-  return Object.values(recipes).filter((r) => r.isVegetarian);
-}

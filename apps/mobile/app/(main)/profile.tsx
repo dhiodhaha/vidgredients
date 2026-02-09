@@ -1,13 +1,16 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
-import { SignOut, User } from 'phosphor-react-native';
+import { ArrowRight, Crown, SignOut, Sparkle, User } from 'phosphor-react-native';
 import { useCallback } from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
+import { COLORS, FONT_SIZES, GRADIENTS, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
 import { signOut, useIsAuthenticated } from '../../stores/auth';
+import { useHasPremium, usePremiumStore } from '../../stores/premium';
 
 export default function ProfileScreen() {
   const { user } = useIsAuthenticated();
+  const isPremium = useHasPremium();
 
   const handleLogout = useCallback(async () => {
     Alert.alert('Log Out', 'Are you sure you want to log out?', [
@@ -16,6 +19,7 @@ export default function ProfileScreen() {
         text: 'Log Out',
         style: 'destructive',
         onPress: async () => {
+          await usePremiumStore.getState().clearUser();
           await signOut();
           router.replace('/(auth)/login');
         },
@@ -23,27 +27,94 @@ export default function ProfileScreen() {
     ]);
   }, []);
 
+  const handleRestore = useCallback(async () => {
+    const restored = await usePremiumStore.getState().restore();
+    if (restored) {
+      Alert.alert('Restored', 'Your premium access has been restored.');
+    } else {
+      Alert.alert('No Purchases', 'No previous purchases found.');
+    }
+  }, []);
+
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <Text style={styles.title}>Profile</Text>
 
+      {/* User Card */}
       <View style={styles.card}>
         <View style={styles.avatar}>
           <User size={32} color={COLORS.primary} weight="bold" />
         </View>
         <View style={styles.userInfo}>
-          <Text style={styles.name}>{user?.name || 'User'}</Text>
+          <View style={styles.nameRow}>
+            <Text style={styles.name}>{user?.name || 'User'}</Text>
+            {isPremium && (
+              <View style={styles.premiumBadge}>
+                <Crown size={12} color="#FCD34D" weight="fill" />
+                <Text style={styles.premiumBadgeText}>PRO</Text>
+              </View>
+            )}
+          </View>
           <Text style={styles.email}>{user?.email || ''}</Text>
         </View>
       </View>
 
-      <Pressable
-        onPress={handleLogout}
-        style={({ pressed }) => [styles.logoutButton, pressed && styles.logoutPressed]}
-      >
-        <SignOut size={20} color={COLORS.error} weight="bold" />
-        <Text style={styles.logoutText}>Log Out</Text>
-      </Pressable>
+      {/* Premium Upsell or Status */}
+      {isPremium ? (
+        <View style={styles.premiumCard}>
+          <LinearGradient
+            colors={[...GRADIENTS.premiumDark]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.premiumGradient}
+          >
+            <Crown size={24} color="#FCD34D" weight="fill" />
+            <View style={styles.premiumInfo}>
+              <Text style={styles.premiumTitle}>Premium Member</Text>
+              <Text style={styles.premiumDesc}>You have access to all features</Text>
+            </View>
+          </LinearGradient>
+        </View>
+      ) : (
+        <Pressable
+          onPress={() => router.push('/paywall')}
+          style={({ pressed }) => [styles.upgradeCard, pressed && { opacity: 0.9 }]}
+        >
+          <LinearGradient
+            colors={[...GRADIENTS.premium]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={styles.upgradeGradient}
+          >
+            <Sparkle size={24} color="#FFFFFF" weight="fill" />
+            <View style={styles.upgradeInfo}>
+              <Text style={styles.upgradeTitle}>Upgrade to Premium</Text>
+              <Text style={styles.upgradeDesc}>Unlock meal plans, unlimited saves & more</Text>
+            </View>
+            <ArrowRight size={20} color="#FFFFFF" weight="bold" />
+          </LinearGradient>
+        </Pressable>
+      )}
+
+      {/* Actions */}
+      <View style={styles.actions}>
+        {!isPremium && (
+          <Pressable
+            onPress={handleRestore}
+            style={({ pressed }) => [styles.actionButton, pressed && styles.actionPressed]}
+          >
+            <Text style={styles.actionText}>Restore Purchases</Text>
+          </Pressable>
+        )}
+
+        <Pressable
+          onPress={handleLogout}
+          style={({ pressed }) => [styles.actionButton, pressed && styles.actionPressed]}
+        >
+          <SignOut size={20} color={COLORS.error} weight="bold" />
+          <Text style={[styles.actionText, { color: COLORS.error }]}>Log Out</Text>
+        </Pressable>
+      </View>
     </SafeAreaView>
   );
 }
@@ -67,7 +138,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.surface,
     borderRadius: RADIUS.lg,
     padding: SPACING.lg,
-    marginBottom: SPACING.xl,
+    marginBottom: SPACING.lg,
     ...SHADOWS.md,
   },
   avatar: {
@@ -82,17 +153,89 @@ const styles = StyleSheet.create({
   userInfo: {
     flex: 1,
   },
+  nameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+  },
   name: {
     fontSize: FONT_SIZES.headingMedium,
     fontWeight: '600',
     color: COLORS.textPrimary,
+  },
+  premiumBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    backgroundColor: COLORS.primary,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 2,
+    borderRadius: RADIUS.sm,
+  },
+  premiumBadgeText: {
+    fontSize: FONT_SIZES.caption,
+    fontWeight: '700',
+    color: '#FCD34D',
+    letterSpacing: 1,
   },
   email: {
     fontSize: FONT_SIZES.bodyMedium,
     color: COLORS.textMuted,
     marginTop: SPACING.xxs,
   },
-  logoutButton: {
+  premiumCard: {
+    marginBottom: SPACING.lg,
+    borderRadius: RADIUS.lg,
+    overflow: 'hidden',
+  },
+  premiumGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: SPACING.lg,
+    gap: SPACING.md,
+  },
+  premiumInfo: {
+    flex: 1,
+  },
+  premiumTitle: {
+    fontSize: FONT_SIZES.bodyLarge,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  premiumDesc: {
+    fontSize: FONT_SIZES.bodySmall,
+    color: 'rgba(255,255,255,0.8)',
+    marginTop: 2,
+  },
+  upgradeCard: {
+    marginBottom: SPACING.lg,
+    borderRadius: RADIUS.lg,
+    overflow: 'hidden',
+    ...SHADOWS.md,
+  },
+  upgradeGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: SPACING.lg,
+    gap: SPACING.md,
+  },
+  upgradeInfo: {
+    flex: 1,
+  },
+  upgradeTitle: {
+    fontSize: FONT_SIZES.bodyLarge,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  upgradeDesc: {
+    fontSize: FONT_SIZES.bodySmall,
+    color: 'rgba(255,255,255,0.8)',
+    marginTop: 2,
+  },
+  actions: {
+    gap: SPACING.sm,
+  },
+  actionButton: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.surface,
@@ -101,12 +244,12 @@ const styles = StyleSheet.create({
     gap: SPACING.sm,
     ...SHADOWS.sm,
   },
-  logoutPressed: {
+  actionPressed: {
     opacity: 0.7,
   },
-  logoutText: {
+  actionText: {
     fontSize: FONT_SIZES.bodyLarge,
     fontWeight: '600',
-    color: COLORS.error,
+    color: COLORS.textPrimary,
   },
 });

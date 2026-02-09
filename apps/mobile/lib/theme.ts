@@ -47,6 +47,29 @@ export const COLORS = {
   error: '#DC2626',
   success: '#10B981',
   warning: '#F59E0B',
+
+  // Premium / MyMind palette
+  premium: '#10B981',
+  premiumDark: '#059669',
+  gold: '#D97706',
+  goldLight: '#FCD34D',
+
+  // Glassmorphism
+  glass: 'rgba(255, 255, 255, 0.6)',
+  glassDark: 'rgba(0, 0, 0, 0.04)',
+} as const;
+
+// ============================================================================
+// GRADIENTS
+// ============================================================================
+
+export const GRADIENTS = {
+  primary: ['#064E3B', '#0F766E'] as const,
+  premium: ['#10B981', '#06B6D4'] as const,
+  premiumDark: ['#064E3B', '#059669'] as const,
+  gold: ['#D97706', '#F59E0B'] as const,
+  subtle: ['rgba(16, 185, 129, 0.08)', 'rgba(6, 182, 212, 0.04)'] as const,
+  card: ['rgba(0,0,0,0)', 'rgba(0,0,0,0.55)'] as const,
 } as const;
 
 // ============================================================================

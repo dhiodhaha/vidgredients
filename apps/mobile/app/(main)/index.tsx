@@ -10,6 +10,7 @@ import { MasonryGrid } from '../../components/home/MasonryGrid';
 import { MoodFilters, type RecipeFilter } from '../../components/home/MoodFilters';
 import { useMealPlanGeneration } from '../../hooks/useMealPlanGeneration';
 import { COLORS } from '../../lib/theme';
+import { usePremiumStore } from '../../stores/premium';
 import { type Recipe, useRecipeStore } from '../../stores/recipe';
 
 // Filter definitions matching MoodFilters component
@@ -80,6 +81,12 @@ export default function HomeScreen() {
 
   const handleMealPlanSelect = useCallback(
     async (days: number) => {
+      const isPremium = usePremiumStore.getState().isPremium;
+      if (!isPremium) {
+        router.push('/paywall');
+        return;
+      }
+
       const recipeIds = Object.keys(recipes);
       if (recipeIds.length === 0) {
         Alert.alert('No Recipes', 'Add some recipes first to generate a meal plan.');
@@ -87,11 +94,9 @@ export default function HomeScreen() {
       }
 
       try {
-        await generate(recipeIds, { duration: days });
-        Alert.alert(
-          'Meal Plan Created',
-          `Your ${days}-day meal plan has been generated from your saved recipes.`
-        );
+        const mealPlanId = await generate(recipeIds, { duration: days });
+        // Navigate to the meal plan detail view
+        router.push(`/meal-plans/${mealPlanId}`);
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Something went wrong';
         Alert.alert('Error', message);

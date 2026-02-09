@@ -110,3 +110,36 @@ ALTER TABLE recipes ADD COLUMN IF NOT EXISTS category category DEFAULT 'Main Cou
 
 -- Add index for filtering by cook time
 CREATE INDEX IF NOT EXISTS idx_recipes_cook_time ON recipes(cook_time_minutes);
+
+-- ============================================================
+-- Meal Plans Tables
+-- ============================================================
+
+-- Meal plans table
+CREATE TABLE IF NOT EXISTS meal_plans (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  description TEXT,
+  duration INTEGER NOT NULL CHECK (duration > 0 AND duration <= 30),
+  days JSONB NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- User meal plans (many-to-many)
+CREATE TABLE IF NOT EXISTS user_meal_plans (
+  user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+  meal_plan_id UUID REFERENCES meal_plans(id) ON DELETE CASCADE,
+  saved_at TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (user_id, meal_plan_id)
+);
+
+-- Indexes for meal plan queries
+CREATE INDEX IF NOT EXISTS idx_meal_plans_created_at ON meal_plans(created_at);
+CREATE INDEX IF NOT EXISTS idx_user_meal_plans_user_id ON user_meal_plans(user_id);
+
+-- Trigger to update meal_plans updated_at timestamp
+CREATE TRIGGER update_meal_plans_updated_at
+    BEFORE UPDATE ON meal_plans
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();

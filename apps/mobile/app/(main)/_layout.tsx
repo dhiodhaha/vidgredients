@@ -77,6 +77,18 @@ export default function MainLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="paywall"
+        options={{
+          href: null, // Not a tab, accessed via router.push
+        }}
+      />
+      <Tabs.Screen
+        name="meal-plans"
+        options={{
+          href: null, // Not a tab, accessed via router.push
+        }}
+      />
     </Tabs>
   );
 }
