@@ -49,22 +49,37 @@ export const StepItem = memo(function StepItem({
     opacity: withTiming(isCompleted ? 0.6 : 1, { duration: 200 }),
   }));
 
-  // Render description with highlighted words in bold
+  // Render description with highlighted words and markdown bold support
   const renderDescription = () => {
-    if (highlightedWords.length === 0) {
+    // If no specific highlighted words, check for markdown bold syntax
+    if (!highlightedWords || highlightedWords.length === 0) {
+      const parts = description.split(/(\*\*.*?\*\*)/g);
+
       return (
         <Animated.Text style={[styles.description, isCompleted && styles.completedText, textStyle]}>
-          {description}
+          {parts.map((part) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+              return (
+                <Text key={`bold-${part}`} style={styles.highlightedText}>
+                  {part.slice(2, -2)}
+                </Text>
+              );
+            }
+            return <Text key={`text-${part}`}>{part}</Text>;
+          })}
         </Animated.Text>
       );
     }
 
-    // Create regex pattern for all highlighted words
+    // Existing logic for explicit highlightedWords array
+    // Also clean up any potential markdown markers in the description
+    const cleanDescription = description.replace(/\*\*/g, '');
+
     const pattern = new RegExp(
       `(${highlightedWords.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`,
       'gi'
     );
-    const parts = description.split(pattern);
+    const parts = cleanDescription.split(pattern);
 
     return (
       <Animated.Text style={[styles.description, isCompleted && styles.completedText, textStyle]}>

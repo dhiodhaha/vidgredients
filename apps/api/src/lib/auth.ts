@@ -11,8 +11,8 @@ const getDb = (databaseUrl: string) => {
   return drizzle(sql, { schema });
 };
 
-export const createAuth = (env: { 
-  DATABASE_URL: string; 
+export const createAuth = (env: {
+  DATABASE_URL: string;
   BETTER_AUTH_SECRET: string;
   BETTER_AUTH_BASE_URL: string;
 }) => {

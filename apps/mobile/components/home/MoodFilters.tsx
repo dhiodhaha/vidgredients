@@ -22,7 +22,7 @@ export interface RecipeFilter {
 
 // Practical filters for tired working women coming home
 const RECIPE_FILTERS: RecipeFilter[] = [
-  // Time filters
+  // Time filters - Using new RECIPE_FILTERS constant
   { id: 'quick-15', label: 'Quick', emoji: '⚡', category: 'time', value: 15 },
   { id: 'medium-30', label: '30 min', emoji: '⏱️', category: 'time', value: 30 },
   // Difficulty filters

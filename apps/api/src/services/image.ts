@@ -73,7 +73,9 @@ export async function getRecipeThumbnail(
     }
 
     console.info(`[Image Service] Searching Unsplash for: "${finalQuery}"`);
-    console.info(`[Image Service] Original query: "${searchQuery || 'not provided'}", using: "${finalQuery}"`);
+    console.info(
+      `[Image Service] Original query: "${searchQuery || 'not provided'}", using: "${finalQuery}"`
+    );
 
     const params = new URLSearchParams({
       query: finalQuery,
@@ -104,7 +106,9 @@ export async function getRecipeThumbnail(
     if (data.results && data.results.length > 0) {
       // Use the first result (most relevant)
       const selectedImage = data.results[0];
-      console.info(`[Image Service] Found ${data.results.length} results, selected: "${selectedImage.alt_description || 'no description'}"`);
+      console.info(
+        `[Image Service] Found ${data.results.length} results, selected: "${selectedImage.alt_description || 'no description'}"`
+      );
       return selectedImage.urls.small;
     }
 

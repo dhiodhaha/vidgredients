@@ -2,44 +2,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-export interface Ingredient {
-  id: string;
-  name: string;
-  quantity: string;
-  unit?: string;
-  imageUrl?: string;
-}
-
-export interface Step {
-  order: number;
-  description: string;
-  highlightedWords: string[];
-}
-
-export interface Nutrition {
-  calories?: number;
-  protein?: number;
-  carbs?: number;
-  fat?: number;
-}
-
-export interface Recipe {
-  id: string;
-  url: string;
-  platform: 'youtube' | 'tiktok' | 'instagram';
-  title: string;
-  thumbnailUrl: string;
-  servings: number;
-  ingredients: Ingredient[];
-  steps: Step[];
-  nutrition?: Nutrition;
-  // Filter fields
-  cookTimeMinutes?: number;
-  difficulty?: 'easy' | 'medium' | 'hard';
-  isVegetarian?: boolean;
-  isVegan?: boolean;
-  isGlutenFree?: boolean;
-}
+// Re-export types from shared
+export type {
+  Ingredient,
+  Step,
+  Nutrition,
+  Recipe,
+  RecipeFilters,
+  AnalyzeRequest,
+  AnalyzeResponse,
+} from '@shared/types';
 
 interface RecipeState {
   recipes: Record<string, Recipe>;
@@ -113,6 +85,7 @@ export const useRecipeStore = create<RecipeState>()(
             isVegetarian: data.isVegetarian ?? false,
             isVegan: data.isVegan ?? false,
             isGlutenFree: data.isGlutenFree ?? false,
+            category: data.category,
           };
 
           set((state) => ({

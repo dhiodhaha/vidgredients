@@ -31,8 +31,15 @@ export const RecipeCard = memo(function RecipeCard({
         transition={200}
       />
       <View style={styles.overlay}>
-        <View style={styles.platformBadge}>
-          <Text style={styles.platformText}>{recipe.platform.toUpperCase()}</Text>
+        <View style={styles.topBadges}>
+          <View style={styles.platformBadge}>
+            <Text style={styles.platformText}>{recipe.platform.toUpperCase()}</Text>
+          </View>
+          {recipe.category && (
+            <View style={[styles.platformBadge, styles.categoryBadge]}>
+              <Text style={styles.platformText}>{recipe.category.toUpperCase()}</Text>
+            </View>
+          )}
         </View>
         <View style={styles.titleContainer}>
           <Text style={styles.title} numberOfLines={2}>
@@ -67,6 +74,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: SPACING.md,
   },
+  topBadges: {
+    flexDirection: 'row',
+    gap: SPACING.xs,
+    alignItems: 'center',
+  },
   platformBadge: {
     alignSelf: 'flex-start',
     backgroundColor: 'rgba(255,255,255,0.9)',
@@ -74,11 +86,17 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.xs,
     borderRadius: RADIUS.xs,
   },
+  categoryBadge: {
+    backgroundColor: COLORS.primary,
+  },
   platformText: {
     fontSize: FONT_SIZES.caption,
     fontWeight: '700',
     color: COLORS.textPrimary,
     letterSpacing: 0.5,
+  },
+  categoryText: {
+    color: COLORS.textInverse,
   },
   titleContainer: {
     marginTop: 'auto',

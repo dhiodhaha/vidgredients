@@ -8,6 +8,7 @@ import { FloatingActionButton } from '../../components/home/FloatingActionButton
 import { Header } from '../../components/home/Header';
 import { MasonryGrid } from '../../components/home/MasonryGrid';
 import { MoodFilters, type RecipeFilter } from '../../components/home/MoodFilters';
+import { useMealPlanGeneration } from '../../hooks/useMealPlanGeneration';
 import { COLORS } from '../../lib/theme';
 import { type Recipe, useRecipeStore } from '../../stores/recipe';
 
@@ -69,6 +70,7 @@ export default function HomeScreen() {
 
   const recipes = useRecipeStore((state) => state.recipes);
   const analyzeVideo = useRecipeStore((state) => state.analyzeVideo);
+  const { generate } = useMealPlanGeneration();
 
   // Convert recipes record to array and apply filter
   const recipeList = useMemo(() => {
@@ -76,13 +78,27 @@ export default function HomeScreen() {
     return filterRecipes(allRecipes, activeFilter);
   }, [recipes, activeFilter]);
 
-  const handleMealPlanSelect = useCallback((days: number) => {
-    // TODO: Implement meal plan generation
-    Alert.alert(
-      '🍽️ Coming Soon',
-      `Auto-generating a ${days}-day meal plan from your saved recipes will be available soon!`
-    );
-  }, []);
+  const handleMealPlanSelect = useCallback(
+    async (days: number) => {
+      const recipeIds = Object.keys(recipes);
+      if (recipeIds.length === 0) {
+        Alert.alert('No Recipes', 'Add some recipes first to generate a meal plan.');
+        return;
+      }
+
+      try {
+        await generate(recipeIds, { duration: days });
+        Alert.alert(
+          'Meal Plan Created',
+          `Your ${days}-day meal plan has been generated from your saved recipes.`
+        );
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Something went wrong';
+        Alert.alert('Error', message);
+      }
+    },
+    [recipes, generate]
+  );
 
   const handleRecipePress = useCallback((recipeId: string) => {
     router.push(`/recipe/${recipeId}`);

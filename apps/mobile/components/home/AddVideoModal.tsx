@@ -2,6 +2,7 @@ import * as Clipboard from 'expo-clipboard';
 import { Link, Loader2, X } from 'lucide-react-native';
 import { memo, useCallback, useEffect, useState } from 'react';
 import {
+  Dimensions,
   Keyboard,
   KeyboardAvoidingView,
   Modal,
@@ -15,12 +16,17 @@ import {
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
-  withTiming,
+  withRepeat,
   withSpring,
+  withTiming,
+  Easing,
+  cancelAnimation,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { detectPlatform } from '../../lib/platform';
-import { ANIMATION, COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
+import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
+import { GlowingBorder } from '../ui/GlowingBorder';
+import { InstagramIcon, TiktokIcon, YoutubeIcon } from '../ui/PlatformIcons';
 
 interface AddVideoModalProps {
   visible: boolean;
@@ -38,18 +44,37 @@ export const AddVideoModal = memo(function AddVideoModal({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const translateY = useSharedValue(300);
+  const SCREEN_HEIGHT = Dimensions.get('window').height;
+  const translateY = useSharedValue(SCREEN_HEIGHT);
   const opacity = useSharedValue(0);
+  const rotation = useSharedValue(0);
+
+  useEffect(() => {
+    if (isLoading) {
+      rotation.value = withRepeat(
+        withTiming(360, { duration: 1000, easing: Easing.linear }),
+        -1,
+        false
+      );
+    } else {
+      cancelAnimation(rotation);
+      rotation.value = 0;
+    }
+  }, [isLoading, rotation]);
 
   useEffect(() => {
     if (visible) {
-      opacity.set(withTiming(1, { duration: ANIMATION.normal }));
-      translateY.set(withSpring(0, { damping: 20, stiffness: 300 }));
+      opacity.value = withTiming(1, { duration: 200 });
+      translateY.value = withSpring(0, {
+        damping: 15,
+        stiffness: 100,
+        mass: 0.5, // Lightweight feel
+      });
     } else {
-      opacity.set(withTiming(0, { duration: ANIMATION.fast }));
-      translateY.set(withTiming(300, { duration: ANIMATION.normal }));
+      opacity.value = withTiming(0, { duration: 150 });
+      translateY.value = withTiming(SCREEN_HEIGHT, { duration: 250 });
     }
-  }, [visible, opacity, translateY]);
+  }, [visible, opacity, translateY, SCREEN_HEIGHT]);
 
   const platform = url ? detectPlatform(url) : null;
 
@@ -106,6 +131,10 @@ export const AddVideoModal = memo(function AddVideoModal({
     transform: [{ translateY: translateY.get() }],
   }));
 
+  const spinnerStyle = useAnimatedStyle(() => ({
+    transform: [{ rotate: `${rotation.value}deg` }],
+  }));
+
   return (
     <Modal visible={visible} transparent animationType="none" onRequestClose={handleClose}>
       <KeyboardAvoidingView
@@ -134,7 +163,16 @@ export const AddVideoModal = memo(function AddVideoModal({
           {/* Input */}
           <View style={styles.inputContainer}>
             <View style={styles.inputWrapper}>
-              <Link size={20} color={COLORS.textMuted} strokeWidth={2} />
+              {/* Dynamic platform icon */}
+              {platform === 'youtube' ? (
+                <YoutubeIcon size={22} />
+              ) : platform === 'instagram' ? (
+                <InstagramIcon size={22} />
+              ) : platform === 'tiktok' ? (
+                <TiktokIcon size={22} />
+              ) : (
+                <Link size={20} color={COLORS.textMuted} strokeWidth={2} />
+              )}
               <TextInput
                 style={styles.input}
                 placeholder="Paste video URL..."
@@ -158,37 +196,36 @@ export const AddVideoModal = memo(function AddVideoModal({
             </Pressable>
           </View>
 
-          {/* Platform indicator */}
-          {platform ? (
-            <View style={styles.platformBadge}>
-              <Text style={styles.platformText}>
-                {platform.charAt(0).toUpperCase() + platform.slice(1)} detected
-              </Text>
-            </View>
-          ) : null}
-
           {/* Error */}
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-          {/* Submit button */}
-          <Pressable
-            style={({ pressed }) => [
-              styles.submitButton,
-              pressed && !isLoading && styles.buttonPressed,
-              isLoading && styles.submitDisabled,
-            ]}
-            onPress={handleSubmit}
-            disabled={isLoading}
+          {/* Submit button with glowing border during analysis */}
+          <GlowingBorder
+            isActive={isLoading}
+            borderRadius={RADIUS.md}
+            style={{ marginBottom: SPACING.md }}
           >
-            {isLoading ? (
-              <View style={styles.loadingRow}>
-                <Loader2 size={20} color={COLORS.textInverse} strokeWidth={2} />
-                <Text style={styles.submitText}>Analyzing...</Text>
-              </View>
-            ) : (
-              <Text style={styles.submitText}>Extract Ingredients</Text>
-            )}
-          </Pressable>
+            <Pressable
+              style={({ pressed }) => [
+                styles.submitButton,
+                pressed && !isLoading && styles.buttonPressed,
+                isLoading && styles.submitDisabled,
+              ]}
+              onPress={handleSubmit}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <View style={styles.loadingRow}>
+                  <Animated.View style={spinnerStyle}>
+                    <Loader2 size={20} color={COLORS.textInverse} strokeWidth={2} />
+                  </Animated.View>
+                  <Text style={styles.submitText}>Analyzing...</Text>
+                </View>
+              ) : (
+                <Text style={styles.submitText}>Extract Ingredients</Text>
+              )}
+            </Pressable>
+          </GlowingBorder>
 
           {/* Supported platforms */}
           <Text style={styles.supportedText}>Supports YouTube, TikTok, and Instagram</Text>
@@ -292,11 +329,11 @@ const styles = StyleSheet.create({
     height: 56,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: SPACING.md,
     ...SHADOWS.md,
   },
   submitDisabled: {
-    backgroundColor: COLORS.primaryMuted,
+    backgroundColor: COLORS.primary, // Keep primary color but rely on opacity
+    opacity: 0.7,
   },
   submitText: {
     fontSize: FONT_SIZES.bodyLarge,
