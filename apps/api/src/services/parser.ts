@@ -32,21 +32,23 @@ const recipeSchema = z.object({
   isVegetarian: z.boolean().default(false),
   isVegan: z.boolean().default(false),
   isGlutenFree: z.boolean().default(false),
-  category: z.enum([
-    'Pasta',
-    'Salad',
-    'Soup',
-    'Dessert',
-    'Meat',
-    'Seafood',
-    'Breakfast',
-    'Drink',
-    'Main Course',
-    'Appetizer',
-    'Snack',
-    'Bread',
-    'Vegetarian', // Specific category if it's the main focus
-  ]).default('Main Course'),
+  category: z
+    .enum([
+      'Pasta',
+      'Salad',
+      'Soup',
+      'Dessert',
+      'Meat',
+      'Seafood',
+      'Breakfast',
+      'Drink',
+      'Main Course',
+      'Appetizer',
+      'Snack',
+      'Bread',
+      'Vegetarian', // Specific category if it's the main focus
+    ])
+    .default('Main Course'),
   // Clean search term for thumbnail image search (1-3 words)
   thumbnailQuery: z.string().optional(),
 });
@@ -68,7 +70,12 @@ Given a transcript from a cooking video, extract:
    - isVegan: true if no animal products (meat, dairy, eggs, honey)
    - isGlutenFree: true if no wheat, barley, rye, or gluten-containing ingredients
 9. Category: Choose the most appropriate category from: Pasta, Salad, Soup, Dessert, Meat, Seafood, Breakfast, Drink, Main Course, Appetizer, Snack, Bread, Vegetarian.
-10. Thumbnail Query: Provide a clean 1-3 word search term for finding a matching food photo (e.g., "spaghetti carbonara", "chicken salad", "chocolate cake"). Just the dish name, no extra words.
+10. Thumbnail Query: Provide a 1-3 word search term optimized for food photography databases.
+   - Focus on the PRIMARY food item (e.g., "toast", "chicken", "cake", "noodles")
+   - Add ONE KEY descriptor if helpful (e.g., "grilled chicken", "chocolate cake", "egg sandwich")
+   - AVOID ambiguous words with non-food meanings: "street" (roads/cars), "garden" (plants), "country" (landscapes), "home" (houses)
+   - For street food, use the dish name instead (e.g., "toast sandwich" NOT "street toast")
+   - Examples: "bulgogi", "pad thai", "tiramisu", "egg sandwich", "fried chicken"
 
 For each step, identify and list ingredient names mentioned in the description as "highlightedWords".
 

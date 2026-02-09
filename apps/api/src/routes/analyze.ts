@@ -3,9 +3,9 @@ import { Hono } from 'hono';
 import { z } from 'zod';
 import { hashUrl } from '../lib/utils';
 import { cacheRecipe, getCachedRecipe } from '../services/cache';
+import { type RecipeCategory, getRecipeThumbnail } from '../services/image';
 import { parseTranscript } from '../services/parser';
 import { extractTranscript } from '../services/scraper';
-import { getRecipeThumbnail, type RecipeCategory } from '../services/image';
 
 type Bindings = {
   DATABASE_URL: string;

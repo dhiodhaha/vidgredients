@@ -11,10 +11,15 @@ const getDb = (databaseUrl: string) => {
   return drizzle(sql, { schema });
 };
 
-export const createAuth = (env: { DATABASE_URL: string; BETTER_AUTH_SECRET: string }) => {
+export const createAuth = (env: { 
+  DATABASE_URL: string; 
+  BETTER_AUTH_SECRET: string;
+  BETTER_AUTH_BASE_URL: string;
+}) => {
   const db = getDb(env.DATABASE_URL);
 
   return betterAuth({
+    baseURL: env.BETTER_AUTH_BASE_URL,
     database: drizzleAdapter(db, {
       provider: 'pg',
       schema: {
