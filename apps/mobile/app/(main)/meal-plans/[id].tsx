@@ -1,6 +1,6 @@
 import type { MealPlanDay } from '@shared/types';
 import { router, useLocalSearchParams } from 'expo-router';
-import { ArrowLeft, ChefHat, Download } from 'lucide-react-native';
+import { ArrowLeft, ChefHat, Download, ShoppingBag } from 'lucide-react-native';
 import { useCallback, useMemo } from 'react';
 import {
   ActivityIndicator,
@@ -12,6 +12,7 @@ import {
   View,
 } from 'react-native';
 import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../../lib/theme';
+import { useGroceryStore } from '../../../stores/grocery';
 import { useMealPlanStore } from '../../../stores/mealPlan';
 import { useRecipeStore } from '../../../stores/recipe';
 
@@ -19,6 +20,7 @@ export default function MealPlanDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { mealPlans, isLoading } = useMealPlanStore();
   const { recipes } = useRecipeStore();
+  const { addFromMealPlan } = useGroceryStore();
 
   const mealPlan = useMemo(() => {
     if (!id || typeof id !== 'string') return null;
@@ -68,6 +70,12 @@ export default function MealPlanDetailScreen() {
 
     console.log('Shopping List:\n', list);
   }, [shoppingList]);
+
+  const handleAddToGroceryList = useCallback(() => {
+    if (!mealPlan) return;
+    addFromMealPlan(mealPlan, recipes);
+    router.navigate('/(main)/grocery');
+  }, [mealPlan, recipes, addFromMealPlan]);
 
   if (isLoading) {
     return (
@@ -195,6 +203,11 @@ export default function MealPlanDetailScreen() {
                 + {Object.keys(shoppingList).length - 5} more items
               </Text>
             )}
+
+            <Pressable onPress={handleAddToGroceryList} style={styles.groceryButton}>
+              <ShoppingBag size={18} color={COLORS.textInverse} strokeWidth={2} />
+              <Text style={styles.groceryButtonText}>Add to Grocery List</Text>
+            </Pressable>
           </View>
         )}
       </ScrollView>
@@ -368,5 +381,20 @@ const styles = StyleSheet.create({
     color: COLORS.textMuted,
     fontStyle: 'italic',
     marginTop: SPACING.sm,
+  },
+  groceryButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: SPACING.sm,
+    backgroundColor: COLORS.primary,
+    borderRadius: RADIUS.md,
+    paddingVertical: 12,
+    marginTop: SPACING.lg,
+  },
+  groceryButtonText: {
+    fontSize: FONT_SIZES.bodyMedium,
+    fontWeight: '600',
+    color: COLORS.textInverse,
   },
 });

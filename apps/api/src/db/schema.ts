@@ -158,3 +158,37 @@ export const usageLogs = pgTable(
     userMonthIdx: index('idx_usage_logs_user_month').on(table.userId, table.createdAt),
   })
 );
+// Meal plans table
+export const mealPlans = pgTable(
+  'meal_plans',
+  {
+    id: uuid('id').defaultRandom().primaryKey(),
+    name: text('name').notNull(),
+    description: text('description'),
+    duration: integer('duration').notNull(),
+    days: jsonb('days').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+  },
+  (table) => ({
+    createdAtIdx: index('idx_meal_plans_created_at').on(table.createdAt),
+  })
+);
+
+// User saved meal plans (many-to-many)
+export const userMealPlans = pgTable(
+  'user_meal_plans',
+  {
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    mealPlanId: uuid('meal_plan_id')
+      .notNull()
+      .references(() => mealPlans.id, { onDelete: 'cascade' }),
+    savedAt: timestamp('saved_at', { withTimezone: true }).defaultNow(),
+  },
+  (table) => ({
+    pk: index('pk_user_meal_plans').on(table.userId, table.mealPlanId),
+    userIdIdx: index('idx_user_meal_plans_user_id').on(table.userId),
+  })
+);

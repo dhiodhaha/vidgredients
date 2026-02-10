@@ -51,7 +51,7 @@ export default function RecipesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAFAFA',
+    backgroundColor: '#F5F0E8',
   },
   headerTitle: {
     fontSize: 24,

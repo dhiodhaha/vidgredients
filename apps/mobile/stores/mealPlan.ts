@@ -10,6 +10,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 interface MealPlanState {
   mealPlans: Record<string, MealPlan>;
+  currentPlan: MealPlan | null;
   isLoading: boolean;
   error: string | null;
   generateMealPlan: (request: GenerateMealPlanRequest) => Promise<string>;
@@ -26,6 +27,7 @@ export const useMealPlanStore = create<MealPlanState>()(
   persist(
     (set, _get) => ({
       mealPlans: {},
+      currentPlan: null,
       isLoading: false,
       error: null,
 
@@ -63,6 +65,7 @@ export const useMealPlanStore = create<MealPlanState>()(
 
           set((state) => ({
             mealPlans: { ...state.mealPlans, [mealPlan.id]: mealPlan },
+            currentPlan: mealPlan,
             isLoading: false,
           }));
 

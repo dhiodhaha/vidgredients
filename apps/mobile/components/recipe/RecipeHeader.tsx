@@ -51,6 +51,7 @@ export const RecipeHeader = memo(function RecipeHeader({
       <Text style={styles.title} numberOfLines={2}>
         {title}
       </Text>
+      <Text style={styles.ingredientCount}>Recipe</Text>
 
       <View style={styles.tabBar} onLayout={onLayout}>
         <Animated.View style={[styles.indicator, indicatorStyle]} />
@@ -79,14 +80,20 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   title: {
-    fontSize: 22,
+    fontSize: 26, // Alma: large serif display
     fontWeight: '700',
-    color: '#064e3b', // Deep Emerald
-    marginBottom: 16,
+    color: '#3D4A2A',
+    marginBottom: 4,
+    fontFamily: 'PlayfairDisplay-Bold', // Alma: serif for hero text
+  },
+  ingredientCount: {
+    fontSize: 14,
+    color: '#9B9B8E',
+    marginBottom: 20,
   },
   tabBar: {
     flexDirection: 'row',
-    backgroundColor: '#F3F4F6', // Light grey background for the track
+    backgroundColor: '#F0EBE3', // Warm light background for the track
     borderRadius: 25, // Full rounded for pill shape
     padding: 4,
     borderBottomWidth: 0, // Remove bottom border
@@ -98,12 +105,12 @@ const styles = StyleSheet.create({
     left: 4, // Account for padding
     bottom: 4,
     borderRadius: 20, // Slightly less than container
-    backgroundColor: '#064e3b', // Deep Emerald
+    backgroundColor: '#3D4A2A', // Deep Olive
     zIndex: 0, // Behind text
   },
   tab: {
     flex: 1,
-    paddingVertical: 10,
+    paddingVertical: 12, // Alma: generous touch target
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 1, // Above indicator
@@ -114,7 +121,7 @@ const styles = StyleSheet.create({
   tabText: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#6B7280', // Default grey
+    color: '#9B9B8E', // Warm muted gray
   },
   tabTextActive: {
     color: '#FFFFFF', // White text when active

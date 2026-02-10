@@ -131,6 +131,27 @@ export interface GenerateMealPlanRequest {
   };
 }
 
+export type GroceryCategory =
+  | 'Produce'
+  | 'Meat & Seafood'
+  | 'Dairy & Eggs'
+  | 'Pantry'
+  | 'Spices & Seasonings'
+  | 'Grains & Bread'
+  | 'Frozen'
+  | 'Beverages'
+  | 'Other';
+
+export interface GroceryItem {
+  id: string;
+  name: string;
+  quantity: number;
+  unit?: string;
+  checked: boolean;
+  recipeIds: string[];
+  category?: GroceryCategory;
+}
+
 export interface GenerateMealPlanResponse {
   id: string;
   name: string;

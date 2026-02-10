@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { COLORS, RADIUS, SPACING } from '../../lib/theme';
 
 interface ServingsAdjusterProps {
   servings: number;
@@ -86,64 +87,64 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingVertical: SPACING.cardPadding,
     borderBottomWidth: 1,
-    borderBottomColor: '#F3F4F6',
-    marginBottom: 8,
+    borderBottomColor: COLORS.borderLight,
+    marginBottom: SPACING.sm,
   },
   servingsControl: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: SPACING.md,
   },
   button: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: '#D1D5DB',
+    width: 36,
+    height: 36,
+    borderRadius: RADIUS.full,
+    borderWidth: 1.5,
+    borderColor: COLORS.border,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonDisabled: {
-    borderColor: '#E5E7EB',
-    opacity: 0.5,
+    borderColor: COLORS.borderLight,
+    opacity: 0.4,
   },
   buttonPressed: {
-    backgroundColor: '#F3F4F6',
+    backgroundColor: COLORS.accentBackground,
   },
   buttonText: {
     fontSize: 18,
-    color: '#374151',
+    color: COLORS.textPrimary,
     fontWeight: '500',
   },
   servingsText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#111827',
+    color: COLORS.textPrimary,
   },
   unitToggle: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   unitButton: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: SPACING.xs,
   },
   unitButtonActive: {
-    backgroundColor: '#F3F4F6',
-    borderRadius: 4,
+    backgroundColor: COLORS.accentBackground,
+    borderRadius: RADIUS.xs,
   },
   unitButtonText: {
     fontSize: 12,
-    color: '#9CA3AF',
+    color: COLORS.textMuted,
     fontWeight: '500',
   },
   unitButtonTextActive: {
-    color: '#111827',
+    color: COLORS.textPrimary,
   },
   unitDivider: {
-    color: '#D1D5DB',
-    marginHorizontal: 4,
+    color: COLORS.border,
+    marginHorizontal: SPACING.xs,
   },
 });

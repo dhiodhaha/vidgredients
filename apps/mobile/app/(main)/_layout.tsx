@@ -1,17 +1,24 @@
 import { Tabs } from 'expo-router';
 import { BookOpen, House, ShoppingBag, User } from 'lucide-react-native';
+import { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useGroceryStore } from '../../stores/grocery';
 
 export default function MainLayout() {
   const insets = useSafeAreaInsets();
+  const groceryItems = useGroceryStore((s) => s.items);
+  const uncheckedCount = useMemo(
+    () => groceryItems.filter((i) => !i.checked).length,
+    [groceryItems]
+  );
 
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: '#064e3b', // Dark emerald green
-        tabBarInactiveTintColor: '#9ca3af', // Gray 400
+        tabBarActiveTintColor: '#3D4A2A', // Deep olive (Alma)
+        tabBarInactiveTintColor: '#B8B5AD', // Warm gray (Alma)
         tabBarStyle: {
           display: 'none', // Hidden while we revamp the navigation
           position: 'absolute',
@@ -61,9 +68,11 @@ export default function MainLayout() {
           tabBarIcon: ({ color, focused }) => (
             <View>
               <ShoppingBag size={28} color={color} strokeWidth={focused ? 2.5 : 2} />
-              <View style={styles.badge}>
-                <Text style={styles.badgeText}>2</Text>
-              </View>
+              {uncheckedCount > 0 && (
+                <View style={styles.badge}>
+                  <Text style={styles.badgeText}>{uncheckedCount}</Text>
+                </View>
+              )}
             </View>
           ),
         }}
@@ -92,7 +101,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: -4,
     right: -4,
-    backgroundColor: '#be185d', // Deep pink/magenta
+    backgroundColor: '#E86B3A', // Warm coral (Alma)
     borderRadius: 10,
     width: 16,
     height: 16,

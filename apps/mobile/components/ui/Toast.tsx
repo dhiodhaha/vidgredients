@@ -29,15 +29,15 @@ const typeConfig: Record<
   }
 > = {
   success: {
-    bgColor: '#10b981',
+    bgColor: '#7CB342',
     textColor: '#ffffff',
-    borderColor: '#059669',
+    borderColor: '#4A5A33',
     icon: <CheckCircle size={20} color="#ffffff" strokeWidth={2} />,
   },
   error: {
     bgColor: '#ef4444',
     textColor: '#ffffff',
-    borderColor: '#dc2626',
+    borderColor: '#C0392B',
     icon: <AlertCircle size={20} color="#ffffff" strokeWidth={2} />,
   },
   info: {
@@ -49,7 +49,7 @@ const typeConfig: Record<
   warning: {
     bgColor: '#f59e0b',
     textColor: '#ffffff',
-    borderColor: '#d97706',
+    borderColor: '#E8963A',
     icon: <AlertCircle size={20} color="#ffffff" strokeWidth={2} />,
   },
 };

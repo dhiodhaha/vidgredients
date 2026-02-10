@@ -3,6 +3,7 @@ import { cors } from 'hono/cors';
 import { logger } from 'hono/logger';
 import { analyze } from './routes/analyze';
 import { authRoute } from './routes/auth';
+import { grocery } from './routes/grocery';
 import { health } from './routes/health';
 import { mealPlans } from './routes/meal-plans';
 
@@ -33,6 +34,7 @@ app.route('/health', health);
 app.route('/analyze', analyze);
 app.route('/api/auth', authRoute);
 app.route('/meal-plans', mealPlans);
+app.route('/grocery', grocery);
 
 // Default route
 app.get('/', (c) => {

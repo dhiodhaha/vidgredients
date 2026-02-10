@@ -174,7 +174,7 @@ export default function HomeScreen() {
       <Modal visible={isGenerating} transparent animationType="fade">
         <View style={styles.loadingOverlay}>
           <View style={styles.loadingCard}>
-            <ActivityIndicator size="large" color={COLORS.primary} />
+            <ActivityIndicator size="large" color={COLORS.accentBackground} />
             <Text style={styles.loadingText}>Generating your meal plan...</Text>
           </View>
         </View>
@@ -201,8 +201,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loadingCard: {
-    backgroundColor: COLORS.surface,
-    borderRadius: 16,
+    backgroundColor: COLORS.textPrimary, // Alma dark tooltip
+    borderRadius: 24,
     padding: 32,
     alignItems: 'center',
     gap: 16,
@@ -210,6 +210,6 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 16,
     fontWeight: '600',
-    color: COLORS.textPrimary,
+    color: COLORS.textInverse,
   },
 });

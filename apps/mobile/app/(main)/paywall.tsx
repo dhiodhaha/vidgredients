@@ -113,7 +113,7 @@ export default function PaywallScreen() {
         {/* Hero */}
         <Animated.View entering={FadeInDown.delay(100).duration(500)} style={styles.hero}>
           <View style={styles.heroGradient}>
-            <Crown size={48} color="#FCD34D" weight="fill" />
+            <Crown size={48} color="#F5D49A" weight="fill" />
             <Text style={styles.heroTitle}>Unlock Premium</Text>
             <Text style={styles.heroSubtitle}>
               Get the most out of your cooking with unlimited recipes and AI meal plans
@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
     padding: SPACING.xl,
     alignItems: 'center',
     gap: SPACING.md,
-    backgroundColor: '#064e3b', // Solid fallback for LinearGradient
+    backgroundColor: '#3D4A2A', // Deep olive (Alma)
   },
   heroTitle: {
     fontSize: FONT_SIZES.displayMedium,

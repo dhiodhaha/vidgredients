@@ -41,8 +41,8 @@ export const StepItem = memo(function StepItem({
 
   const checkboxStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
-    backgroundColor: interpolateColor(progress.value, [0, 1], ['rgba(255,255,255,0)', '#be185d']),
-    borderColor: interpolateColor(progress.value, [0, 1], ['#064e3b', '#be185d']),
+    backgroundColor: interpolateColor(progress.value, [0, 1], ['rgba(255,255,255,0)', '#E8963A']),
+    borderColor: interpolateColor(progress.value, [0, 1], ['#3D4A2A', '#E8963A']),
   }));
 
   const textStyle = useAnimatedStyle(() => ({
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   stepLabel: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#064e3b', // Dark green
+    color: '#3D4A2A', // Deep olive
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
@@ -160,12 +160,12 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 18,
     lineHeight: 28,
-    color: '#064e3b', // Deep emerald green
+    color: '#3D4A2A', // Deep olive
     fontFamily: Platform.select({ ios: 'Georgia', android: 'serif' }),
   },
   highlightedText: {
     fontWeight: '700',
-    color: '#064e3b',
+    color: '#3D4A2A',
   },
   completedText: {
     textDecorationLine: 'line-through',

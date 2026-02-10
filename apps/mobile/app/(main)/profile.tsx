@@ -57,7 +57,7 @@ export default function ProfileScreen() {
             <Text style={styles.name}>{user?.name || 'User'}</Text>
             {isPremium && (
               <View style={styles.premiumBadge}>
-                <Crown size={12} color="#FCD34D" weight="fill" />
+                <Crown size={12} color="#F5D49A" weight="fill" />
                 <Text style={styles.premiumBadgeText}>PRO</Text>
               </View>
             )}
@@ -70,7 +70,7 @@ export default function ProfileScreen() {
       {isPremium ? (
         <View style={styles.premiumCard}>
           <View style={styles.premiumGradient}>
-            <Crown size={24} color="#FCD34D" weight="fill" />
+            <Crown size={24} color="#F5D49A" weight="fill" />
             <View style={styles.premiumInfo}>
               <Text style={styles.premiumTitle}>Premium Member</Text>
               <Text style={styles.premiumDesc}>You have access to all features</Text>
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   premiumBadgeText: {
     fontSize: FONT_SIZES.caption,
     fontWeight: '700',
-    color: '#FCD34D',
+    color: '#F5D49A',
     letterSpacing: 1,
   },
   email: {
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: SPACING.lg,
     gap: SPACING.md,
-    backgroundColor: '#064e3b', // Solid fallback for LinearGradient
+    backgroundColor: '#3D4A2A', // Deep olive (Alma)
     borderRadius: RADIUS.lg,
   },
   premiumInfo: {
@@ -285,9 +285,9 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
   },
   devButton: {
-    backgroundColor: '#FEF3C7', // Yellow tint to indicate dev feature
+    backgroundColor: '#F0EBE1', // Warm cream to indicate dev feature
     borderWidth: 2,
-    borderColor: '#F59E0B',
+    borderColor: '#E8963A',
     borderStyle: 'dashed',
   },
 });

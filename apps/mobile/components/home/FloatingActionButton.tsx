@@ -1,4 +1,4 @@
-import { Plus } from 'lucide-react-native';
+import { PlusIcon } from 'react-native-heroicons/outline';
 import { memo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -21,13 +21,13 @@ export const FloatingActionButton = memo(function FloatingActionButton({
         accessibilityLabel="Add recipe video"
         accessibilityRole="button"
       >
-        <Plus size={28} color={COLORS.textInverse} strokeWidth={2.5} />
+        <PlusIcon size={28} color={COLORS.textInverse} strokeWidth={2.5} />
       </Pressable>
     </View>
   );
 });
 
-const FAB_SIZE = 64;
+const FAB_SIZE = 56; // Alma: center FAB is 56px
 
 const styles = StyleSheet.create({
   container: {
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    ...SHADOWS.xl,
+    ...SHADOWS.lg, // Alma: subtle shadow on FAB
   },
   buttonPressed: {
     opacity: 0.9,

@@ -1,6 +1,7 @@
 import { Image } from 'expo-image';
 import { memo } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { COLORS, RADIUS, SPACING } from '../../lib/theme';
 
 interface IngredientItemProps {
   id: string;
@@ -22,22 +23,24 @@ export const IngredientItem = memo(function IngredientItem({
 }: IngredientItemProps) {
   const content = (
     <View style={styles.container}>
-      <View style={styles.iconContainer}>
-        {imageUrl ? (
-          <Image source={{ uri: imageUrl }} style={styles.icon} contentFit="cover" />
-        ) : (
-          <View style={styles.iconPlaceholder}>
-            <Text style={styles.iconEmoji}>🥘</Text>
-          </View>
-        )}
-      </View>
-
+      {/* Text content — left side (Alma layout: text-heavy left, image right) */}
       <View style={styles.textContainer}>
+        <Text style={styles.name}>{name}</Text>
         <Text style={styles.quantity}>
           {quantity}
           {unit ? ` ${unit}` : ''}
         </Text>
-        <Text style={[styles.name, hasLink && styles.nameLink]}>{name}</Text>
+      </View>
+
+      {/* Image — right side, softly-rounded square (Alma: 12px radius, NOT circle) */}
+      <View style={styles.imageContainer}>
+        {imageUrl ? (
+          <Image source={{ uri: imageUrl }} style={styles.image} contentFit="cover" />
+        ) : (
+          <View style={styles.imagePlaceholder}>
+            <Text style={styles.placeholderEmoji}>🥘</Text>
+          </View>
+        )}
       </View>
 
       {hasLink ? <Text style={styles.chevron}>›</Text> : null}
@@ -59,56 +62,53 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: SPACING.cardPadding,
+    paddingHorizontal: SPACING.cardPadding, // Fix: Add horizontal padding so text doesn't touch edges
     borderBottomWidth: 1,
-    borderBottomColor: '#F3F4F6',
-  },
-  iconContainer: {
-    width: 44,
-    height: 44,
-    marginRight: 12,
-  },
-  icon: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-  },
-  iconPlaceholder: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: '#F5F5F5',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  iconEmoji: {
-    fontSize: 20,
+    borderBottomColor: COLORS.borderLight,
   },
   textContainer: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    gap: 8,
-  },
-  quantity: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#be185d', // Deep Pink/Magenta for contrast
-    minWidth: 60,
+    gap: 4,
   },
   name: {
-    fontSize: 16,
-    color: '#064e3b', // Deep Emerald
-    flex: 1,
-    fontFamily: Platform.select({ ios: 'Georgia', android: 'serif' }),
+    fontSize: 17, // Alma: Bold 17px for ingredient name
+    fontWeight: '600',
+    color: COLORS.textPrimary,
+    fontFamily: Platform.select({ ios: 'System', android: 'sans-serif' }), // Alma uses sans-serif for names
   },
-  nameLink: {
-    textDecorationLine: 'underline',
+  quantity: {
+    fontSize: 14, // Alma: Regular 14px for amount
+    color: COLORS.textMuted,
+    fontWeight: '400',
+  },
+  // Alma: Images are softly-rounded squares (12px radius), NOT circles
+  imageContainer: {
+    width: 64,
+    height: 64,
+    marginLeft: SPACING.md,
+  },
+  image: {
+    width: 64,
+    height: 64,
+    borderRadius: RADIUS.sm, // Alma: 10-12px rounded square
+  },
+  imagePlaceholder: {
+    width: 64,
+    height: 64,
+    borderRadius: RADIUS.sm,
+    backgroundColor: COLORS.accentBackground,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  placeholderEmoji: {
+    fontSize: 28,
   },
   chevron: {
-    fontSize: 20,
-    color: '#9CA3AF',
-    marginLeft: 8,
+    fontSize: 24,
+    color: COLORS.textMuted,
+    marginLeft: SPACING.sm,
+    fontWeight: '300',
   },
   pressed: {
     opacity: 0.7,

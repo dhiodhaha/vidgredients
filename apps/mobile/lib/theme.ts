@@ -1,6 +1,6 @@
 /**
  * Design System Tokens
- * Swiss Style meets MyMind design philosophy
+ * Alma-inspired warm, organic design philosophy
  */
 
 // ============================================================================
@@ -8,55 +8,55 @@
 // ============================================================================
 
 export const COLORS = {
-  // Primary palette - Dark emerald
-  primary: '#064E3B',
-  primaryLight: '#10B981',
-  primaryMuted: '#047857',
+  // Primary palette - Deep olive green (Alma-inspired)
+  primary: '#3D4A2A',
+  primaryLight: '#7CB342',
+  primaryMuted: '#4A5A33',
 
-  // Background
-  background: '#FAFAFA',
-  surface: '#FFFFFF',
+  // Background - Warm parchment (never pure white)
+  background: '#F5F0E8',
+  surface: '#FAF7F2',
   surfaceElevated: '#FFFFFF',
 
-  // Text hierarchy
-  textPrimary: '#0F172A', // Slate 900 - Headlines
-  textSecondary: '#475569', // Slate 600 - Body text
-  textMuted: '#94A3B8', // Slate 400 - Labels, hints
+  // Text hierarchy - Warm undertones
+  textPrimary: '#2C2C2C', // Warm near-black
+  textSecondary: '#6B6B6B', // Warm gray
+  textMuted: '#9B9B8E', // Olive-tinted muted
   textInverse: '#FFFFFF', // On dark backgrounds
 
   // Accent for active/selected states
-  accent: '#064E3B',
-  accentBackground: '#ECFDF5', // Emerald 50
+  accent: '#3D4A2A',
+  accentBackground: '#F0EBE1', // Warm cream
 
-  // Mood filter pill colors
+  // Mood filter pill colors - Warmer tones
   mood: {
-    lowEnergy: { bg: '#FEF3C7', text: '#92400E' }, // Amber
-    comfort: { bg: '#FDE68A', text: '#78350F' }, // Warm amber
-    healthy: { bg: '#D1FAE5', text: '#065F46' }, // Emerald
-    quick: { bg: '#E0E7FF', text: '#3730A3' }, // Indigo
-    family: { bg: '#FCE7F3', text: '#9D174D' }, // Pink
+    lowEnergy: { bg: '#F5ECD7', text: '#8B6914' }, // Warm gold
+    comfort: { bg: '#F2E6C9', text: '#7A5C1F' }, // Sandy
+    healthy: { bg: '#E4EDDA', text: '#3D4A2A' }, // Sage
+    quick: { bg: '#E8E3D9', text: '#5A5548' }, // Stone
+    family: { bg: '#F0DDD4', text: '#8B5A3C' }, // Terracotta
   },
 
-  // UI states
-  border: '#E2E8F0', // Slate 200
-  borderLight: '#F1F5F9', // Slate 100
-  shadow: 'rgba(0, 0, 0, 0.08)',
-  overlay: 'rgba(0, 0, 0, 0.5)',
+  // UI states - Warm borders
+  border: '#E8E4DC',
+  borderLight: '#F0EBE3',
+  shadow: 'rgba(0, 0, 0, 0.04)',
+  overlay: 'rgba(0, 0, 0, 0.3)',
 
   // Semantic
-  error: '#DC2626',
-  success: '#10B981',
-  warning: '#F59E0B',
+  error: '#C0392B',
+  success: '#7CB342',
+  warning: '#E8963A',
 
-  // Premium / MyMind palette
-  premium: '#10B981',
-  premiumDark: '#059669',
-  gold: '#D97706',
-  goldLight: '#FCD34D',
+  // Premium palette - Olive tones
+  premium: '#7CB342',
+  premiumDark: '#4A5A33',
+  gold: '#E8963A',
+  goldLight: '#F5D49A',
 
-  // Glassmorphism
-  glass: 'rgba(255, 255, 255, 0.6)',
-  glassDark: 'rgba(0, 0, 0, 0.04)',
+  // Glassmorphism - Warm tint
+  glass: 'rgba(250, 247, 242, 0.7)',
+  glassDark: 'rgba(0, 0, 0, 0.03)',
 } as const;
 
 // ============================================================================
@@ -64,12 +64,12 @@ export const COLORS = {
 // ============================================================================
 
 export const GRADIENTS = {
-  primary: ['#064E3B', '#0F766E'] as const,
-  premium: ['#10B981', '#06B6D4'] as const,
-  premiumDark: ['#064E3B', '#059669'] as const,
-  gold: ['#D97706', '#F59E0B'] as const,
-  subtle: ['rgba(16, 185, 129, 0.08)', 'rgba(6, 182, 212, 0.04)'] as const,
-  card: ['rgba(0,0,0,0)', 'rgba(0,0,0,0.55)'] as const,
+  primary: ['#3D4A2A', '#4A5A33'] as const,
+  premium: ['#7CB342', '#8BC34A'] as const,
+  premiumDark: ['#3D4A2A', '#4A5A33'] as const,
+  gold: ['#E8963A', '#F5B041'] as const,
+  subtle: ['rgba(124, 179, 66, 0.06)', 'rgba(232, 150, 58, 0.03)'] as const,
+  card: ['rgba(0,0,0,0)', 'rgba(0,0,0,0.45)'] as const,
 } as const;
 
 // ============================================================================
@@ -91,8 +91,10 @@ export const FONT_SIZES = {
   // Swiss Style - Bold typography hierarchy
   displayLarge: 40, // Main headline
   displayMedium: 32, // Section headers
+  displaySmall: 28, // Smaller display
   headingLarge: 24, // Card titles
   headingMedium: 20, // Subsections
+  headingSmall: 18, // Small headers
   bodyLarge: 17, // Primary body
   bodyMedium: 15, // Secondary body
   bodySmall: 13, // Labels, captions
@@ -114,9 +116,10 @@ export const SPACING = {
   xs: 4,
   sm: 8,
   md: 16,
+  cardPadding: 20, // Alma-style generous card padding
   lg: 24,
   xl: 32,
-  xxl: 48,
+  xxl: 40, // Alma section gap
   xxxl: 64,
 } as const;
 
@@ -126,9 +129,9 @@ export const SPACING = {
 
 export const RADIUS = {
   xs: 4,
-  sm: 8,
+  sm: 10, // Alma ingredient image corners
   md: 12,
-  lg: 16,
+  lg: 20, // Alma pillow-like cards (was 16)
   xl: 24,
   full: 9999,
 } as const;
@@ -141,30 +144,30 @@ export const SHADOWS = {
   sm: {
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.03,
     shadowRadius: 2,
     elevation: 1,
   },
   md: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 3,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.04,
+    shadowRadius: 4,
+    elevation: 2,
   },
   lg: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 16,
-    elevation: 6,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 8,
+    elevation: 4,
   },
   xl: {
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.12,
-    shadowRadius: 24,
-    elevation: 10,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 6,
   },
 } as const;
 

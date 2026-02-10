@@ -135,7 +135,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F1F8E9',
+    backgroundColor: '#F5F0E8',
   },
   keyboardView: {
     flex: 1,
@@ -154,13 +154,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: '700',
-    color: '#1B5E20',
+    color: '#3D4A2A',
     textAlign: 'center',
     marginBottom: 12,
   },
   subtitle: {
     fontSize: 16,
-    color: '#388E3C',
+    color: '#6B6B6B',
     textAlign: 'center',
     lineHeight: 24,
   },
@@ -168,27 +168,27 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   input: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FAF7F2',
     borderRadius: 12,
     padding: 16,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: '#E8E4DC',
   },
   errorText: {
-    color: '#D32F2F',
+    color: '#C0392B',
     fontSize: 14,
     textAlign: 'center',
   },
   loginButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#3D4A2A',
     paddingVertical: 16,
     borderRadius: 12,
     alignItems: 'center',
-    shadowColor: '#4CAF50',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
+    shadowColor: '#3D4A2A',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
     elevation: 4,
     marginTop: 8,
   },
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   switchButtonText: {
-    color: '#388E3C',
+    color: '#6B6B6B',
     fontSize: 14,
   },
 });

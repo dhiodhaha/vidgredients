@@ -1,24 +1,19 @@
 import { router } from 'expo-router';
-import { Sparkles, User } from 'lucide-react-native';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { CalendarIcon, ShoppingBagIcon, UserIcon } from 'react-native-heroicons/outline';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { ANIMATION, COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
+import { useGroceryStore } from '../../stores/grocery';
 import { useHasPremium } from '../../stores/premium';
 
-interface HeaderProps {
-  onMealPlanSelect?: (days: number) => void;
-}
-
-const MEAL_PLAN_OPTIONS = [
-  { days: 3, label: '3 Days', emoji: '🍳' },
-  { days: 5, label: '5 Days', emoji: '🥗' },
-  { days: 7, label: '7 Days', emoji: '🍽️' },
-];
-
-export const Header = memo(function Header({ onMealPlanSelect }: HeaderProps) {
-  const [showOptions, setShowOptions] = useState(false);
+export const Header = memo(function Header() {
   const isPremium = useHasPremium();
+  const groceryItems = useGroceryStore((s) => s.items);
+  const uncheckedGroceryCount = useMemo(
+    () => groceryItems.filter((i) => !i.checked).length,
+    [groceryItems]
+  );
   const opacity = useSharedValue(0);
   const translateY = useSharedValue(10);
 
@@ -41,21 +36,19 @@ export const Header = memo(function Header({ onMealPlanSelect }: HeaderProps) {
     transform: [{ translateY: translateY.get() }],
   }));
 
-  const handleSparklePress = useCallback(() => {
-    setShowOptions(true);
+  const handleMealPlanPress = useCallback(() => {
+    router.push('/meal-plan');
+  }, []);
+
+  const handleGroceryPress = useCallback(() => {
+    router.push('/grocery');
   }, []);
 
   const handleProfilePress = useCallback(() => {
     router.push('/profile');
   }, []);
 
-  const handleOptionSelect = useCallback(
-    (days: number) => {
-      setShowOptions(false);
-      onMealPlanSelect?.(days);
-    },
-    [onMealPlanSelect]
-  );
+
 
   return (
     <>
@@ -64,12 +57,31 @@ export const Header = memo(function Header({ onMealPlanSelect }: HeaderProps) {
           <Text style={styles.greeting}>{greeting}</Text>
           <View style={styles.headerButtons}>
             <Pressable
-              onPress={handleSparklePress}
+              onPress={handleMealPlanPress}
               style={({ pressed }) => [styles.iconButton, pressed && styles.iconButtonPressed]}
-              accessibilityLabel="Auto-generate meal plan"
+              accessibilityLabel="View meal plan"
               accessibilityRole="button"
             >
-              <Sparkles size={22} color={COLORS.primary} strokeWidth={2} />
+              <CalendarIcon size={24} color={COLORS.primary} strokeWidth={2} />
+            </Pressable>
+            <Pressable
+              onPress={handleGroceryPress}
+              style={({ pressed }) => [
+                styles.iconButton,
+                styles.groceryButton,
+                pressed && styles.iconButtonPressed,
+              ]}
+              accessibilityLabel="Go to grocery list"
+              accessibilityRole="button"
+            >
+              <ShoppingBagIcon size={24} color={COLORS.primary} strokeWidth={2} />
+              {uncheckedGroceryCount > 0 && (
+                <View style={styles.groceryBadge}>
+                  <Text style={styles.groceryBadgeText}>
+                    {uncheckedGroceryCount > 99 ? '99+' : uncheckedGroceryCount}
+                  </Text>
+                </View>
+              )}
             </Pressable>
             <Pressable
               onPress={handleProfilePress}
@@ -81,7 +93,7 @@ export const Header = memo(function Header({ onMealPlanSelect }: HeaderProps) {
               accessibilityLabel="Go to profile"
               accessibilityRole="button"
             >
-              <User size={22} color={COLORS.primary} strokeWidth={2} />
+              <UserIcon size={24} color={COLORS.primary} strokeWidth={2} />
               {isPremium && <View style={styles.premiumDot} />}
             </Pressable>
           </View>
@@ -89,32 +101,6 @@ export const Header = memo(function Header({ onMealPlanSelect }: HeaderProps) {
         <Text style={styles.title}>What are we eating?</Text>
       </Animated.View>
 
-      {/* Meal Plan Options Modal */}
-      <Modal
-        visible={showOptions}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setShowOptions(false)}
-      >
-        <Pressable style={styles.modalOverlay} onPress={() => setShowOptions(false)}>
-          <View style={styles.optionsCard}>
-            <Text style={styles.optionsTitle}>✨ Auto-Generate Menu</Text>
-            <Text style={styles.optionsSubtitle}>Choose a meal plan duration</Text>
-            <View style={styles.optionsRow}>
-              {MEAL_PLAN_OPTIONS.map((option) => (
-                <Pressable
-                  key={option.days}
-                  onPress={() => handleOptionSelect(option.days)}
-                  style={({ pressed }) => [styles.optionButton, pressed && styles.optionPressed]}
-                >
-                  <Text style={styles.optionEmoji}>{option.emoji}</Text>
-                  <Text style={styles.optionLabel}>{option.label}</Text>
-                </Pressable>
-              ))}
-            </View>
-          </View>
-        </Pressable>
-      </Modal>
     </>
   );
 });
@@ -153,6 +139,29 @@ const styles = StyleSheet.create({
     opacity: 0.7,
     transform: [{ scale: 0.95 }],
   },
+  groceryButton: {
+    position: 'relative',
+  },
+  groceryBadge: {
+    position: 'absolute',
+    top: -4,
+    right: -4,
+    backgroundColor: '#E86B3A',
+    borderRadius: 10,
+    minWidth: 18,
+    height: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 4,
+    borderWidth: 2,
+    borderColor: COLORS.accentBackground,
+  },
+  groceryBadgeText: {
+    color: '#FFFFFF',
+    fontSize: 10,
+    fontWeight: '800',
+    lineHeight: 12,
+  },
   profileButton: {
     position: 'relative',
   },
@@ -163,7 +172,7 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: '#FCD34D',
+    backgroundColor: '#F5D49A',
     borderWidth: 2,
     borderColor: COLORS.accentBackground,
   },
@@ -173,60 +182,5 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
     lineHeight: FONT_SIZES.displayLarge * 1.1,
   },
-  // Modal styles
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: SPACING.xl,
-  },
-  optionsCard: {
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.xl,
-    padding: SPACING.xl,
-    width: '100%',
-    maxWidth: 340,
-    ...SHADOWS.lg,
-  },
-  optionsTitle: {
-    fontSize: FONT_SIZES.headingMedium,
-    fontWeight: '700',
-    color: COLORS.textPrimary,
-    textAlign: 'center',
-    marginBottom: SPACING.xs,
-  },
-  optionsSubtitle: {
-    fontSize: FONT_SIZES.bodyMedium,
-    color: COLORS.textMuted,
-    textAlign: 'center',
-    marginBottom: SPACING.lg,
-  },
-  optionsRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: SPACING.md,
-  },
-  optionButton: {
-    backgroundColor: COLORS.background,
-    borderRadius: RADIUS.lg,
-    padding: SPACING.lg,
-    alignItems: 'center',
-    minWidth: 90,
-    borderWidth: 2,
-    borderColor: COLORS.borderLight,
-  },
-  optionPressed: {
-    backgroundColor: COLORS.primaryLight,
-    borderColor: COLORS.primary,
-  },
-  optionEmoji: {
-    fontSize: 32,
-    marginBottom: SPACING.sm,
-  },
-  optionLabel: {
-    fontSize: FONT_SIZES.bodyMedium,
-    fontWeight: '600',
-    color: COLORS.textPrimary,
-  },
+
 });

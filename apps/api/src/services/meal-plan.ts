@@ -161,3 +161,105 @@ Return ONLY valid JSON (no markdown) with this structure for each of ${duration}
     clearTimeout(timeoutId);
   }
 }
+
+/**
+ * Optimize an existing meal plan using GPT
+ * Focus on ingredient reuse (grocery efficiency), nutritional balance, and variety
+ */
+export async function optimizeMealPlanWithGPT(
+  openaiKey: string,
+  currentPlan: MealPlanDay[],
+  recipes: Array<{
+    id: string;
+    title: string;
+    cookTimeMinutes?: number;
+    difficulty?: string;
+  }>
+): Promise<MealPlanDay[]> {
+  if (!openaiKey) throw new Error('OpenAI API key is not configured');
+  if (recipes.length === 0) throw new Error('No recipes available for optimization');
+
+  const recipeList = recipes.map((r) => `${r.id}:${r.title}`).join('\n');
+  const currentPlanJson = JSON.stringify(currentPlan);
+
+  const prompt = `Here is a preliminary ${currentPlan.length}-day meal plan and a list of available recipes.
+  
+CURRENT PLAN:
+${currentPlanJson}
+
+AVAILABLE RECIPES:
+${recipeList}
+
+TASK:
+Optimize this meal plan for:
+1. Grocery Efficiency: Reuse ingredients across days (e.g. if a recipe uses cilantro on Day 1, try to use another cilantro recipe on Day 3).
+2. Variety: Ensure protein sources and flavors are varied across the week.
+3. Balance: Avoid heavy meals for both Lunch and Dinner on the same day if possible.
+
+You may swap recipes with others from the AVAILABLE RECIPES list.
+The structure must remain EXACTLY the same (Day X, Breakfast/Lunch/Dinner/Snacks).
+
+Return ONLY valid JSON (no markdown) with this structure for each of the ${currentPlan.length} days:
+[{"day":1,"breakfast":{"recipeId":"<id>","servings":1},"lunch":{"recipeId":"<id>","servings":1},"dinner":{"recipeId":"<id>","servings":1},"snacks":[]}]`;
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 45000); // 45s timeout for optimization
+
+  try {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${openaiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [
+          {
+            role: 'user',
+            content: prompt,
+          },
+        ],
+        temperature: 0.4, // Lower temperature for more focused optimization
+        max_tokens: 2000,
+      }),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[GPT-Optimize] API error:', response.status, errorText);
+      // Fallback: return the original plan if optimization fails
+      console.warn('Optimization failed, returning original plan');
+      return currentPlan;
+    }
+
+    const data = (await response.json()) as { choices: Array<{ message: { content: string } }> };
+    const content = data.choices[0]?.message?.content?.trim();
+
+    if (!content) {
+      throw new Error('No response from GPT during optimization');
+    }
+
+    const jsonMatch = content.match(/\[[\s\S]*\]/);
+    const jsonContent = jsonMatch ? jsonMatch[0] : content;
+
+    const optimizedPlan: MealPlanDay[] = JSON.parse(jsonContent);
+
+    if (!Array.isArray(optimizedPlan) || optimizedPlan.length !== currentPlan.length) {
+      console.warn('Optimized plan has invalid length, returning original');
+      return currentPlan;
+    }
+
+    return optimizedPlan;
+  } catch (error) {
+    console.error('[GPT-Optimize] Error:', error);
+    // Fallback on error
+    return currentPlan;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
