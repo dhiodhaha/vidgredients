@@ -10,8 +10,8 @@ import { RecipeHeader } from '../../components/recipe/RecipeHeader';
 import { ServingsAdjuster } from '../../components/recipe/ServingsAdjuster';
 import { StepItem } from '../../components/recipe/StepItem';
 import { Button } from '../../components/ui/Button';
-import { useRecipeStore } from '../../stores/recipe';
 import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
+import { useRecipeStore } from '../../stores/recipe';
 
 type TabType = 'ingredients' | 'method';
 
@@ -101,7 +101,7 @@ export default function RecipeScreen() {
         highlightedWords={item.highlightedWords}
       />
     ),
-    [completedSteps, handleStepToggle, recipe]
+    [completedSteps, handleStepToggle]
   );
 
   const keyExtractorIngredient = useCallback((item: (typeof recipe.ingredients)[0]) => item.id, []);

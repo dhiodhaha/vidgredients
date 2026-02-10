@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from 'react';
 import { type LayoutChangeEvent, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { COLORS, FONTS, FONT_SIZES, RADIUS, SPACING } from '../../lib/theme';
+import { COLORS, FONT_SIZES, RADIUS, SPACING } from '../../lib/theme';
 
 interface RecipeHeaderProps {
   title: string;
