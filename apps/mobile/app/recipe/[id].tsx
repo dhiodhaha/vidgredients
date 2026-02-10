@@ -88,7 +88,7 @@ export default function RecipeScreen() {
         imageUrl={item.imageUrl}
       />
     ),
-    [recipe]
+    []
   );
 
   const renderStep = useCallback(

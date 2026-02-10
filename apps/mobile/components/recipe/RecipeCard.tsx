@@ -5,16 +5,16 @@ import { memo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
-import type { Recipe } from '../../stores/recipe';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 interface RecipeCardProps {
-  item: Recipe;
-  index?: number;
+  id: string;
+  title: string;
+  thumbnailUrl: string;
 }
 
-export const RecipeCard = memo(function RecipeCard({ item }: RecipeCardProps) {
+export const RecipeCard = memo(function RecipeCard({ id, title, thumbnailUrl }: RecipeCardProps) {
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -32,14 +32,14 @@ export const RecipeCard = memo(function RecipeCard({ item }: RecipeCardProps) {
   return (
     <AnimatedPressable
       style={[styles.card, animatedStyle]}
-      onPress={() => router.push(`/recipe/${item.id}`)}
+      onPress={() => router.push(`/recipe/${id}`)}
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
     >
-      <Image source={{ uri: item.thumbnailUrl }} style={styles.thumbnail} contentFit="cover" />
+      <Image source={{ uri: thumbnailUrl }} style={styles.thumbnail} contentFit="cover" />
       <View style={styles.cardContent}>
         <Text style={styles.title} numberOfLines={2}>
-          {item.title}
+          {title}
         </Text>
         <View style={styles.metaRow}>
           <Clock size={14} color={COLORS.textMuted} />

@@ -10,7 +10,12 @@ export default function RecipesScreen() {
   const recipesMap = useRecipeStore((state) => state.recipes);
   const recipes = useMemo(() => Object.values(recipesMap).reverse(), [recipesMap]);
 
-  const renderItem = useCallback(({ item }: { item: (typeof recipes)[0] }) => <RecipeCard item={item} />, []);
+  const renderItem = useCallback(
+    ({ item }: { item: (typeof recipes)[0] }) => (
+      <RecipeCard id={item.id} title={item.title} thumbnailUrl={item.thumbnailUrl} />
+    ),
+    []
+  );
 
   return (
     <SafeAreaView style={styles.container}>
