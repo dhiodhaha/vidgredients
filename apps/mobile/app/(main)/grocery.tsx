@@ -45,12 +45,12 @@ export default function GroceryScreen() {
 
   // Group items by category into sections
   const sections = useMemo(() => {
-    const unchecked = items.filter((i) => !i.checked);
-    const checked = items.filter((i) => i.checked);
+    // Alma: User requested bought items stay in their category
+    // So we don't separate checked/unchecked at the top level
 
     const categoryMap = new Map<string, GroceryItem[]>();
 
-    for (const item of unchecked) {
+    for (const item of items) {
       const cat = item.category ?? 'Other';
       const list = categoryMap.get(cat) ?? [];
       list.push(item);
@@ -66,27 +66,26 @@ export default function GroceryScreen() {
         result.push({
           title: cat,
           emoji: CATEGORY_EMOJI[cat] ?? '📦',
-          data: list.sort((a, b) => a.name.localeCompare(b.name)),
+          data: list.sort((a, b) => {
+            // Sort by checked status first (unchecked first), then name
+            if (a.checked === b.checked) return a.name.localeCompare(b.name);
+            return a.checked ? 1 : -1;
+          }),
         });
       }
     }
 
     // Items without categories go under "Uncategorized"
-    const hasCategories = unchecked.some((i) => i.category);
-    if (!hasCategories && unchecked.length > 0) {
+    // (Note: Our aggregation logic defaults to 'Other' if null, but just in case)
+    const uncategorized = items.filter((i) => !i.category && !categoryMap.has('Other'));
+    if (uncategorized.length > 0) {
       result.push({
         title: 'Items',
         emoji: '🛒',
-        data: unchecked.sort((a, b) => a.name.localeCompare(b.name)),
-      });
-    }
-
-    // Checked section at the bottom
-    if (checked.length > 0) {
-      result.push({
-        title: 'Completed',
-        emoji: '✅',
-        data: checked.sort((a, b) => a.name.localeCompare(b.name)),
+        data: uncategorized.sort((a, b) => {
+          if (a.checked === b.checked) return a.name.localeCompare(b.name);
+          return a.checked ? 1 : -1;
+        }),
       });
     }
 

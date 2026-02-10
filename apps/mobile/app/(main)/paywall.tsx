@@ -11,14 +11,9 @@ import {
   Text,
   View,
 } from 'react-native';
-import Animated, {
-  FadeInDown,
-  FadeInUp,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from 'react-native-reanimated';
+import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Button } from '../../components/ui/Button';
 import { GlowingBorder } from '../../components/ui/GlowingBorder';
 import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
 import {
@@ -104,9 +99,7 @@ export default function PaywallScreen() {
         <Pressable onPress={() => router.back()} hitSlop={12} style={styles.backButton}>
           <ArrowLeft size={24} color={COLORS.textPrimary} weight="bold" />
         </Pressable>
-        <Pressable onPress={handleRestore}>
-          <Text style={styles.restoreText}>Restore</Text>
-        </Pressable>
+        <Button title="Restore" onPress={handleRestore} variant="ghost" size="sm" />
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
@@ -186,7 +179,7 @@ export default function PaywallScreen() {
 
         {/* CTA */}
         <Animated.View entering={FadeInUp.delay(400).duration(500)} style={styles.ctaContainer}>
-          <PurchaseButton onPress={handlePurchase} loading={purchasing} />
+          <Button title="Continue" onPress={handlePurchase} isLoading={purchasing} size="lg" />
           <Pressable onPress={() => router.back()} style={styles.skipButton}>
             <Text style={styles.skipText}>Maybe later</Text>
           </Pressable>
@@ -229,45 +222,6 @@ function OfferingCard({
   );
 }
 
-function PurchaseButton({
-  onPress,
-  loading,
-}: {
-  onPress: () => void;
-  loading: boolean;
-}) {
-  const scale = useSharedValue(1);
-
-  const handlePressIn = () => {
-    scale.value = withSpring(0.95);
-  };
-  const handlePressOut = () => {
-    scale.value = withSpring(1);
-  };
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-  }));
-
-  return (
-    <Animated.View style={animatedStyle}>
-      <Pressable
-        onPress={onPress}
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-        disabled={loading}
-      >
-        <View style={styles.purchaseButton}>
-          {loading ? (
-            <ActivityIndicator color="#FFFFFF" />
-          ) : (
-            <Text style={styles.purchaseButtonText}>Continue</Text>
-          )}
-        </View>
-      </Pressable>
-    </Animated.View>
-  );
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -431,19 +385,6 @@ const styles = StyleSheet.create({
   },
   ctaContainer: {
     gap: SPACING.md,
-  },
-  purchaseButton: {
-    borderRadius: RADIUS.lg,
-    paddingVertical: SPACING.lg,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.primary, // Solid fallback for LinearGradient
-  },
-  purchaseButtonText: {
-    fontSize: FONT_SIZES.bodyLarge,
-    fontWeight: '700',
-    color: '#FFFFFF',
-    letterSpacing: 0.5,
   },
   skipButton: {
     paddingVertical: SPACING.md,

@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
 import { memo } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-import { COLORS, RADIUS, SPACING } from '../../lib/theme';
+import { COLORS, FONT_SIZES, RADIUS, SPACING } from '../../lib/theme';
 
 interface IngredientItemProps {
   id: string;
@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: SPACING.cardPadding,
-    paddingHorizontal: SPACING.cardPadding, // Fix: Add horizontal padding so text doesn't touch edges
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.lg, // Use SPACING.lg for consistent side padding
     borderBottomWidth: 1,
     borderBottomColor: COLORS.borderLight,
   },
@@ -72,45 +72,47 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   name: {
-    fontSize: 17, // Alma: Bold 17px for ingredient name
+    fontSize: FONT_SIZES.bodyLarge,
     fontWeight: '600',
     color: COLORS.textPrimary,
-    fontFamily: Platform.select({ ios: 'System', android: 'sans-serif' }), // Alma uses sans-serif for names
+    fontFamily: Platform.select({ ios: 'System', android: 'sans-serif' }),
   },
   quantity: {
-    fontSize: 14, // Alma: Regular 14px for amount
+    fontSize: FONT_SIZES.bodyMedium,
     color: COLORS.textMuted,
-    fontWeight: '400',
+    fontWeight: '500',
   },
-  // Alma: Images are softly-rounded squares (12px radius), NOT circles
+  // Images are softly-rounded squares
   imageContainer: {
-    width: 64,
-    height: 64,
+    width: 56, // Slightly smaller than before (was 64) for better density
+    height: 56,
     marginLeft: SPACING.md,
   },
   image: {
-    width: 64,
-    height: 64,
-    borderRadius: RADIUS.sm, // Alma: 10-12px rounded square
+    width: 56,
+    height: 56,
+    borderRadius: RADIUS.md, // 12px
+    backgroundColor: COLORS.skeleton,
   },
   imagePlaceholder: {
-    width: 64,
-    height: 64,
-    borderRadius: RADIUS.sm,
-    backgroundColor: COLORS.accentBackground,
+    width: 56,
+    height: 56,
+    borderRadius: RADIUS.md,
+    backgroundColor: COLORS.skeleton,
     justifyContent: 'center',
     alignItems: 'center',
   },
   placeholderEmoji: {
-    fontSize: 28,
+    fontSize: 24,
   },
   chevron: {
-    fontSize: 24,
+    fontSize: 20,
     color: COLORS.textMuted,
     marginLeft: SPACING.sm,
-    fontWeight: '300',
+    fontWeight: '500',
   },
   pressed: {
     opacity: 0.7,
+    backgroundColor: COLORS.surfaceMuted,
   },
 });

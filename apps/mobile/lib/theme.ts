@@ -41,6 +41,7 @@ export const COLORS = {
   surfaceElevated: '#FFFFFF', // Surface white
   surfaceMuted: '#F2F2F4', // Surface s2
   surfaceSubtle: '#ECECF0', // Surface s3
+  skeleton: '#F2F2F4', // Matched to surfaceMuted for skeletons
 
   // Text hierarchy - Light theme emphasis levels
   textPrimary: '#0A0C11', // Gray 950 (high emphasis)

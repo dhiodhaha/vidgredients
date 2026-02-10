@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Crown, SignOut, Sparkle, User } from 'phosphor-r
 import { useCallback } from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Button } from '../../components/ui/Button';
 import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
 import { signOut, useIsAuthenticated } from '../../stores/auth';
 import { useHasPremium, usePremiumStore } from '../../stores/premium';
@@ -96,36 +97,27 @@ export default function ProfileScreen() {
       {/* Actions */}
       <View style={styles.actions}>
         {!isPremium && (
-          <Pressable
-            onPress={handleRestore}
-            style={({ pressed }) => [styles.actionButton, pressed && styles.actionPressed]}
-          >
-            <Text style={styles.actionText}>Restore Purchases</Text>
-          </Pressable>
+          <Button title="Restore Purchases" onPress={handleRestore} variant="tertiary" size="lg" />
         )}
 
-        <Pressable
+        <Button
+          title="Log Out"
           onPress={handleLogout}
-          style={({ pressed }) => [styles.actionButton, pressed && styles.actionPressed]}
-        >
-          <SignOut size={20} color={COLORS.error} weight="bold" />
-          <Text style={[styles.actionText, { color: COLORS.error }]}>Log Out</Text>
-        </Pressable>
+          variant="tertiary"
+          leftIcon={SignOut}
+          size="lg"
+          style={{ borderColor: COLORS.error }}
+        />
 
         {/* DEV ONLY: Toggle premium for testing */}
         {__DEV__ && (
-          <Pressable
+          <Button
+            title={isPremium ? '🔓 Dev: Disable Premium' : '🔒 Dev: Enable Premium'}
             onPress={() => usePremiumStore.getState().setDevPremium(!isPremium)}
-            style={({ pressed }) => [
-              styles.actionButton,
-              styles.devButton,
-              pressed && styles.actionPressed,
-            ]}
-          >
-            <Text style={styles.actionText}>
-              {isPremium ? '🔓 Dev: Disable Premium' : '🔒 Dev: Enable Premium'}
-            </Text>
-          </Pressable>
+            variant="tertiary"
+            size="lg"
+            style={styles.devButton}
+          />
         )}
       </View>
     </SafeAreaView>
@@ -266,23 +258,6 @@ const styles = StyleSheet.create({
   },
   actions: {
     gap: SPACING.sm,
-  },
-  actionButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.lg,
-    padding: SPACING.lg,
-    gap: SPACING.sm,
-    ...SHADOWS.sm,
-  },
-  actionPressed: {
-    opacity: 0.7,
-  },
-  actionText: {
-    fontSize: FONT_SIZES.bodyLarge,
-    fontWeight: '600',
-    color: COLORS.textPrimary,
   },
   devButton: {
     backgroundColor: '#F0EBE1', // Warm cream to indicate dev feature

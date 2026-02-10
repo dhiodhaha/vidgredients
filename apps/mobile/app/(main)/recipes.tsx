@@ -4,31 +4,53 @@ import { router } from 'expo-router';
 import { Clock } from 'lucide-react-native';
 import { useCallback, useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
 import { useRecipeStore } from '../../stores/recipe';
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export default function RecipesScreen() {
   const recipesMap = useRecipeStore((state) => state.recipes);
   const recipes = useMemo(() => Object.values(recipesMap).reverse(), [recipesMap]);
 
   const renderItem = useCallback(
-    ({ item }: { item: (typeof recipes)[0] }) => (
-      <Pressable
-        style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
-        onPress={() => router.push(`/recipe/${item.id}`)}
-      >
-        <Image source={{ uri: item.thumbnailUrl }} style={styles.thumbnail} contentFit="cover" />
-        <View style={styles.cardContent}>
-          <Text style={styles.title} numberOfLines={2}>
-            {item.title}
-          </Text>
-          <View style={styles.metaRow}>
-            <Clock size={14} color="#757575" />
-            <Text style={styles.metaText}>Saved</Text>
+    ({ item }: { item: (typeof recipes)[0] }) => {
+      const scale = useSharedValue(1);
+
+      const animatedStyle = useAnimatedStyle(() => ({
+        transform: [{ scale: scale.value }],
+      }));
+
+      const handlePressIn = () => {
+        scale.value = withSpring(0.96, { damping: 10, stiffness: 300 });
+      };
+
+      const handlePressOut = () => {
+        scale.value = withSpring(1, { damping: 10, stiffness: 300 });
+      };
+
+      return (
+        <AnimatedPressable
+          style={[styles.card, animatedStyle]}
+          onPress={() => router.push(`/recipe/${item.id}`)}
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}
+        >
+          <Image source={{ uri: item.thumbnailUrl }} style={styles.thumbnail} contentFit="cover" />
+          <View style={styles.cardContent}>
+            <Text style={styles.title} numberOfLines={2}>
+              {item.title}
+            </Text>
+            <View style={styles.metaRow}>
+              <Clock size={14} color={COLORS.textMuted} />
+              <Text style={styles.metaText}>Saved</Text>
+            </View>
           </View>
-        </View>
-      </Pressable>
-    ),
+        </AnimatedPressable>
+      );
+    },
     []
   );
 
@@ -36,12 +58,14 @@ export default function RecipesScreen() {
     <SafeAreaView style={styles.container}>
       <Text style={styles.headerTitle}>Saved Recipes</Text>
       <View style={styles.listContainer}>
+        {/* @ts-ignore: estimatedItemSize is a valid prop but types are flaking */}
         <FlashList
           data={recipes}
           renderItem={renderItem}
-          estimatedItemSize={200}
+          estimatedItemSize={220}
           numColumns={2}
           contentContainerStyle={styles.listContent}
+          showsVerticalScrollIndicator={false}
         />
       </View>
     </SafeAreaView>
@@ -51,53 +75,49 @@ export default function RecipesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F0E8',
+    backgroundColor: COLORS.background,
   },
   headerTitle: {
-    fontSize: 24,
+    fontSize: FONT_SIZES.headingLarge,
     fontWeight: '700',
-    color: '#212121',
-    marginHorizontal: 20,
-    marginTop: 16,
-    marginBottom: 16,
+    color: COLORS.textPrimary,
+    marginHorizontal: SPACING.lg,
+    marginTop: SPACING.md,
+    marginBottom: SPACING.md,
   },
   listContainer: {
     flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: SPACING.md, // Slightly less padding to allow cards to fill width
   },
   listContent: {
     paddingBottom: 100, // Space for floating tab bar
+    paddingTop: SPACING.sm,
   },
   card: {
     flex: 1,
-    margin: 10,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
+    margin: SPACING.sm,
+    backgroundColor: COLORS.surface,
+    borderRadius: RADIUS.lg,
     overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  cardPressed: {
-    opacity: 0.9,
-    transform: [{ scale: 0.98 }],
+    ...SHADOWS.md, // Premium shadow
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.03)', // Subtle border for definition
   },
   thumbnail: {
     width: '100%',
-    height: 120,
-    backgroundColor: '#F5F5F5',
+    height: 140, // Taller image for better visual
+    backgroundColor: COLORS.skeleton,
   },
   cardContent: {
-    padding: 12,
+    padding: SPACING.md,
   },
   title: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#212121',
-    marginBottom: 8,
-    height: 40,
+    fontSize: FONT_SIZES.bodyMedium,
+    fontWeight: '700',
+    color: COLORS.textPrimary,
+    marginBottom: SPACING.xs,
+    height: 40, // Fixed height for 2 lines
+    lineHeight: 20,
   },
   metaRow: {
     flexDirection: 'row',
@@ -105,7 +125,8 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   metaText: {
-    fontSize: 12,
-    color: '#757575',
+    fontSize: FONT_SIZES.caption,
+    color: COLORS.textMuted,
+    fontWeight: '500',
   },
 });

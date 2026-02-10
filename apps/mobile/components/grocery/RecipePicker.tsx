@@ -8,6 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
 import { useMealPlanStore } from '../../stores/mealPlan';
 import { useRecipeStore } from '../../stores/recipe';
+import { Button } from '../ui/Button';
 
 interface RecipePickerProps {
   visible: boolean;
@@ -187,11 +188,11 @@ export const RecipePicker = memo(function RecipePicker({
         {/* Bottom CTA */}
         {selectedIds.size > 0 && (
           <View style={[styles.bottomBar, { paddingBottom: insets.bottom + SPACING.md }]}>
-            <Pressable onPress={handleGenerate} style={styles.ctaButton}>
-              <Text style={styles.ctaText}>
-                Add {selectedIds.size} recipe{selectedIds.size > 1 ? 's' : ''} to list
-              </Text>
-            </Pressable>
+            <Button
+              title={`Add ${selectedIds.size} recipe${selectedIds.size > 1 ? 's' : ''} to list`}
+              onPress={handleGenerate}
+              size="lg"
+            />
           </View>
         )}
       </View>

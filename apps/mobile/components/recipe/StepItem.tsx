@@ -9,6 +9,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
 
 interface StepItemProps {
   stepNumber: number;
@@ -41,8 +42,12 @@ export const StepItem = memo(function StepItem({
 
   const checkboxStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
-    backgroundColor: interpolateColor(progress.value, [0, 1], ['rgba(255,255,255,0)', '#E8963A']),
-    borderColor: interpolateColor(progress.value, [0, 1], ['#3D4A2A', '#E8963A']),
+    backgroundColor: interpolateColor(
+      progress.value,
+      [0, 1],
+      ['rgba(255,255,255,0)', COLORS.primary]
+    ),
+    borderColor: interpolateColor(progress.value, [0, 1], [COLORS.border, COLORS.primary]),
   }));
 
   const textStyle = useAnimatedStyle(() => ({
@@ -110,7 +115,7 @@ export const StepItem = memo(function StepItem({
           style={({ pressed }) => ({ opacity: pressed ? 0.8 : 1 })}
         >
           <Animated.View style={[styles.checkbox, checkboxStyle]}>
-            {isCompleted && <Check size={16} color="#FFFFFF" weight="bold" />}
+            {isCompleted && <Check size={14} color={COLORS.textInverse} weight="bold" />}
           </Animated.View>
         </Pressable>
       </View>
@@ -121,35 +126,31 @@ export const StepItem = memo(function StepItem({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f9f9f9',
-    padding: 20,
-    marginBottom: 16,
-    borderRadius: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
+    backgroundColor: COLORS.surface,
+    padding: SPACING.cardPadding,
+    marginBottom: SPACING.md,
+    borderRadius: RADIUS.lg,
+    ...SHADOWS.sm,
     borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.03)',
+    borderColor: COLORS.borderLight,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: SPACING.sm,
   },
   stepLabel: {
-    fontSize: 14,
+    fontSize: FONT_SIZES.caption,
     fontWeight: '700',
-    color: '#3D4A2A', // Deep olive
+    color: COLORS.textMuted,
     textTransform: 'uppercase',
     letterSpacing: 1,
   },
   checkbox: {
     width: 24,
     height: 24,
-    borderRadius: 6,
+    borderRadius: RADIUS.sm,
     borderWidth: 2,
     justifyContent: 'center',
     alignItems: 'center',
@@ -158,16 +159,17 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   description: {
-    fontSize: 18,
-    lineHeight: 28,
-    color: '#3D4A2A', // Deep olive
-    fontFamily: Platform.select({ ios: 'Georgia', android: 'serif' }),
+    fontSize: FONT_SIZES.bodyLarge,
+    lineHeight: 26,
+    color: COLORS.textPrimary,
+    fontFamily: Platform.select({ ios: 'System', android: 'sans-serif' }),
   },
   highlightedText: {
     fontWeight: '700',
-    color: '#3D4A2A',
+    color: COLORS.primary,
   },
   completedText: {
     textDecorationLine: 'line-through',
+    color: COLORS.textMuted,
   },
 });

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import {
   ChevronDownIcon,
+  ChevronLeftIcon,
   ChevronUpIcon,
   PencilSquareIcon,
   TrashIcon,
@@ -19,6 +20,7 @@ import { ShoppingBagIcon } from 'react-native-heroicons/solid';
 import Animated, { FadeIn, FadeOut, Layout } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MealSlotPicker } from '../../components/meal-plan/MealSlotPicker';
+import { Button } from '../../components/ui/Button';
 import { useMealPlanGeneration } from '../../hooks/useMealPlanGeneration';
 import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
 import { useGroceryStore } from '../../stores/grocery';
@@ -139,6 +141,12 @@ export default function MealPlanScreen() {
     removeMealFromDay(currentPlanId, slotPicker.day, slotPicker.mealType);
   }, [currentPlanId, slotPicker.day, slotPicker.mealType, removeMealFromDay]);
 
+  const handleMealPress = useCallback((recipeId?: string) => {
+    if (recipeId) {
+      router.push(`/recipe/${recipeId}`);
+    }
+  }, []);
+
   // ---------- RENDER ----------
 
   const renderPlanChips = () => (
@@ -175,7 +183,7 @@ export default function MealPlanScreen() {
   ) => (
     <Pressable
       key={mealType}
-      onPress={() => openSlotPicker(day, mealType, meal?.recipeId)}
+      onPress={() => (meal ? handleMealPress(meal.recipeId) : openSlotPicker(day, mealType))}
       style={styles.mealRow}
     >
       <Text style={styles.mealEmoji}>{MEAL_EMOJI[mealType]}</Text>
@@ -189,7 +197,13 @@ export default function MealPlanScreen() {
           <Text style={styles.mealEmpty}>+ Add {MEAL_LABELS[mealType]}</Text>
         )}
       </View>
-      <PencilSquareIcon size={16} color={COLORS.textMuted} />
+      <Pressable
+        hitSlop={12}
+        onPress={() => openSlotPicker(day, mealType, meal?.recipeId)}
+        style={{ padding: 4 }}
+      >
+        <PencilSquareIcon size={18} color={COLORS.textMuted} />
+      </Pressable>
     </Pressable>
   );
 
@@ -275,8 +289,12 @@ export default function MealPlanScreen() {
           <Pressable
             key={option.days}
             onPress={() => handleGenerate(option.days)}
-            style={({ pressed }) => [styles.optionButton, pressed && styles.optionPressed]}
             disabled={isGenerating}
+            style={({ pressed }) => [
+              styles.optionCard,
+              pressed && styles.optionPressed,
+              isGenerating && { opacity: 0.5 },
+            ]}
           >
             <Text style={styles.optionEmoji}>{option.emoji}</Text>
             <Text style={styles.optionLabel}>{option.label}</Text>
@@ -300,6 +318,16 @@ export default function MealPlanScreen() {
           title: 'Meal Plans',
           headerStyle: { backgroundColor: COLORS.background },
           headerShadowVisible: false,
+          headerBackTitleVisible: false, // Attempt standard property again with proper override or just let headerLeft take over
+          headerLeft: () => (
+            <Pressable
+              onPress={() => router.back()}
+              hitSlop={12}
+              style={{ marginLeft: -8, padding: 8 }}
+            >
+              <ChevronLeftIcon size={24} color={COLORS.textPrimary} strokeWidth={2.5} />
+            </Pressable>
+          ),
           headerTintColor: COLORS.textPrimary,
           headerRight: () =>
             currentPlan ? (
@@ -327,10 +355,12 @@ export default function MealPlanScreen() {
         {/* Bottom grocery CTA */}
         {currentPlan && (
           <View style={[styles.bottomBar, { paddingBottom: insets.bottom + SPACING.md }]}>
-            <Pressable onPress={handleAddToGrocery} style={styles.groceryButton}>
-              <ShoppingBagIcon size={20} color={COLORS.textInverse} />
-              <Text style={styles.groceryButtonText}>Add to Grocery List</Text>
-            </Pressable>
+            <Button
+              title="Add to Grocery List"
+              onPress={handleAddToGrocery}
+              leftIcon={ShoppingBagIcon}
+              size="lg"
+            />
           </View>
         )}
 
@@ -367,7 +397,8 @@ const styles = StyleSheet.create({
 
   // Header
   headerDeleteBtn: {
-    marginRight: SPACING.xs,
+    // Removed margin to let default header spacing handle alignment
+    padding: 8,
   },
 
   // Plan chips
@@ -551,9 +582,10 @@ const styles = StyleSheet.create({
     gap: SPACING.md,
     marginBottom: SPACING.md,
   },
-  optionButton: {
+  optionCard: {
     backgroundColor: COLORS.surface,
-    padding: SPACING.lg,
+    paddingVertical: SPACING.lg,
+    paddingHorizontal: SPACING.md,
     borderRadius: RADIUS.lg,
     alignItems: 'center',
     minWidth: 100,
@@ -564,10 +596,11 @@ const styles = StyleSheet.create({
   optionPressed: {
     backgroundColor: COLORS.accentBackground,
     borderColor: COLORS.primary,
+    transform: [{ scale: 0.98 }],
   },
   optionEmoji: {
-    fontSize: 28,
-    marginBottom: SPACING.xs,
+    fontSize: 32,
+    marginBottom: SPACING.sm,
   },
   optionLabel: {
     fontSize: FONT_SIZES.bodyMedium,

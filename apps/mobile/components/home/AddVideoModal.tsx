@@ -1,5 +1,5 @@
 import * as Clipboard from 'expo-clipboard';
-import { Link, Loader2, X } from 'lucide-react-native';
+import { Link, X } from 'lucide-react-native';
 import { memo, useCallback, useEffect, useState } from 'react';
 import {
   Dimensions,
@@ -16,15 +16,13 @@ import {
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
-  withRepeat,
   withSpring,
   withTiming,
-  Easing,
-  cancelAnimation,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { detectPlatform } from '../../lib/platform';
 import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
+import { Button } from '../ui/Button';
 import { GlowingBorder } from '../ui/GlowingBorder';
 import { InstagramIcon, TiktokIcon, YoutubeIcon } from '../ui/PlatformIcons';
 
@@ -47,20 +45,6 @@ export const AddVideoModal = memo(function AddVideoModal({
   const SCREEN_HEIGHT = Dimensions.get('window').height;
   const translateY = useSharedValue(SCREEN_HEIGHT);
   const opacity = useSharedValue(0);
-  const rotation = useSharedValue(0);
-
-  useEffect(() => {
-    if (isLoading) {
-      rotation.value = withRepeat(
-        withTiming(360, { duration: 1000, easing: Easing.linear }),
-        -1,
-        false
-      );
-    } else {
-      cancelAnimation(rotation);
-      rotation.value = 0;
-    }
-  }, [isLoading, rotation]);
 
   useEffect(() => {
     if (visible) {
@@ -131,10 +115,6 @@ export const AddVideoModal = memo(function AddVideoModal({
     transform: [{ translateY: translateY.get() }],
   }));
 
-  const spinnerStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${rotation.value}deg` }],
-  }));
-
   return (
     <Modal visible={visible} transparent animationType="none" onRequestClose={handleClose}>
       <KeyboardAvoidingView
@@ -202,29 +182,15 @@ export const AddVideoModal = memo(function AddVideoModal({
           {/* Submit button with glowing border during analysis */}
           <GlowingBorder
             isActive={isLoading}
-            borderRadius={RADIUS.md}
+            borderRadius={RADIUS.pill}
             style={{ marginBottom: SPACING.md }}
           >
-            <Pressable
-              style={({ pressed }) => [
-                styles.submitButton,
-                pressed && !isLoading && styles.buttonPressed,
-                isLoading && styles.submitDisabled,
-              ]}
+            <Button
+              title={isLoading ? 'Analyzing...' : 'Extract Ingredients'}
               onPress={handleSubmit}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <View style={styles.loadingRow}>
-                  <Animated.View style={spinnerStyle}>
-                    <Loader2 size={20} color={COLORS.textInverse} strokeWidth={2} />
-                  </Animated.View>
-                  <Text style={styles.submitText}>Analyzing...</Text>
-                </View>
-              ) : (
-                <Text style={styles.submitText}>Extract Ingredients</Text>
-              )}
-            </Pressable>
+              isLoading={isLoading}
+              size="lg"
+            />
           </GlowingBorder>
 
           {/* Supported platforms */}
@@ -322,23 +288,6 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZES.bodySmall,
     color: COLORS.error,
     marginBottom: SPACING.md,
-  },
-  submitButton: {
-    backgroundColor: COLORS.primary,
-    borderRadius: RADIUS.md,
-    height: 56,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...SHADOWS.md,
-  },
-  submitDisabled: {
-    backgroundColor: COLORS.primary, // Keep primary color but rely on opacity
-    opacity: 0.7,
-  },
-  submitText: {
-    fontSize: FONT_SIZES.bodyLarge,
-    fontWeight: '600',
-    color: COLORS.textInverse,
   },
   loadingRow: {
     flexDirection: 'row',

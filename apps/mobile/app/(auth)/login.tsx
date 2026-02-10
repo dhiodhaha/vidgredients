@@ -1,7 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import {
-  ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -13,6 +12,8 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { GreetingCard } from '../../components/home/GreetingCard';
+import { Button } from '../../components/ui/Button';
+import { COLORS, FONT_SIZES, SPACING } from '../../lib/theme';
 import { signIn, signUp } from '../../stores/auth';
 
 export default function LoginScreen() {
@@ -105,19 +106,15 @@ export default function LoginScreen() {
 
               {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-              <Pressable
-                style={({ pressed }) => [styles.loginButton, pressed && styles.loginButtonPressed]}
+              {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
+              <Button
+                title={isSignUp ? 'Create Account' : 'Sign In'}
                 onPress={handleSubmit}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <ActivityIndicator color="#FFFFFF" />
-                ) : (
-                  <Text style={styles.loginButtonText}>
-                    {isSignUp ? 'Create Account' : 'Sign In'}
-                  </Text>
-                )}
-              </Pressable>
+                isLoading={isLoading}
+                size="lg"
+                style={styles.loginButton}
+              />
 
               <Pressable style={styles.switchButton} onPress={() => setIsSignUp(!isSignUp)}>
                 <Text style={styles.switchButtonText}>
@@ -135,7 +132,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F0E8',
+    backgroundColor: COLORS.background,
   },
   keyboardView: {
     flex: 1,
@@ -145,22 +142,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   content: {
-    padding: 24,
+    padding: SPACING.lg,
   },
   hero: {
-    marginTop: 32,
-    marginBottom: 32,
+    marginTop: SPACING.xl,
+    marginBottom: SPACING.xl,
   },
   title: {
-    fontSize: 32,
+    fontSize: FONT_SIZES.displayMedium,
     fontWeight: '700',
-    color: '#3D4A2A',
+    color: COLORS.textPrimary,
     textAlign: 'center',
-    marginBottom: 12,
+    marginBottom: SPACING.xs,
   },
   subtitle: {
-    fontSize: 16,
-    color: '#6B6B6B',
+    fontSize: FONT_SIZES.bodyLarge,
+    color: COLORS.textSecondary,
     textAlign: 'center',
     lineHeight: 24,
   },
@@ -168,45 +165,28 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   input: {
-    backgroundColor: '#FAF7F2',
+    backgroundColor: COLORS.surface,
     borderRadius: 12,
-    padding: 16,
+    padding: SPACING.md,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#E8E4DC',
+    borderColor: COLORS.border,
+    color: COLORS.textPrimary,
   },
   errorText: {
-    color: '#C0392B',
+    color: COLORS.error,
     fontSize: 14,
     textAlign: 'center',
   },
   loginButton: {
-    backgroundColor: '#3D4A2A',
-    paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    shadowColor: '#3D4A2A',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    elevation: 4,
-    marginTop: 8,
-  },
-  loginButtonPressed: {
-    opacity: 0.9,
-    transform: [{ scale: 0.98 }],
-  },
-  loginButtonText: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: '600',
+    marginTop: SPACING.sm,
   },
   switchButton: {
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: SPACING.sm,
   },
   switchButtonText: {
-    color: '#6B6B6B',
+    color: COLORS.textSecondary,
     fontSize: 14,
   },
 });

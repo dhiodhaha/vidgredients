@@ -9,7 +9,9 @@ import { IngredientItem } from '../../components/recipe/IngredientItem';
 import { RecipeHeader } from '../../components/recipe/RecipeHeader';
 import { ServingsAdjuster } from '../../components/recipe/ServingsAdjuster';
 import { StepItem } from '../../components/recipe/StepItem';
+import { Button } from '../../components/ui/Button';
 import { useRecipeStore } from '../../stores/recipe';
+import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
 
 type TabType = 'ingredients' | 'method';
 
@@ -33,6 +35,7 @@ export default function RecipeScreen() {
       return next;
     });
   }, []);
+
   // Helper to parse and scale quantities
   const scaleQuantity = useCallback(
     (qtyString: string, originalServings: number, newServings: number) => {
@@ -67,12 +70,10 @@ export default function RecipeScreen() {
     if (!recipe) return [];
 
     // Fallback if recipe.servings is missing/invalid
-    const baseServings = recipe.servings || 4;
-
-    return recipe.ingredients.map((item) => ({
+    return recipe.ingredients.map((item: (typeof recipe.ingredients)[0]) => ({
       ...item,
       // Scale quantity if it exists
-      displayQuantity: scaleQuantity(item.quantity, baseServings, servings),
+      displayQuantity: scaleQuantity(item.quantity, recipe.servings || 4, servings),
     }));
   }, [recipe, servings, scaleQuantity]);
 
@@ -87,7 +88,7 @@ export default function RecipeScreen() {
         imageUrl={item.imageUrl}
       />
     ),
-    []
+    [recipe]
   );
 
   const renderStep = useCallback(
@@ -100,7 +101,7 @@ export default function RecipeScreen() {
         highlightedWords={item.highlightedWords}
       />
     ),
-    [completedSteps, handleStepToggle]
+    [completedSteps, handleStepToggle, recipe]
   );
 
   const keyExtractorIngredient = useCallback((item: (typeof recipe.ingredients)[0]) => item.id, []);
@@ -112,9 +113,7 @@ export default function RecipeScreen() {
       <SafeAreaView style={styles.container}>
         <View style={styles.errorContainer}>
           <Text style={styles.errorText}>Recipe not found</Text>
-          <Pressable style={styles.backButton} onPress={() => router.back()}>
-            <Text style={styles.backButtonText}>Go Back</Text>
-          </Pressable>
+          <Button title="Go Back" onPress={() => router.back()} size="lg" />
         </View>
       </SafeAreaView>
     );
@@ -132,11 +131,11 @@ export default function RecipeScreen() {
               onPress={() => router.back()}
               style={({ pressed }) => [styles.headerBackButton, pressed && styles.opacityPressed]}
             >
-              <ChevronLeftIcon size={24} color="#3D4A2A" strokeWidth={2.5} />
+              <ChevronLeftIcon size={24} color={COLORS.textPrimary} strokeWidth={2.5} />
             </Pressable>
           ),
           headerStyle: {
-            backgroundColor: '#FAF7F2',
+            backgroundColor: COLORS.background,
           },
           headerShadowVisible: false,
         }}
@@ -163,8 +162,8 @@ export default function RecipeScreen() {
                   unitSystem={unitSystem}
                   onUnitSystemChange={setUnitSystem}
                 />
-                {/* Alma: Wrap ingredients in a single container card */}
                 <View style={styles.ingredientCard}>
+                  {/* @ts-ignore: estimatedItemSize is a valid prop but types are flaking */}
                   <FlashList
                     data={scaledIngredients}
                     renderItem={renderIngredient}
@@ -179,7 +178,7 @@ export default function RecipeScreen() {
                 key="method"
                 entering={FadeIn.duration(200)}
                 exiting={FadeOut.duration(200)}
-                style={{ flex: 1 }}
+                style={{ flex: 1, marginTop: SPACING.md }}
               >
                 <FlashList
                   data={recipe.steps}
@@ -201,59 +200,47 @@ export default function RecipeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FAF7F2',
+    backgroundColor: COLORS.background,
   },
   content: {
     flex: 1,
-    backgroundColor: '#FAF7F2',
+    backgroundColor: COLORS.background,
   },
   listContainer: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: SPACING.lg,
   },
   listContent: {
     paddingBottom: 40,
   },
-  // Alma: Single container card wrapping all ingredients
   ingredientCard: {
-    flex: 1, // Fix: Ensure it fills the space so FlashList can render
-    backgroundColor: '#FAF7F2',
-    borderRadius: 20,
+    flex: 1,
+    backgroundColor: COLORS.surface,
+    borderRadius: RADIUS.xl,
     borderWidth: 1,
-    borderColor: '#F0EBE3',
-    // Removed marginHorizontal to let it be full width within the container padding if needed,
-    // but looking at listContainer padding (20), this card is already inset.
-    // Let's keep margin tight or remove it.
+    borderColor: COLORS.borderLight,
     marginHorizontal: 0,
     minHeight: 100,
-    marginBottom: 20,
-    overflow: 'hidden', // Clip content to rounded corners
+    marginBottom: SPACING.lg,
+    overflow: 'hidden',
+    ...SHADOWS.sm,
   },
   errorContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: SPACING.lg,
   },
   errorText: {
-    fontSize: 18,
-    color: '#6B6B6B',
-    marginBottom: 20,
-  },
-  backButton: {
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    backgroundColor: '#3D4A2A',
-    borderRadius: 8,
-  },
-  backButtonText: {
-    color: '#FFFFFF',
-    fontWeight: '600',
+    fontSize: FONT_SIZES.bodyLarge,
+    color: COLORS.textSecondary,
+    marginBottom: SPACING.lg,
+    fontWeight: '500',
   },
   headerBackButton: {
     padding: 8,
     marginLeft: 0,
-    borderRadius: 20,
+    borderRadius: RADIUS.pill,
   },
   opacityPressed: {
     opacity: 0.7,
