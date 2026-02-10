@@ -262,4 +262,3 @@ Return ONLY valid JSON (no markdown) with this structure for each of the ${curre
     clearTimeout(timeoutId);
   }
 }
-

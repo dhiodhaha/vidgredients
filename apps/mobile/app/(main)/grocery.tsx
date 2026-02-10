@@ -1,6 +1,6 @@
 import type { GroceryCategory, GroceryItem, Recipe } from '@shared/types';
-import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router';
 import { ArrowLeft, Plus, ShoppingBag, Sparkle, Trash } from 'phosphor-react-native';
 import { useCallback, useMemo, useState } from 'react';
 import { ActivityIndicator, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';

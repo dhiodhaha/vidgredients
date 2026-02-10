@@ -107,7 +107,7 @@ export default function HomeScreen() {
         const mealPlanId = await generate(recipeIds, { duration: days });
         console.log('[MealPlan] Generated:', mealPlanId);
         // Navigate to the meal plan detail view
-        router.push(`/meal-plans/${mealPlanId}`);
+        router.push('/meal-plan');
       } catch (error) {
         console.error('[MealPlan] Error:', error);
         const message = error instanceof Error ? error.message : 'Something went wrong';

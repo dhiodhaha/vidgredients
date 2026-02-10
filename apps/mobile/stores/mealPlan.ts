@@ -8,15 +8,26 @@ import type {
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+type MealType = 'breakfast' | 'lunch' | 'dinner';
+
 interface MealPlanState {
   mealPlans: Record<string, MealPlan>;
-  currentPlan: MealPlan | null;
+  currentPlanId: string | null;
   isLoading: boolean;
   error: string | null;
   generateMealPlan: (request: GenerateMealPlanRequest) => Promise<string>;
   addMealPlan: (mealPlan: MealPlan) => void;
   updateMealPlan: (id: string, updates: Partial<MealPlan>) => void;
   deleteMealPlan: (id: string) => void;
+  setCurrentPlan: (id: string | null) => void;
+  setMealForDay: (
+    planId: string,
+    day: number,
+    mealType: MealType,
+    recipeId: string,
+    servings: number
+  ) => void;
+  removeMealFromDay: (planId: string, day: number, mealType: MealType) => void;
   updateMealDay: (mealPlanId: string, day: number, dayData: MealPlanDay) => void;
   clearError: () => void;
 }
@@ -27,7 +38,7 @@ export const useMealPlanStore = create<MealPlanState>()(
   persist(
     (set, _get) => ({
       mealPlans: {},
-      currentPlan: null,
+      currentPlanId: null,
       isLoading: false,
       error: null,
 
@@ -40,7 +51,6 @@ export const useMealPlanStore = create<MealPlanState>()(
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              // TODO: Add auth token
             },
             body: JSON.stringify(request),
           });
@@ -65,7 +75,7 @@ export const useMealPlanStore = create<MealPlanState>()(
 
           set((state) => ({
             mealPlans: { ...state.mealPlans, [mealPlan.id]: mealPlan },
-            currentPlan: mealPlan,
+            currentPlanId: mealPlan.id,
             isLoading: false,
           }));
 
@@ -105,7 +115,67 @@ export const useMealPlanStore = create<MealPlanState>()(
       deleteMealPlan: (id) => {
         set((state) => {
           const { [id]: _, ...rest } = state.mealPlans;
-          return { mealPlans: rest };
+          const nextPlanId =
+            state.currentPlanId === id
+              ? (Object.keys(rest).sort((a, b) => {
+                  const planA = rest[a];
+                  const planB = rest[b];
+                  return (planB?.createdAt ?? '').localeCompare(planA?.createdAt ?? '');
+                })[0] ?? null)
+              : state.currentPlanId;
+          return { mealPlans: rest, currentPlanId: nextPlanId };
+        });
+      },
+
+      setCurrentPlan: (id) => {
+        set({ currentPlanId: id });
+      },
+
+      setMealForDay: (planId, day, mealType, recipeId, servings) => {
+        set((state) => {
+          const plan = state.mealPlans[planId];
+          if (!plan) return state;
+
+          const updatedDays = plan.days.map((d) => {
+            if (d.day !== day) return d;
+            return { ...d, [mealType]: { recipeId, servings } };
+          });
+
+          return {
+            mealPlans: {
+              ...state.mealPlans,
+              [planId]: {
+                ...plan,
+                days: updatedDays,
+                updatedAt: new Date().toISOString(),
+              },
+            },
+          };
+        });
+      },
+
+      removeMealFromDay: (planId, day, mealType) => {
+        set((state) => {
+          const plan = state.mealPlans[planId];
+          if (!plan) return state;
+
+          const updatedDays = plan.days.map((d) => {
+            if (d.day !== day) return d;
+            const updated = { ...d };
+            delete updated[mealType];
+            return updated;
+          });
+
+          return {
+            mealPlans: {
+              ...state.mealPlans,
+              [planId]: {
+                ...plan,
+                days: updatedDays,
+                updatedAt: new Date().toISOString(),
+              },
+            },
+          };
         });
       },
 
@@ -136,7 +206,10 @@ export const useMealPlanStore = create<MealPlanState>()(
     {
       name: 'meal-plan-storage',
       storage: createJSONStorage(() => AsyncStorage),
-      partialize: (state) => ({ mealPlans: state.mealPlans }),
+      partialize: (state) => ({
+        mealPlans: state.mealPlans,
+        currentPlanId: state.currentPlanId,
+      }),
     }
   )
 );

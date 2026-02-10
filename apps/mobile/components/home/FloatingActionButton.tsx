@@ -1,6 +1,6 @@
-import { PlusIcon } from 'react-native-heroicons/outline';
 import { memo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import { PlusIcon } from 'react-native-heroicons/outline';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, SHADOWS, SPACING } from '../../lib/theme';
 

@@ -1,8 +1,9 @@
 import type { Recipe } from '@shared/types';
 import { Image } from 'expo-image';
-import { Check, Search, X } from 'lucide-react-native';
 import { memo, useCallback, useMemo, useState } from 'react';
 import { FlatList, Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { MagnifyingGlassIcon, XMarkIcon } from 'react-native-heroicons/outline';
+import { CheckCircleIcon } from 'react-native-heroicons/solid';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
 import { useMealPlanStore } from '../../stores/mealPlan';
@@ -90,10 +91,17 @@ export const RecipePicker = memo(function RecipePicker({
             <Text style={styles.recipeTitle} numberOfLines={1}>
               {item.title}
             </Text>
-            <Text style={styles.recipeMeta}>{item.ingredients.length} ingredients</Text>
+            <View style={styles.recipeMetaRow}>
+              <View style={styles.ingredientBadge}>
+                <Text style={styles.ingredientBadgeText}>{item.ingredients.length} items</Text>
+              </View>
+              {item.cookTimeMinutes && (
+                <Text style={styles.recipeMeta}>{item.cookTimeMinutes} min</Text>
+              )}
+            </View>
           </View>
           <View style={[styles.selectionCircle, isSelected && styles.selectionCircleActive]}>
-            {isSelected && <Check size={14} color={COLORS.textInverse} strokeWidth={3} />}
+            {isSelected && <CheckCircleIcon size={24} color={COLORS.primary} />}
           </View>
         </Pressable>
       );
@@ -108,7 +116,7 @@ export const RecipePicker = memo(function RecipePicker({
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Add Ingredients</Text>
           <Pressable onPress={onClose} hitSlop={12}>
-            <X size={24} color={COLORS.textPrimary} strokeWidth={2} />
+            <XMarkIcon size={24} color={COLORS.textPrimary} strokeWidth={2} />
           </Pressable>
         </View>
 
@@ -123,7 +131,7 @@ export const RecipePicker = memo(function RecipePicker({
                 style={styles.mealPlanRow}
               >
                 <View style={styles.mealPlanIcon}>
-                  <Text style={styles.mealPlanEmoji}>📋</Text>
+                  <Text style={styles.mealPlanEmoji}>{'\uD83D\uDCCB'}</Text>
                 </View>
                 <View style={styles.recipeInfo}>
                   <Text style={styles.recipeTitle} numberOfLines={1}>
@@ -138,7 +146,7 @@ export const RecipePicker = memo(function RecipePicker({
 
         {/* Search */}
         <View style={styles.searchContainer}>
-          <Search size={18} color={COLORS.textMuted} strokeWidth={2} />
+          <MagnifyingGlassIcon size={18} color={COLORS.textMuted} strokeWidth={2} />
           <TextInput
             style={styles.searchInput}
             placeholder="Search recipes..."
@@ -169,7 +177,9 @@ export const RecipePicker = memo(function RecipePicker({
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             <View style={styles.emptyList}>
+              <Text style={styles.emptyEmoji}>{'\uD83C\uDF73'}</Text>
               <Text style={styles.emptyText}>No recipes found</Text>
+              <Text style={styles.emptySubtext}>Add some recipes from the home screen first</Text>
             </View>
           }
         />
@@ -226,7 +236,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.sm,
     gap: 12,
+    borderRadius: RADIUS.md,
+    borderWidth: 1,
+    borderColor: COLORS.borderLight,
+    backgroundColor: COLORS.surface,
+    marginBottom: SPACING.sm,
   },
   mealPlanIcon: {
     width: 44,
@@ -296,10 +312,26 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: COLORS.textPrimary,
   },
+  recipeMetaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 4,
+  },
+  ingredientBadge: {
+    backgroundColor: COLORS.accentBackground,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: RADIUS.xs,
+  },
+  ingredientBadgeText: {
+    fontSize: FONT_SIZES.caption,
+    fontWeight: '600',
+    color: COLORS.textSecondary,
+  },
   recipeMeta: {
     fontSize: FONT_SIZES.bodySmall,
     color: COLORS.textMuted,
-    marginTop: 2,
   },
   selectionCircle: {
     width: 24,
@@ -311,15 +343,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   selectionCircleActive: {
-    backgroundColor: COLORS.primary,
-    borderColor: COLORS.primary,
+    borderColor: 'transparent',
   },
   emptyList: {
     paddingVertical: SPACING.xxl,
     alignItems: 'center',
+    gap: SPACING.sm,
+  },
+  emptyEmoji: {
+    fontSize: 40,
   },
   emptyText: {
-    fontSize: FONT_SIZES.bodyMedium,
+    fontSize: FONT_SIZES.bodyLarge,
+    fontWeight: '600',
+    color: COLORS.textPrimary,
+  },
+  emptySubtext: {
+    fontSize: FONT_SIZES.bodySmall,
     color: COLORS.textMuted,
   },
   bottomBar: {

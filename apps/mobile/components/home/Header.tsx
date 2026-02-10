@@ -1,9 +1,9 @@
 import { router } from 'expo-router';
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { memo, useCallback, useEffect, useMemo } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { CalendarIcon, ShoppingBagIcon, UserIcon } from 'react-native-heroicons/outline';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { ANIMATION, COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
+import { ANIMATION, COLORS, FONT_SIZES, SPACING } from '../../lib/theme';
 import { useGroceryStore } from '../../stores/grocery';
 import { useHasPremium } from '../../stores/premium';
 
@@ -47,8 +47,6 @@ export const Header = memo(function Header() {
   const handleProfilePress = useCallback(() => {
     router.push('/profile');
   }, []);
-
-
 
   return (
     <>
@@ -100,7 +98,6 @@ export const Header = memo(function Header() {
         </View>
         <Text style={styles.title}>What are we eating?</Text>
       </Animated.View>
-
     </>
   );
 });
@@ -182,5 +179,4 @@ const styles = StyleSheet.create({
     color: COLORS.textPrimary,
     lineHeight: FONT_SIZES.displayLarge * 1.1,
   },
-
 });

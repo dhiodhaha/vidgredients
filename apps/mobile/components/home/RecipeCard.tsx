@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
 import { memo, useCallback } from 'react';
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
+import { COLORS, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
 import type { Recipe } from '../../stores/recipe';
 
 interface RecipeCardProps {
@@ -45,7 +45,7 @@ export const RecipeCard = memo(function RecipeCard({
         <Text style={styles.title} numberOfLines={2}>
           {recipe.title}
         </Text>
-        
+
         <View style={styles.metaRow}>
           <Text style={styles.ingredients}>{recipe.ingredients.length} ingredients</Text>
           {recipe.cookTimeMinutes && (

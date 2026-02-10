@@ -47,7 +47,7 @@ mealPlans.post('/generate', zValidator('json', generateSchema), async (c) => {
       FROM recipes
       WHERE id = ANY(${recipeIds}::uuid[])
     `;
-    
+
     // Define a minimal type for what we need
     type DbRecipe = {
       id: string;
@@ -72,21 +72,19 @@ mealPlans.post('/generate', zValidator('json', generateSchema), async (c) => {
     }
 
     // Filter recipes by preferences
-    const filteredRecipes = recipes.filter(
-      (recipe) => {
-        if (preferences?.vegetarian && !recipe.isVegetarian) return false;
-        if (preferences?.vegan && !recipe.isVegan) return false;
-        if (preferences?.glutenFree && !recipe.isGlutenFree) return false;
-        if (
-          preferences?.maxCookTime &&
-          recipe.cookTimeMinutes &&
-          recipe.cookTimeMinutes > preferences.maxCookTime
-        ) {
-          return false;
-        }
-        return true;
+    const filteredRecipes = recipes.filter((recipe) => {
+      if (preferences?.vegetarian && !recipe.isVegetarian) return false;
+      if (preferences?.vegan && !recipe.isVegan) return false;
+      if (preferences?.glutenFree && !recipe.isGlutenFree) return false;
+      if (
+        preferences?.maxCookTime &&
+        recipe.cookTimeMinutes &&
+        recipe.cookTimeMinutes > preferences.maxCookTime
+      ) {
+        return false;
       }
-    );
+      return true;
+    });
 
     if (filteredRecipes.length === 0) {
       return c.json(

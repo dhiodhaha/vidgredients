@@ -206,7 +206,10 @@ export const useGroceryStore = create<GroceryState>()(
               existing.quantity += item.quantity;
               existing.recipeIds = [...new Set([...existing.recipeIds, ...item.recipeIds])];
             } else {
-              seen.set(key, { ...item, id: `grocery-${key}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}` });
+              seen.set(key, {
+                ...item,
+                id: `grocery-${key}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+              });
             }
           }
           state.items = Array.from(seen.values());

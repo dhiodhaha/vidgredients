@@ -37,7 +37,7 @@ export default function RecipeScreen() {
   const scaleQuantity = useCallback(
     (qtyString: string, originalServings: number, newServings: number) => {
       if (!qtyString) return '';
-      
+
       // Basic fraction support
       try {
         let numericQty = 0;
@@ -45,18 +45,18 @@ export default function RecipeScreen() {
           const [num, den] = qtyString.split('/').map(Number);
           numericQty = num / den;
         } else {
-          numericQty = parseFloat(qtyString);
+          numericQty = Number.parseFloat(qtyString);
         }
 
-        if (isNaN(numericQty)) return qtyString; // Return original if not a number
+        if (Number.isNaN(numericQty)) return qtyString; // Return original if not a number
 
         const ratio = newServings / originalServings;
         const newQty = numericQty * ratio;
 
         // Format nicely (e.g. 0.5 -> 1/2 if you wanted, but decimal is fine for now)
         // Let's stick to max 2 decimals to avoid 1.3333333
-        return parseFloat(newQty.toFixed(2)).toString();
-      } catch (e) {
+        return Number.parseFloat(newQty.toFixed(2)).toString();
+      } catch (_e) {
         return qtyString;
       }
     },
@@ -65,14 +65,14 @@ export default function RecipeScreen() {
 
   const scaledIngredients = useMemo(() => {
     if (!recipe) return [];
-    
-    // Fallback if recipe.servings is missing/invalid
-    const baseServings = recipe.servings || 4; 
 
-    return recipe.ingredients.map(item => ({
+    // Fallback if recipe.servings is missing/invalid
+    const baseServings = recipe.servings || 4;
+
+    return recipe.ingredients.map((item) => ({
       ...item,
       // Scale quantity if it exists
-      displayQuantity: scaleQuantity(item.quantity, baseServings, servings)
+      displayQuantity: scaleQuantity(item.quantity, baseServings, servings),
     }));
   }, [recipe, servings, scaleQuantity]);
 
@@ -82,7 +82,7 @@ export default function RecipeScreen() {
         id={item.id}
         name={item.name}
         // Use the scaled quantity
-        quantity={item.displayQuantity} 
+        quantity={item.displayQuantity}
         unit={item.unit}
         imageUrl={item.imageUrl}
       />
@@ -221,10 +221,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     borderColor: '#F0EBE3',
-    // Removed marginHorizontal to let it be full width within the container padding if needed, 
+    // Removed marginHorizontal to let it be full width within the container padding if needed,
     // but looking at listContainer padding (20), this card is already inset.
     // Let's keep margin tight or remove it.
-    marginHorizontal: 0, 
+    marginHorizontal: 0,
     minHeight: 100,
     marginBottom: 20,
     overflow: 'hidden', // Clip content to rounded corners

@@ -1,33 +1,90 @@
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
-import { ActivityIndicator, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { ChevronDownIcon, ChevronUpIcon } from 'react-native-heroicons/outline';
+import {
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  PencilSquareIcon,
+  TrashIcon,
+} from 'react-native-heroicons/outline';
+import { ShoppingBagIcon } from 'react-native-heroicons/solid';
 import Animated, { FadeIn, FadeOut, Layout } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { MealSlotPicker } from '../../components/meal-plan/MealSlotPicker';
 import { useMealPlanGeneration } from '../../hooks/useMealPlanGeneration';
 import { COLORS, FONT_SIZES, RADIUS, SHADOWS, SPACING } from '../../lib/theme';
+import { useGroceryStore } from '../../stores/grocery';
 import { useMealPlanStore } from '../../stores/mealPlan';
 import { useRecipeStore } from '../../stores/recipe';
 
-const MEAL_PLAN_OPTIONS = [
-  { days: 3, label: '3 Days', emoji: '🍳' },
-  { days: 5, label: '5 Days', emoji: '🥗' },
-  { days: 7, label: '7 Days', emoji: '🍽️' },
+type MealType = 'breakfast' | 'lunch' | 'dinner';
+
+const MEAL_TYPES: MealType[] = ['breakfast', 'lunch', 'dinner'];
+const MEAL_LABELS: Record<MealType, string> = {
+  breakfast: 'Breakfast',
+  lunch: 'Lunch',
+  dinner: 'Dinner',
+};
+const MEAL_EMOJI: Record<MealType, string> = {
+  breakfast: '\u2615',
+  lunch: '\uD83C\uDF5C',
+  dinner: '\uD83C\uDF7D\uFE0F',
+};
+
+const PLAN_OPTIONS = [
+  { days: 3, label: '3 Days', emoji: '\uD83C\uDF73' },
+  { days: 5, label: '5 Days', emoji: '\uD83E\uDD57' },
+  { days: 7, label: '7 Days', emoji: '\uD83C\uDF7D\uFE0F' },
 ];
 
 export default function MealPlanScreen() {
-  const { currentPlan, isLoading, error } = useMealPlanStore();
+  const insets = useSafeAreaInsets();
+  const {
+    mealPlans,
+    currentPlanId,
+    error,
+    setCurrentPlan,
+    deleteMealPlan,
+    setMealForDay,
+    removeMealFromDay,
+    clearError,
+  } = useMealPlanStore();
   const { recipes } = useRecipeStore();
+  const { addFromMealPlan } = useGroceryStore();
   const { generateForAllRecipes } = useMealPlanGeneration();
+
   const [isGenerating, setIsGenerating] = useState(false);
-  const [expandedDay, setExpandedDay] = useState<number | null>(1); // Default expand day 1
+  const [expandedDay, setExpandedDay] = useState<number | null>(1);
+  const [slotPicker, setSlotPicker] = useState<{
+    visible: boolean;
+    day: number;
+    mealType: MealType;
+    currentRecipeId?: string;
+  }>({ visible: false, day: 1, mealType: 'breakfast' });
+
+  const planList = useMemo(
+    () => Object.values(mealPlans).sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
+    [mealPlans]
+  );
+
+  const currentPlan = currentPlanId ? mealPlans[currentPlanId] : null;
 
   const handleGenerate = useCallback(
     async (days: number) => {
       try {
         setIsGenerating(true);
         await generateForAllRecipes({ duration: days });
-      } catch (err) {
-        console.error('Failed to generate plan:', err);
+        setExpandedDay(1);
+      } catch (_err) {
+        // error handled in store
       } finally {
         setIsGenerating(false);
       }
@@ -35,28 +92,186 @@ export default function MealPlanScreen() {
     [generateForAllRecipes]
   );
 
+  const handleDelete = useCallback(() => {
+    if (!currentPlanId) return;
+    Alert.alert('Delete Plan', 'Are you sure you want to delete this meal plan?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: () => deleteMealPlan(currentPlanId),
+      },
+    ]);
+  }, [currentPlanId, deleteMealPlan]);
+
+  const handleAddToGrocery = useCallback(() => {
+    if (!currentPlan) return;
+    addFromMealPlan(currentPlan, recipes);
+    router.push('/grocery');
+  }, [currentPlan, recipes, addFromMealPlan]);
+
   const toggleDay = useCallback((day: number) => {
     setExpandedDay((prev) => (prev === day ? null : day));
   }, []);
 
   const getRecipeTitle = useCallback(
-    (id: string) => {
-      return recipes[id]?.title || 'Unknown Recipe';
-    },
+    (id: string) => recipes[id]?.title || 'Unknown Recipe',
     [recipes]
   );
 
+  const openSlotPicker = useCallback(
+    (day: number, mealType: MealType, currentRecipeId?: string) => {
+      setSlotPicker({ visible: true, day, mealType, currentRecipeId });
+    },
+    []
+  );
+
+  const handleSlotSelect = useCallback(
+    (recipeId: string, servings: number) => {
+      if (!currentPlanId) return;
+      setMealForDay(currentPlanId, slotPicker.day, slotPicker.mealType, recipeId, servings);
+    },
+    [currentPlanId, slotPicker.day, slotPicker.mealType, setMealForDay]
+  );
+
+  const handleSlotRemove = useCallback(() => {
+    if (!currentPlanId) return;
+    removeMealFromDay(currentPlanId, slotPicker.day, slotPicker.mealType);
+  }, [currentPlanId, slotPicker.day, slotPicker.mealType, removeMealFromDay]);
+
+  // ---------- RENDER ----------
+
+  const renderPlanChips = () => (
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.chipsContainer}
+      style={styles.chipsScroll}
+    >
+      {planList.map((plan) => {
+        const isActive = plan.id === currentPlanId;
+        return (
+          <Pressable
+            key={plan.id}
+            onPress={() => setCurrentPlan(plan.id)}
+            style={[styles.chip, isActive && styles.chipActive]}
+          >
+            <Text style={[styles.chipText, isActive && styles.chipTextActive]} numberOfLines={1}>
+              {plan.name}
+            </Text>
+            <Text style={[styles.chipDuration, isActive && styles.chipDurationActive]}>
+              {plan.duration}d
+            </Text>
+          </Pressable>
+        );
+      })}
+    </ScrollView>
+  );
+
+  const renderMealRow = (
+    day: number,
+    mealType: MealType,
+    meal?: { recipeId: string; servings: number }
+  ) => (
+    <Pressable
+      key={mealType}
+      onPress={() => openSlotPicker(day, mealType, meal?.recipeId)}
+      style={styles.mealRow}
+    >
+      <Text style={styles.mealEmoji}>{MEAL_EMOJI[mealType]}</Text>
+      <View style={styles.mealContent}>
+        <Text style={styles.mealLabel}>{MEAL_LABELS[mealType]}</Text>
+        {meal ? (
+          <Text style={styles.mealRecipe} numberOfLines={1}>
+            {getRecipeTitle(meal.recipeId)}
+          </Text>
+        ) : (
+          <Text style={styles.mealEmpty}>+ Add {MEAL_LABELS[mealType]}</Text>
+        )}
+      </View>
+      <PencilSquareIcon size={16} color={COLORS.textMuted} />
+    </Pressable>
+  );
+
+  const renderActivePlan = () => {
+    if (!currentPlan) return null;
+
+    return (
+      <>
+        {/* Plan info card */}
+        <View style={styles.planInfoCard}>
+          <View>
+            <Text style={styles.planTitle}>{currentPlan.name}</Text>
+            <Text style={styles.planSubtitle}>
+              {currentPlan.days.length} days
+              {currentPlan.updatedAt
+                ? ` \u00B7 ${new Date(currentPlan.updatedAt).toLocaleDateString()}`
+                : ''}
+            </Text>
+          </View>
+        </View>
+
+        {/* Day accordion cards */}
+        <View style={styles.daysList}>
+          {currentPlan.days.map((day) => {
+            const isExpanded = expandedDay === day.day;
+            return (
+              <Animated.View
+                key={day.day}
+                style={styles.dayCard}
+                layout={Layout.springify()}
+                entering={FadeIn}
+              >
+                <Pressable onPress={() => toggleDay(day.day)} style={styles.dayHeader}>
+                  <Text style={styles.dayTitle}>Day {day.day}</Text>
+                  <View style={styles.dayHeaderRight}>
+                    <Text style={styles.dayMealCount}>
+                      {[day.breakfast, day.lunch, day.dinner].filter(Boolean).length}/3 meals
+                    </Text>
+                    {isExpanded ? (
+                      <ChevronUpIcon size={18} color={COLORS.textMuted} />
+                    ) : (
+                      <ChevronDownIcon size={18} color={COLORS.textMuted} />
+                    )}
+                  </View>
+                </Pressable>
+
+                {isExpanded && (
+                  <Animated.View entering={FadeIn} exiting={FadeOut} style={styles.mealsContainer}>
+                    {MEAL_TYPES.map((mt) =>
+                      renderMealRow(
+                        day.day,
+                        mt,
+                        day[mt] as { recipeId: string; servings: number } | undefined
+                      )
+                    )}
+                  </Animated.View>
+                )}
+              </Animated.View>
+            );
+          })}
+        </View>
+      </>
+    );
+  };
+
   const renderEmptyState = () => (
     <View style={styles.emptyContainer}>
-      <Text style={styles.emptyEmoji}>📅</Text>
-      <Text style={styles.emptyTitle}>No Meal Plan Yet</Text>
+      <Text style={styles.emptyEmoji}>{'\uD83D\uDCC5'}</Text>
+      <Text style={styles.emptyTitle}>No Meal Plans</Text>
       <Text style={styles.emptySubtitle}>
-        Let AI generate a personalized meal plan for you based on your saved recipes.
+        Generate a personalized meal plan from your saved recipes.
       </Text>
+    </View>
+  );
 
-      <Text style={styles.sectionLabel}>Generate New Plan</Text>
+  const renderGenerateSection = () => (
+    <View style={styles.generateSection}>
+      <Text style={styles.generateLabel}>
+        {planList.length > 0 ? 'Generate New Plan' : 'Get Started'}
+      </Text>
       <View style={styles.optionsRow}>
-        {MEAL_PLAN_OPTIONS.map((option) => (
+        {PLAN_OPTIONS.map((option) => (
           <Pressable
             key={option.days}
             onPress={() => handleGenerate(option.days)}
@@ -71,122 +286,72 @@ export default function MealPlanScreen() {
       {isGenerating && (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={COLORS.primary} />
-          <Text style={styles.loadingText}>
-            Generating & Optimizing your plan...
-          </Text>
+          <Text style={styles.loadingText}>Generating & optimizing...</Text>
         </View>
       )}
     </View>
   );
-
-  const renderMealPlan = () => {
-    if (!currentPlan) return null;
-
-    return (
-      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-        <View style={styles.planHeader}>
-          <View>
-            <Text style={styles.planTitle}>{currentPlan.name}</Text>
-            <Text style={styles.planSubtitle}>{currentPlan.days.length} Days • Optimized</Text>
-          </View>
-          <Pressable
-            onPress={() => handleGenerate(currentPlan.duration)}
-            style={({ pressed }) => [styles.regenerateButton, pressed && styles.opacityPressed]}
-            disabled={isGenerating}
-          >
-            <Text style={styles.regenerateText}>🔄 Refresh</Text>
-          </Pressable>
-        </View>
-
-        {isGenerating ? (
-           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={COLORS.primary} />
-            <Text style={styles.loadingText}>Optimizing new plan...</Text>
-          </View>
-        ) : (
-          <View style={styles.daysList}>
-            {currentPlan.days.map((day) => {
-              const isExpanded = expandedDay === day.day;
-              return (
-                <Animated.View 
-                  key={day.day} 
-                  style={styles.dayCard}
-                  layout={Layout.springify()}
-                  entering={FadeIn}
-                >
-                  <Pressable 
-                    onPress={() => toggleDay(day.day)}
-                    style={styles.dayHeader}
-                  >
-                    <Text style={styles.dayTitle}>Day {day.day}</Text>
-                    {isExpanded ? (
-                      <ChevronUpIcon size={20} color={COLORS.textMuted} />
-                    ) : (
-                      <ChevronDownIcon size={20} color={COLORS.textMuted} />
-                    )}
-                  </Pressable>
-
-                  {isExpanded && (
-                    <Animated.View entering={FadeIn} exiting={FadeOut} style={styles.mealsContainer}>
-                      {/* Breakfast */}
-                      {day.breakfast && (
-                        <View style={styles.mealRow}>
-                          <Text style={styles.mealLabel}>Breakfast</Text>
-                          <Text style={styles.mealRecipe} numberOfLines={1}>
-                            {getRecipeTitle(day.breakfast.recipeId)}
-                          </Text>
-                        </View>
-                      )}
-                      
-                      {/* Lunch */}
-                      {day.lunch && (
-                        <View style={styles.mealRow}>
-                          <Text style={styles.mealLabel}>Lunch</Text>
-                          <Text style={styles.mealRecipe} numberOfLines={1}>
-                            {getRecipeTitle(day.lunch.recipeId)}
-                          </Text>
-                        </View>
-                      )}
-
-                      {/* Dinner */}
-                      {day.dinner && (
-                        <View style={styles.mealRow}>
-                          <Text style={styles.mealLabel}>Dinner</Text>
-                          <Text style={styles.mealRecipe} numberOfLines={1}>
-                            {getRecipeTitle(day.dinner.recipeId)}
-                          </Text>
-                        </View>
-                      )}
-                    </Animated.View>
-                  )}
-                </Animated.View>
-              );
-            })}
-          </View>
-        )}
-      </ScrollView>
-    );
-  };
 
   return (
     <>
       <Stack.Screen
         options={{
           headerShown: true,
-          title: 'Meal Plan',
+          title: 'Meal Plans',
           headerStyle: { backgroundColor: COLORS.background },
           headerShadowVisible: false,
           headerTintColor: COLORS.textPrimary,
+          headerRight: () =>
+            currentPlan ? (
+              <Pressable onPress={handleDelete} hitSlop={12} style={styles.headerDeleteBtn}>
+                <TrashIcon size={20} color={COLORS.error} strokeWidth={2} />
+              </Pressable>
+            ) : null,
         }}
       />
       <View style={styles.container}>
-        {currentPlan ? renderMealPlan() : renderEmptyState()}
-        {error && (
-          <View style={styles.errorBanner}>
-             <Text style={styles.errorText}>{error}</Text>
+        <ScrollView
+          contentContainerStyle={[styles.scrollContent, { paddingBottom: currentPlan ? 100 : 40 }]}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Plan selector chips */}
+          {planList.length > 0 && renderPlanChips()}
+
+          {/* Active plan or empty state */}
+          {currentPlan ? renderActivePlan() : renderEmptyState()}
+
+          {/* Generate section */}
+          {renderGenerateSection()}
+        </ScrollView>
+
+        {/* Bottom grocery CTA */}
+        {currentPlan && (
+          <View style={[styles.bottomBar, { paddingBottom: insets.bottom + SPACING.md }]}>
+            <Pressable onPress={handleAddToGrocery} style={styles.groceryButton}>
+              <ShoppingBagIcon size={20} color={COLORS.textInverse} />
+              <Text style={styles.groceryButtonText}>Add to Grocery List</Text>
+            </Pressable>
           </View>
         )}
+
+        {/* Error banner */}
+        {error && (
+          <Pressable onPress={clearError} style={styles.errorBanner}>
+            <Text style={styles.errorText}>{error}</Text>
+          </Pressable>
+        )}
       </View>
+
+      {/* Meal slot picker modal */}
+      <MealSlotPicker
+        visible={slotPicker.visible}
+        onClose={() => setSlotPicker((s) => ({ ...s, visible: false }))}
+        mealType={slotPicker.mealType}
+        day={slotPicker.day}
+        currentRecipeId={slotPicker.currentRecipeId}
+        onSelectRecipe={handleSlotSelect}
+        onRemoveMeal={handleSlotRemove}
+      />
     </>
   );
 }
@@ -197,15 +362,160 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   scrollContent: {
-    padding: SPACING.lg,
-    paddingBottom: 40,
+    paddingHorizontal: SPACING.lg,
   },
-  // Empty State
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
+
+  // Header
+  headerDeleteBtn: {
+    marginRight: SPACING.xs,
+  },
+
+  // Plan chips
+  chipsScroll: {
+    marginHorizontal: -SPACING.lg,
+    marginBottom: SPACING.md,
+  },
+  chipsContainer: {
+    paddingHorizontal: SPACING.lg,
+    gap: SPACING.sm,
+    paddingVertical: SPACING.sm,
+  },
+  chip: {
+    flexDirection: 'row',
     alignItems: 'center',
-    padding: SPACING.lg,
+    gap: 6,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+    borderRadius: RADIUS.full,
+    backgroundColor: COLORS.surface,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+  },
+  chipActive: {
+    backgroundColor: COLORS.primary,
+    borderColor: COLORS.primary,
+  },
+  chipText: {
+    fontSize: FONT_SIZES.bodySmall,
+    fontWeight: '600',
+    color: COLORS.textPrimary,
+    maxWidth: 120,
+  },
+  chipTextActive: {
+    color: COLORS.textInverse,
+  },
+  chipDuration: {
+    fontSize: FONT_SIZES.caption,
+    color: COLORS.textMuted,
+    fontWeight: '500',
+  },
+  chipDurationActive: {
+    color: 'rgba(255,255,255,0.7)',
+  },
+
+  // Plan info
+  planInfoCard: {
+    backgroundColor: COLORS.surface,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.md,
+    marginBottom: SPACING.md,
+    borderWidth: 1,
+    borderColor: COLORS.borderLight,
+    ...SHADOWS.sm,
+  },
+  planTitle: {
+    fontSize: FONT_SIZES.headingMedium,
+    fontWeight: '700',
+    color: COLORS.textPrimary,
+  },
+  planSubtitle: {
+    fontSize: FONT_SIZES.bodySmall,
+    color: COLORS.textMuted,
+    marginTop: 2,
+  },
+
+  // Day cards
+  daysList: {
+    gap: SPACING.md,
+  },
+  dayCard: {
+    backgroundColor: COLORS.surface,
+    borderRadius: RADIUS.lg,
+    padding: SPACING.md,
+    borderWidth: 1,
+    borderColor: COLORS.borderLight,
+    ...SHADOWS.sm,
+  },
+  dayHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  dayHeaderRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+  },
+  dayTitle: {
+    fontSize: FONT_SIZES.headingSmall,
+    fontWeight: '600',
+    color: COLORS.primary,
+  },
+  dayMealCount: {
+    fontSize: FONT_SIZES.caption,
+    color: COLORS.textMuted,
+    fontWeight: '500',
+  },
+  mealsContainer: {
+    marginTop: SPACING.md,
+    gap: SPACING.sm,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.borderLight,
+    paddingTop: SPACING.md,
+  },
+
+  // Meal rows
+  mealRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.xs,
+    borderRadius: RADIUS.md,
+    backgroundColor: COLORS.background,
+  },
+  mealEmoji: {
+    fontSize: 18,
+    width: 28,
+    textAlign: 'center',
+  },
+  mealContent: {
+    flex: 1,
+  },
+  mealLabel: {
+    fontSize: FONT_SIZES.caption,
+    fontWeight: '600',
+    color: COLORS.textMuted,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  mealRecipe: {
+    fontSize: FONT_SIZES.bodyMedium,
+    color: COLORS.textPrimary,
+    fontWeight: '500',
+    marginTop: 1,
+  },
+  mealEmpty: {
+    fontSize: FONT_SIZES.bodyMedium,
+    color: COLORS.textMuted,
+    fontStyle: 'italic',
+    marginTop: 1,
+  },
+
+  // Empty state
+  emptyContainer: {
+    alignItems: 'center',
+    paddingVertical: SPACING.xxl,
   },
   emptyEmoji: {
     fontSize: 64,
@@ -222,10 +532,15 @@ const styles = StyleSheet.create({
     fontSize: FONT_SIZES.bodyLarge,
     color: COLORS.textSecondary,
     textAlign: 'center',
-    marginBottom: SPACING.xl,
     paddingHorizontal: SPACING.lg,
   },
-  sectionLabel: {
+
+  // Generate section
+  generateSection: {
+    marginTop: SPACING.xl,
+    alignItems: 'center',
+  },
+  generateLabel: {
     fontSize: FONT_SIZES.headingSmall,
     fontWeight: '600',
     color: COLORS.textPrimary,
@@ -234,7 +549,7 @@ const styles = StyleSheet.create({
   optionsRow: {
     flexDirection: 'row',
     gap: SPACING.md,
-    marginBottom: SPACING.xl,
+    marginBottom: SPACING.md,
   },
   optionButton: {
     backgroundColor: COLORS.surface,
@@ -259,9 +574,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: COLORS.textPrimary,
   },
-  // Loading
   loadingContainer: {
-    marginTop: SPACING.xl,
+    marginTop: SPACING.md,
     alignItems: 'center',
     gap: SPACING.sm,
   },
@@ -270,82 +584,35 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
     fontStyle: 'italic',
   },
-  // Active Plan
-  planHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: SPACING.lg,
-  },
-  planTitle: {
-    fontSize: FONT_SIZES.headingMedium,
-    fontWeight: '700',
-    color: COLORS.textPrimary,
-  },
-  planSubtitle: {
-    fontSize: FONT_SIZES.bodyMedium,
-    color: COLORS.textMuted,
-    marginTop: 2,
-  },
-  regenerateButton: {
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.xs,
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.md,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-  regenerateText: {
-    fontSize: FONT_SIZES.caption,
-    fontWeight: '600',
-    color: COLORS.textSecondary,
-  },
-  opacityPressed: {
-    opacity: 0.7,
-  },
-  daysList: {
-    gap: SPACING.md,
-  },
-  dayCard: {
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.lg,
-    padding: SPACING.md,
-    borderWidth: 1,
-    borderColor: COLORS.borderLight,
-    ...SHADOWS.sm,
-  },
-  dayHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  dayTitle: {
-    fontSize: FONT_SIZES.headingSmall,
-    fontWeight: '600',
-    color: COLORS.primary,
-  },
-  mealsContainer: {
-    marginTop: SPACING.md,
-    gap: SPACING.md,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.borderLight,
+
+  // Bottom bar
+  bottomBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: SPACING.lg,
     paddingTop: SPACING.md,
+    backgroundColor: COLORS.surface,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.border,
+    ...SHADOWS.lg,
   },
-  mealRow: {
-    gap: 4,
+  groceryButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: SPACING.sm,
+    backgroundColor: COLORS.primary,
+    borderRadius: RADIUS.md,
+    paddingVertical: 14,
   },
-  mealLabel: {
-    fontSize: FONT_SIZES.caption,
-    fontWeight: '600',
-    color: COLORS.textMuted,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  mealRecipe: {
+  groceryButtonText: {
     fontSize: FONT_SIZES.bodyLarge,
-    color: COLORS.textPrimary,
-    fontWeight: '500',
+    fontWeight: '600',
+    color: COLORS.textInverse,
   },
+
   // Error
   errorBanner: {
     position: 'absolute',
