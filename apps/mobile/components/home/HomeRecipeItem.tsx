@@ -27,21 +27,17 @@ export const HomeRecipeItem = memo(function HomeRecipeItem({
       style={({ pressed }) => [styles.container, pressed && styles.pressed]}
     >
       <Image source={{ uri: thumbnailUrl }} style={styles.thumbnail} contentFit="cover" />
-      
+
       <View style={styles.content}>
         <Text style={styles.title} numberOfLines={2}>
           {title}
         </Text>
-        
+
         <View style={styles.metaRow}>
-          <Text style={styles.ingredients}>
-            {ingredientsCount} ingredients
-          </Text>
+          <Text style={styles.ingredients}>{ingredientsCount} ingredients</Text>
         </View>
 
-        <Text style={styles.platformTag}>
-          {sourceType}
-        </Text>
+        <Text style={styles.platformTag}>{sourceType}</Text>
       </View>
 
       <CaretRight size={16} color={COLORS.textMuted} weight="bold" />

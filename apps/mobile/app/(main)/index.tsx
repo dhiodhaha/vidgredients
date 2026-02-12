@@ -1,16 +1,14 @@
 import { router } from 'expo-router';
 import { useCallback, useMemo, useState } from 'react';
-import { ActivityIndicator, Alert, Modal, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { AccordionSection } from '../../components/home/AccordionSection';
 import { AddVideoModal } from '../../components/home/AddVideoModal';
 import { FloatingActionButton } from '../../components/home/FloatingActionButton';
 import { HomeRecipeItem } from '../../components/home/HomeRecipeItem';
 import { HomeSearchInput } from '../../components/home/HomeSearchInput';
-import { useMealPlanGeneration } from '../../hooks/useMealPlanGeneration';
-import { COLORS, FONT_SIZES, RADIUS, SPACING } from '../../lib/theme';
-import { usePremiumStore } from '../../stores/premium';
-import { type Recipe, useRecipeStore } from '../../stores/recipe';
+import { COLORS, FONT_SIZES, SPACING } from '../../lib/theme';
+import { useRecipeStore } from '../../stores/recipe';
 
 export default function HomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -18,7 +16,6 @@ export default function HomeScreen() {
 
   const recipes = useRecipeStore((state) => state.recipes);
   const analyzeVideo = useRecipeStore((state) => state.analyzeVideo);
-  const { generate } = useMealPlanGeneration();
 
   // Categorize recipes
   const { allRecipes, recentRecipes, quickRecipes, dinnerRecipes } = useMemo(() => {
@@ -29,7 +26,7 @@ export default function HomeScreen() {
     // Assuming 'dinner' might not be populate, let's just take a slice or randomize?
     // Let's just use all for now but sliced to avoid duplication visually if possible,
     // or just show all again.
-    const dinner = all; 
+    const dinner = all;
 
     return {
       allRecipes: all,
@@ -38,20 +35,6 @@ export default function HomeScreen() {
       dinnerRecipes: dinner,
     };
   }, [recipes]);
-
-  const [isGenerating, setIsGenerating] = useState(false);
-
-  const handleMealPlanSelect = useCallback(
-    async (days: number) => {
-      // Logic for generating meal plan (triggered via... unknown currently)
-      // Preserving this logic just in case we need it, but removing UI trigger for now
-      // as per wireframe which has no "Generate" button in header.
-      // Maybe moved to "Magic Button" or elsewhere?
-      // User didn't specify, but wireframe has specific layout.
-      // I'll keep the function but it's currently unused until UI is added back.
-    },
-    [recipes, generate] // eslint-disable-line react-hooks/exhaustive-deps
-  );
 
   const handleRecipePress = useCallback((recipeId: string) => {
     router.push(`/recipe/${recipeId}`);
@@ -101,18 +84,24 @@ export default function HomeScreen() {
         {searchQuery ? (
           /* Search Results */
           <View style={styles.sectionList}>
-             <Text style={styles.searchResultsTitle}>Search Results ({displayRecipes.length})</Text>
-             {displayRecipes.map((recipe) => (
-                <HomeRecipeItem
-                  key={recipe.id}
-                  id={recipe.id}
-                  title={recipe.title}
-                  thumbnailUrl={recipe.thumbnailUrl}
-                  ingredientsCount={recipe.ingredients.length}
-                  sourceType={recipe.sourceUrl?.includes('tiktok') ? 'TIKTOK' : recipe.sourceUrl?.includes('youtube') ? 'YOUTUBE' : 'UNKNOWN'}
-                  onPress={handleRecipePress}
-                />
-             ))}
+            <Text style={styles.searchResultsTitle}>Search Results ({displayRecipes.length})</Text>
+            {displayRecipes.map((recipe) => (
+              <HomeRecipeItem
+                key={recipe.id}
+                id={recipe.id}
+                title={recipe.title}
+                thumbnailUrl={recipe.thumbnailUrl}
+                ingredientsCount={recipe.ingredients.length}
+                sourceType={
+                  recipe.sourceUrl?.includes('tiktok')
+                    ? 'TIKTOK'
+                    : recipe.sourceUrl?.includes('youtube')
+                      ? 'YOUTUBE'
+                      : 'UNKNOWN'
+                }
+                onPress={handleRecipePress}
+              />
+            ))}
           </View>
         ) : (
           /* Accordion Sections */
@@ -125,7 +114,13 @@ export default function HomeScreen() {
                   title={recipe.title}
                   thumbnailUrl={recipe.thumbnailUrl}
                   ingredientsCount={recipe.ingredients.length}
-                  sourceType={recipe.sourceUrl?.includes('tiktok') ? 'TIKTOK' : recipe.sourceUrl?.includes('youtube') ? 'YOUTUBE' : 'UNKNOWN'}
+                  sourceType={
+                    recipe.sourceUrl?.includes('tiktok')
+                      ? 'TIKTOK'
+                      : recipe.sourceUrl?.includes('youtube')
+                        ? 'YOUTUBE'
+                        : 'UNKNOWN'
+                  }
                   onPress={handleRecipePress}
                 />
               ))}
@@ -139,7 +134,13 @@ export default function HomeScreen() {
                   title={recipe.title}
                   thumbnailUrl={recipe.thumbnailUrl}
                   ingredientsCount={recipe.ingredients.length}
-                  sourceType={recipe.sourceUrl?.includes('tiktok') ? 'TIKTOK' : recipe.sourceUrl?.includes('youtube') ? 'YOUTUBE' : 'UNKNOWN'}
+                  sourceType={
+                    recipe.sourceUrl?.includes('tiktok')
+                      ? 'TIKTOK'
+                      : recipe.sourceUrl?.includes('youtube')
+                        ? 'YOUTUBE'
+                        : 'UNKNOWN'
+                  }
                   onPress={handleRecipePress}
                 />
               ))}
@@ -153,7 +154,13 @@ export default function HomeScreen() {
                   title={recipe.title}
                   thumbnailUrl={recipe.thumbnailUrl}
                   ingredientsCount={recipe.ingredients.length}
-                  sourceType={recipe.sourceUrl?.includes('tiktok') ? 'TIKTOK' : recipe.sourceUrl?.includes('youtube') ? 'YOUTUBE' : 'UNKNOWN'}
+                  sourceType={
+                    recipe.sourceUrl?.includes('tiktok')
+                      ? 'TIKTOK'
+                      : recipe.sourceUrl?.includes('youtube')
+                        ? 'YOUTUBE'
+                        : 'UNKNOWN'
+                  }
                   onPress={handleRecipePress}
                 />
               ))}
@@ -171,16 +178,6 @@ export default function HomeScreen() {
         onClose={handleCloseModal}
         onSubmit={handleAddVideo}
       />
-
-       {/* Loading Overlay (kept for consistency if needed later) */}
-      <Modal visible={isGenerating} transparent animationType="fade">
-        <View style={styles.loadingOverlay}>
-          <View style={styles.loadingCard}>
-            <ActivityIndicator size="large" color={COLORS.accentBackground} />
-            <Text style={styles.loadingText}>Generating your meal plan...</Text>
-          </View>
-        </View>
-      </Modal>
     </SafeAreaView>
   );
 }

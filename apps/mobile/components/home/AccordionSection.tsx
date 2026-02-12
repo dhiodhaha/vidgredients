@@ -32,7 +32,7 @@ export function AccordionSection({
             </View>
           )}
         </View>
-        
+
         {isExpanded ? (
           <CaretUp size={16} color={COLORS.textPrimary} weight="bold" />
         ) : (

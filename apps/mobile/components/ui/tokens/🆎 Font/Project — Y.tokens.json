@@ -4,9 +4,7 @@
     "$value": "Greed Narrow-TRIAL",
     "$extensions": {
       "com.figma.variableId": "VariableID:10:69",
-      "com.figma.scopes": [
-        "FONT_FAMILY"
-      ],
+      "com.figma.scopes": ["FONT_FAMILY"],
       "com.figma.type": "string",
       "com.figma.isOverride": true
     }
@@ -16,9 +14,7 @@
     "$value": "Geist",
     "$extensions": {
       "com.figma.variableId": "VariableID:10:72",
-      "com.figma.scopes": [
-        "FONT_FAMILY"
-      ],
+      "com.figma.scopes": ["FONT_FAMILY"],
       "com.figma.type": "string",
       "com.figma.isOverride": true
     }
@@ -28,9 +24,7 @@
     "$value": "Greed Wide-TRIAL",
     "$extensions": {
       "com.figma.variableId": "VariableID:10:67",
-      "com.figma.scopes": [
-        "FONT_FAMILY"
-      ],
+      "com.figma.scopes": ["FONT_FAMILY"],
       "com.figma.type": "string",
       "com.figma.isOverride": true
     }
@@ -40,9 +34,7 @@
     "$value": "GT Alpina Trial",
     "$extensions": {
       "com.figma.variableId": "VariableID:10:63",
-      "com.figma.scopes": [
-        "FONT_FAMILY"
-      ],
+      "com.figma.scopes": ["FONT_FAMILY"],
       "com.figma.type": "string",
       "com.figma.isOverride": true
     }
@@ -54,9 +46,7 @@
         "$value": 280,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:181",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -65,9 +55,7 @@
         "$value": 200,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:166",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -76,9 +64,7 @@
         "$value": 160,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:165",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -87,9 +73,7 @@
         "$value": 120,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:164",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -98,9 +82,7 @@
         "$value": 104,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:178",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -109,9 +91,7 @@
         "$value": 88,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:175",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -120,9 +100,7 @@
         "$value": 76,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:183",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -131,9 +109,7 @@
         "$value": 62,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:180",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -142,9 +118,7 @@
         "$value": 52,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:176",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -153,9 +127,7 @@
         "$value": 42,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:182",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -164,9 +136,7 @@
         "$value": 32,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:179",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -175,9 +145,7 @@
         "$value": 25,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:177",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -186,9 +154,7 @@
         "$value": 22,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:174",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -197,9 +163,7 @@
         "$value": 18,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:169",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -208,9 +172,7 @@
         "$value": 15,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:173",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -219,9 +181,7 @@
         "$value": 15,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:170",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -230,9 +190,7 @@
         "$value": 14,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:171",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -241,9 +199,7 @@
         "$value": 12,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:172",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -252,9 +208,7 @@
         "$value": 10,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:167",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -263,9 +217,7 @@
         "$value": 11,
         "$extensions": {
           "com.figma.variableId": "VariableID:29992:168",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       }
@@ -276,9 +228,7 @@
         "$value": 256,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:211",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -287,9 +237,7 @@
         "$value": 184,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:214",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -298,9 +246,7 @@
         "$value": 152,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:204",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -309,9 +255,7 @@
         "$value": 112,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:212",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -320,9 +264,7 @@
         "$value": 96,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:210",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -331,9 +273,7 @@
         "$value": 80,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:209",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -342,9 +282,7 @@
         "$value": 80,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:208",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -353,9 +291,7 @@
         "$value": 68,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:205",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -364,9 +300,7 @@
         "$value": 56,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:207",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -375,9 +309,7 @@
         "$value": 48,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:203",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -386,9 +318,7 @@
         "$value": 40,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:213",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -397,9 +327,7 @@
         "$value": 36,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:201",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -408,9 +336,7 @@
         "$value": 28,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:206",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -419,9 +345,7 @@
         "$value": 24,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:200",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -430,9 +354,7 @@
         "$value": 24,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:199",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -441,9 +363,7 @@
         "$value": 24,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:197",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -452,9 +372,7 @@
         "$value": 24,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:196",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -463,9 +381,7 @@
         "$value": 20,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:195",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -474,9 +390,7 @@
         "$value": 16,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:202",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -485,9 +399,7 @@
         "$value": 16,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:194",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -496,9 +408,7 @@
         "$value": 12,
         "$extensions": {
           "com.figma.variableId": "VariableID:29993:198",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       }
@@ -509,9 +419,7 @@
         "$value": 400,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:65",
-          "com.figma.scopes": [
-            "FONT_STYLE"
-          ],
+          "com.figma.scopes": ["FONT_STYLE"],
           "com.figma.isOverride": true
         }
       },
@@ -520,9 +428,7 @@
         "$value": 500,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:64",
-          "com.figma.scopes": [
-            "FONT_STYLE"
-          ],
+          "com.figma.scopes": ["FONT_STYLE"],
           "com.figma.isOverride": true
         }
       },
@@ -531,9 +437,7 @@
         "$value": 600,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:62",
-          "com.figma.scopes": [
-            "FONT_STYLE"
-          ],
+          "com.figma.scopes": ["FONT_STYLE"],
           "com.figma.isOverride": true
         }
       },
@@ -542,9 +446,7 @@
         "$value": 700,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:61",
-          "com.figma.scopes": [
-            "FONT_STYLE"
-          ],
+          "com.figma.scopes": ["FONT_STYLE"],
           "com.figma.isOverride": true
         }
       }
@@ -555,9 +457,7 @@
         "$value": 400,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:71",
-          "com.figma.scopes": [
-            "FONT_STYLE"
-          ],
+          "com.figma.scopes": ["FONT_STYLE"],
           "com.figma.isOverride": true
         }
       },
@@ -566,9 +466,7 @@
         "$value": 500,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:70",
-          "com.figma.scopes": [
-            "FONT_STYLE"
-          ],
+          "com.figma.scopes": ["FONT_STYLE"],
           "com.figma.isOverride": true
         }
       },
@@ -577,9 +475,7 @@
         "$value": 600,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:68",
-          "com.figma.scopes": [
-            "FONT_STYLE"
-          ],
+          "com.figma.scopes": ["FONT_STYLE"],
           "com.figma.isOverride": true
         }
       },
@@ -588,9 +484,7 @@
         "$value": 700,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:66",
-          "com.figma.scopes": [
-            "FONT_STYLE"
-          ],
+          "com.figma.scopes": ["FONT_STYLE"],
           "com.figma.isOverride": true
         }
       }
@@ -601,9 +495,7 @@
         "$value": 0,
         "$extensions": {
           "com.figma.variableId": "VariableID:20001:22",
-          "com.figma.scopes": [
-            "LETTER_SPACING"
-          ],
+          "com.figma.scopes": ["LETTER_SPACING"],
           "com.figma.isOverride": true
         }
       },
@@ -612,9 +504,7 @@
         "$value": 2,
         "$extensions": {
           "com.figma.variableId": "VariableID:22186:27654",
-          "com.figma.scopes": [
-            "LETTER_SPACING"
-          ],
+          "com.figma.scopes": ["LETTER_SPACING"],
           "com.figma.isOverride": true
         }
       },
@@ -623,9 +513,7 @@
         "$value": 0,
         "$extensions": {
           "com.figma.variableId": "VariableID:20001:21",
-          "com.figma.scopes": [
-            "LETTER_SPACING"
-          ],
+          "com.figma.scopes": ["LETTER_SPACING"],
           "com.figma.isOverride": true
         }
       },
@@ -634,9 +522,7 @@
         "$value": -2,
         "$extensions": {
           "com.figma.variableId": "VariableID:20001:20",
-          "com.figma.scopes": [
-            "LETTER_SPACING"
-          ],
+          "com.figma.scopes": ["LETTER_SPACING"],
           "com.figma.isOverride": true
         }
       },
@@ -645,9 +531,7 @@
         "$value": -4,
         "$extensions": {
           "com.figma.variableId": "VariableID:20001:19",
-          "com.figma.scopes": [
-            "LETTER_SPACING"
-          ],
+          "com.figma.scopes": ["LETTER_SPACING"],
           "com.figma.isOverride": true
         }
       },
@@ -656,9 +540,7 @@
         "$value": -7,
         "$extensions": {
           "com.figma.variableId": "VariableID:20001:18",
-          "com.figma.scopes": [
-            "LETTER_SPACING"
-          ],
+          "com.figma.scopes": ["LETTER_SPACING"],
           "com.figma.isOverride": true
         }
       }

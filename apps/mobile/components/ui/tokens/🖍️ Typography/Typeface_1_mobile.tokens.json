@@ -6,9 +6,7 @@
         "$value": "Radio Canada Big",
         "$extensions": {
           "com.figma.variableId": "VariableID:10:74",
-          "com.figma.scopes": [
-            "FONT_FAMILY"
-          ],
+          "com.figma.scopes": ["FONT_FAMILY"],
           "com.figma.type": "string",
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:915bb51a12a558c29baadc1ed88a4b331daee482/-1:-1",
@@ -24,9 +22,7 @@
         "$value": "Open Sauce Two",
         "$extensions": {
           "com.figma.variableId": "VariableID:10:75",
-          "com.figma.scopes": [
-            "FONT_FAMILY"
-          ],
+          "com.figma.scopes": ["FONT_FAMILY"],
           "com.figma.type": "string",
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:f08e800638be9b4d4b773501dd6d0a9f3179b968/-1:-1",
@@ -44,9 +40,7 @@
         "$value": 200,
         "$extensions": {
           "com.figma.variableId": "VariableID:25597:121",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -55,9 +49,7 @@
         "$value": 144,
         "$extensions": {
           "com.figma.variableId": "VariableID:25597:120",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -66,9 +58,7 @@
         "$value": 120,
         "$extensions": {
           "com.figma.variableId": "VariableID:25597:119",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -77,9 +67,7 @@
         "$value": 96,
         "$extensions": {
           "com.figma.variableId": "VariableID:26402:119",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -88,9 +76,7 @@
         "$value": 44,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:127",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -99,9 +85,7 @@
         "$value": 44,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:128",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -110,9 +94,7 @@
         "$value": 44,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:129",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -121,9 +103,7 @@
         "$value": 40,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:130",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -132,9 +112,7 @@
         "$value": 36,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:131",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -143,9 +121,7 @@
         "$value": 30,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:132",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -154,9 +130,7 @@
         "$value": 26,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:2",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -165,9 +139,7 @@
         "$value": 22,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:3",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -176,9 +148,7 @@
         "$value": 20,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:4",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -187,9 +157,7 @@
         "$value": 17,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:5",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -198,9 +166,7 @@
         "$value": 17,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:6",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -209,9 +175,7 @@
         "$value": 17,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:7",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -220,9 +184,7 @@
         "$value": 15,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:8",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -231,9 +193,7 @@
         "$value": 14,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:9",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -242,9 +202,7 @@
         "$value": 12,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:10",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       },
@@ -253,9 +211,7 @@
         "$value": 12,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:11",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.isOverride": true
         }
       }
@@ -266,9 +222,7 @@
         "$value": 216,
         "$extensions": {
           "com.figma.variableId": "VariableID:25601:14349",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -277,9 +231,7 @@
         "$value": 160,
         "$extensions": {
           "com.figma.variableId": "VariableID:25601:14348",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -288,9 +240,7 @@
         "$value": 136,
         "$extensions": {
           "com.figma.variableId": "VariableID:25601:126",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -299,9 +249,7 @@
         "$value": 104,
         "$extensions": {
           "com.figma.variableId": "VariableID:26402:120",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -310,9 +258,7 @@
         "$value": 48,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:12",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -321,9 +267,7 @@
         "$value": 48,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:13",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -332,9 +276,7 @@
         "$value": 48,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:14",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -343,9 +285,7 @@
         "$value": 44,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:15",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -354,9 +294,7 @@
         "$value": 44,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:16",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -365,9 +303,7 @@
         "$value": 40,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:17",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -376,9 +312,7 @@
         "$value": 32,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:18",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -387,9 +321,7 @@
         "$value": 28,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:19",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -398,9 +330,7 @@
         "$value": 28,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:20",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -409,9 +339,7 @@
         "$value": 24,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:21",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -420,9 +348,7 @@
         "$value": 24,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:22",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -431,9 +357,7 @@
         "$value": 24,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:23",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -442,9 +366,7 @@
         "$value": 20,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:24",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -453,9 +375,7 @@
         "$value": 20,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:28",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -464,9 +384,7 @@
         "$value": 20,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:25",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -475,9 +393,7 @@
         "$value": 16,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:26",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       },
@@ -486,9 +402,7 @@
         "$value": 16,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:27",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.isOverride": true
         }
       }
@@ -499,9 +413,7 @@
         "$value": 0,
         "$extensions": {
           "com.figma.variableId": "VariableID:14:3",
-          "com.figma.scopes": [
-            "LETTER_SPACING"
-          ],
+          "com.figma.scopes": ["LETTER_SPACING"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:5dad020d0e02f85da2440d589770c926c4a576ac/-1:-1",
             "targetVariableName": "Font/letter_spacing/none",
@@ -516,9 +428,7 @@
         "$value": -1,
         "$extensions": {
           "com.figma.variableId": "VariableID:14:4",
-          "com.figma.scopes": [
-            "LETTER_SPACING"
-          ],
+          "com.figma.scopes": ["LETTER_SPACING"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:ed6276d2e8dd42a54499ac9fe10f20b3f65b9062/-1:-1",
             "targetVariableName": "Font/letter_spacing/xs",
@@ -533,9 +443,7 @@
         "$value": -3,
         "$extensions": {
           "com.figma.variableId": "VariableID:14:5",
-          "com.figma.scopes": [
-            "LETTER_SPACING"
-          ],
+          "com.figma.scopes": ["LETTER_SPACING"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:4bf0886d82f6bb04b19b4aa39ad28593d27f5f7b/-1:-1",
             "targetVariableName": "Font/letter_spacing/sm",
@@ -550,9 +458,7 @@
         "$value": -5,
         "$extensions": {
           "com.figma.variableId": "VariableID:14:6",
-          "com.figma.scopes": [
-            "LETTER_SPACING"
-          ],
+          "com.figma.scopes": ["LETTER_SPACING"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:a00f52a884274344dd5a8073e51cd2d004d83817/-1:-1",
             "targetVariableName": "Font/letter_spacing/md",
@@ -567,9 +473,7 @@
         "$value": -7,
         "$extensions": {
           "com.figma.variableId": "VariableID:14:7",
-          "com.figma.scopes": [
-            "LETTER_SPACING"
-          ],
+          "com.figma.scopes": ["LETTER_SPACING"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:e437e9c1227f82da8a03c29cc76c97611bb70194/-1:-1",
             "targetVariableName": "Font/letter_spacing/lg",
@@ -587,9 +491,7 @@
           "$value": 400,
           "$extensions": {
             "com.figma.variableId": "VariableID:15:49",
-            "com.figma.scopes": [
-              "FONT_STYLE"
-            ],
+            "com.figma.scopes": ["FONT_STYLE"],
             "com.figma.aliasData": {
               "targetVariableId": "VariableID:94a5841db3104f0f4eb67f27d07e68d5a05b5f21/-1:-1",
               "targetVariableName": "Font/display_weight/normal",
@@ -604,9 +506,7 @@
           "$value": 500,
           "$extensions": {
             "com.figma.variableId": "VariableID:15:68",
-            "com.figma.scopes": [
-              "FONT_STYLE"
-            ],
+            "com.figma.scopes": ["FONT_STYLE"],
             "com.figma.aliasData": {
               "targetVariableId": "VariableID:4b3fab9033f04e55a12fd6775153728f1e0395da/-1:-1",
               "targetVariableName": "Font/display_weight/medium",
@@ -621,9 +521,7 @@
           "$value": 600,
           "$extensions": {
             "com.figma.variableId": "VariableID:15:69",
-            "com.figma.scopes": [
-              "FONT_STYLE"
-            ],
+            "com.figma.scopes": ["FONT_STYLE"],
             "com.figma.aliasData": {
               "targetVariableId": "VariableID:57cc9518bc85d50f2ceb6f8fe492a7f6f5829159/-1:-1",
               "targetVariableName": "Font/display_weight/semibold",
@@ -638,9 +536,7 @@
           "$value": 700,
           "$extensions": {
             "com.figma.variableId": "VariableID:15:70",
-            "com.figma.scopes": [
-              "FONT_STYLE"
-            ],
+            "com.figma.scopes": ["FONT_STYLE"],
             "com.figma.aliasData": {
               "targetVariableId": "VariableID:541132566846c66e1d582a735d8d30755676d9bf/-1:-1",
               "targetVariableName": "Font/display_weight/bold",
@@ -657,9 +553,7 @@
           "$value": 500,
           "$extensions": {
             "com.figma.variableId": "VariableID:15:75",
-            "com.figma.scopes": [
-              "FONT_STYLE"
-            ],
+            "com.figma.scopes": ["FONT_STYLE"],
             "com.figma.aliasData": {
               "targetVariableId": "VariableID:789f8f20c5a0eb2215bbaeaa134aef8b5b0b05ca/-1:-1",
               "targetVariableName": "Font/body_weight/normal",
@@ -674,9 +568,7 @@
           "$value": 600,
           "$extensions": {
             "com.figma.variableId": "VariableID:15:76",
-            "com.figma.scopes": [
-              "FONT_STYLE"
-            ],
+            "com.figma.scopes": ["FONT_STYLE"],
             "com.figma.aliasData": {
               "targetVariableId": "VariableID:947b29de3985ab6c751457b74c8f6e00e7f4c765/-1:-1",
               "targetVariableName": "Font/body_weight/medium",
@@ -691,9 +583,7 @@
           "$value": 700,
           "$extensions": {
             "com.figma.variableId": "VariableID:15:77",
-            "com.figma.scopes": [
-              "FONT_STYLE"
-            ],
+            "com.figma.scopes": ["FONT_STYLE"],
             "com.figma.aliasData": {
               "targetVariableId": "VariableID:22b066213155de794dbd89eb9624860f08710b03/-1:-1",
               "targetVariableName": "Font/body_weight/semibold",
@@ -708,9 +598,7 @@
           "$value": 800,
           "$extensions": {
             "com.figma.variableId": "VariableID:15:78",
-            "com.figma.scopes": [
-              "FONT_STYLE"
-            ],
+            "com.figma.scopes": ["FONT_STYLE"],
             "com.figma.aliasData": {
               "targetVariableId": "VariableID:cd283a3f2ee65fe8c75c9655b109700d009440c3/-1:-1",
               "targetVariableName": "Font/body_weight/bold",

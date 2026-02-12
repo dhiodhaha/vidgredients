@@ -6,9 +6,7 @@
         "$value": "Lastik",
         "$extensions": {
           "com.figma.variableId": "VariableID:10:74",
-          "com.figma.scopes": [
-            "FONT_FAMILY"
-          ],
+          "com.figma.scopes": ["FONT_FAMILY"],
           "com.figma.type": "string",
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:986d2315ef7b849e840ddf6bc9cdb49c44c1ea41/-1:-1",
@@ -24,9 +22,7 @@
         "$value": "JetBrains Mono",
         "$extensions": {
           "com.figma.variableId": "VariableID:10:75",
-          "com.figma.scopes": [
-            "FONT_FAMILY"
-          ],
+          "com.figma.scopes": ["FONT_FAMILY"],
           "com.figma.type": "string",
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:72d5782fedc3204448cb2e79f471c5067a0a8a14/-1:-1",
@@ -44,9 +40,7 @@
         "$value": 280,
         "$extensions": {
           "com.figma.variableId": "VariableID:25597:121",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:fb5728322d7d4735bb5aefaeff37997a21b7d9b4/-1:-1",
             "targetVariableName": "Font/size_web/deck_heading_4",
@@ -61,9 +55,7 @@
         "$value": 200,
         "$extensions": {
           "com.figma.variableId": "VariableID:25597:120",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:63890962dbfe5aaf2260cf0e188423cd4ab525f2/-1:-1",
             "targetVariableName": "Font/size_web/deck_heading_3",
@@ -78,9 +70,7 @@
         "$value": 160,
         "$extensions": {
           "com.figma.variableId": "VariableID:25597:119",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:ff6add3531a53f8c2e7b59d0007a605b4c7135ac/-1:-1",
             "targetVariableName": "Font/size_web/deck_heading_2",
@@ -95,9 +85,7 @@
         "$value": 120,
         "$extensions": {
           "com.figma.variableId": "VariableID:26402:119",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:d249acd3dd0a25abe2fd921c4872f379ef170611/-1:-1",
             "targetVariableName": "Font/size_web/deck_heading_1",
@@ -112,9 +100,7 @@
         "$value": 104,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:127",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:1fd2b47dfe92309b2b497d7da5dda72bf9610b2f/-1:-1",
             "targetVariableName": "Font/size_web/display_3",
@@ -129,9 +115,7 @@
         "$value": 88,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:128",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:20e500f91d2445066f49fc22b3efedcd39a88480/-1:-1",
             "targetVariableName": "Font/size_web/display_2",
@@ -146,9 +130,7 @@
         "$value": 76,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:129",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:f37c536b449dc8e91353c42447cc0e2fbff72744/-1:-1",
             "targetVariableName": "Font/size_web/display_1",
@@ -163,9 +145,7 @@
         "$value": 62,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:130",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:7e57375c907b39a0900d4759854550af904ca207/-1:-1",
             "targetVariableName": "Font/size_web/heading_6",
@@ -180,9 +160,7 @@
         "$value": 52,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:131",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:0b26f04a330ea2b52051fd0b41ad83c6c1764915/-1:-1",
             "targetVariableName": "Font/size_web/heading_5",
@@ -197,9 +175,7 @@
         "$value": 42,
         "$extensions": {
           "com.figma.variableId": "VariableID:10:132",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:11b2407d5b0f9e3c92a6428291f53af25a6a0ede/-1:-1",
             "targetVariableName": "Font/size_web/heading_4",
@@ -214,9 +190,7 @@
         "$value": 32,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:2",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:83e6e94e96bf823b9232e6958ee92cd44199c930/-1:-1",
             "targetVariableName": "Font/size_web/heading_3",
@@ -231,9 +205,7 @@
         "$value": 25,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:3",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:8d8074f52b5ff558d00bfae29318e251356c09f4/-1:-1",
             "targetVariableName": "Font/size_web/heading_2",
@@ -248,9 +220,7 @@
         "$value": 22,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:4",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:53a5094997d7886f5ce77cf13366cd4c99099729/-1:-1",
             "targetVariableName": "Font/size_web/heading_1",
@@ -265,9 +235,7 @@
         "$value": 18,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:5",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:516da6b56a80e16c58bad00f6bc9a2a70f006988/-1:-1",
             "targetVariableName": "Font/size_web/title_2",
@@ -282,9 +250,7 @@
         "$value": 15,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:6",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:9827d2008a4fd91f4ecc600d1e690af85bbafd8a/-1:-1",
             "targetVariableName": "Font/size_web/title_1",
@@ -299,9 +265,7 @@
         "$value": 15,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:7",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:bcba5b62a1a05d615df92c5476470c0b8f99f24c/-1:-1",
             "targetVariableName": "Font/size_web/body_2",
@@ -316,9 +280,7 @@
         "$value": 13,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:8",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:1fb1be44302008d012b1ad224be761f3b79d982d/-1:-1",
             "targetVariableName": "Font/size_web/body_1",
@@ -333,9 +295,7 @@
         "$value": 12,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:9",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:ccbe27827683a6bb12fd5dbd09c6ca3776e29618/-1:-1",
             "targetVariableName": "Font/size_web/caption_2",
@@ -350,9 +310,7 @@
         "$value": 10,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:10",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:0c2218861197d4a861b6230322d4c133ed867e36/-1:-1",
             "targetVariableName": "Font/size_web/caption_1",
@@ -367,9 +325,7 @@
         "$value": 11,
         "$extensions": {
           "com.figma.variableId": "VariableID:11:11",
-          "com.figma.scopes": [
-            "FONT_SIZE"
-          ],
+          "com.figma.scopes": ["FONT_SIZE"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:f105022cd30381a1968331f361c672f98f6bc3ed/-1:-1",
             "targetVariableName": "Font/size_web/overline",
@@ -386,9 +342,7 @@
         "$value": 256,
         "$extensions": {
           "com.figma.variableId": "VariableID:25601:14349",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:080546c9d08c87798a4a7c862c14e8407321522c/-1:-1",
             "targetVariableName": "Font/line_height_web/deck_heading_4",
@@ -403,9 +357,7 @@
         "$value": 184,
         "$extensions": {
           "com.figma.variableId": "VariableID:25601:14348",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:8fb54aac15e165efcc2e7b61053f3c76bd88c4b5/-1:-1",
             "targetVariableName": "Font/line_height_web/deck_heading_3",
@@ -420,9 +372,7 @@
         "$value": 152,
         "$extensions": {
           "com.figma.variableId": "VariableID:25601:126",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:b2b657e02b74bcbd1ed4cfa1fb24d83ec58bff28/-1:-1",
             "targetVariableName": "Font/line_height_web/deck_heading_2",
@@ -437,9 +387,7 @@
         "$value": 112,
         "$extensions": {
           "com.figma.variableId": "VariableID:26402:120",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:8b21c0326c09f7fa468a31aaeb7dbe21ca5e0012/-1:-1",
             "targetVariableName": "Font/line_height_web/deck_heading_1",
@@ -454,9 +402,7 @@
         "$value": 96,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:12",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:de8dfe38898a7538c20989e1f63f671f6e141dc7/-1:-1",
             "targetVariableName": "Font/line_height_web/display_3",
@@ -471,9 +417,7 @@
         "$value": 80,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:13",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:4696200ba0a58637d890744a06a786a458dc44a2/-1:-1",
             "targetVariableName": "Font/line_height_web/display_2",
@@ -488,9 +432,7 @@
         "$value": 80,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:14",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:7abaadb8dc58bf9397741a563be709155156402c/-1:-1",
             "targetVariableName": "Font/line_height_web/display_1",
@@ -505,9 +447,7 @@
         "$value": 68,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:15",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:f185b5db1266638eb7b234cb3a51d83367260b79/-1:-1",
             "targetVariableName": "Font/line_height_web/heading_6",
@@ -522,9 +462,7 @@
         "$value": 56,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:16",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:796f981bd0592617812daba92a285be4c1856a2f/-1:-1",
             "targetVariableName": "Font/line_height_web/heading_5",
@@ -539,9 +477,7 @@
         "$value": 48,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:17",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:048da8246ae1be1a89ff67b347780847c577c00f/-1:-1",
             "targetVariableName": "Font/line_height_web/heading_4",
@@ -556,9 +492,7 @@
         "$value": 40,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:18",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:9e38263c737aaeca3130b1788d313b111654b55d/-1:-1",
             "targetVariableName": "Font/line_height_web/heading_3",
@@ -573,9 +507,7 @@
         "$value": 36,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:19",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:bdca33e6fad3eb0faba3220b433c76b48a7276e0/-1:-1",
             "targetVariableName": "Font/line_height_web/heading_2",
@@ -590,9 +522,7 @@
         "$value": 28,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:20",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:d262c2ede57c9f8dcce5b0dc0d2c63e1a5cc050f/-1:-1",
             "targetVariableName": "Font/line_height_web/heading_1",
@@ -607,9 +537,7 @@
         "$value": 24,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:21",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:14a344c6f233c4042988d69a4c53f64f989999de/-1:-1",
             "targetVariableName": "Font/line_height_web/title_2",
@@ -624,9 +552,7 @@
         "$value": 24,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:22",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:c1e110930b4b05f747343e92be2c94c4533afdc0/-1:-1",
             "targetVariableName": "Font/line_height_web/title_1",
@@ -641,9 +567,7 @@
         "$value": 24,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:23",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:b28fc4ee6763b23aed556fb5f76dd96fbcd208b1/-1:-1",
             "targetVariableName": "Font/line_height_web/body_2",
@@ -658,9 +582,7 @@
         "$value": 24,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:24",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:677ce3e89d06b41ae24e229065a2bd901d891435/-1:-1",
             "targetVariableName": "Font/line_height_web/body_1",
@@ -675,9 +597,7 @@
         "$value": 20,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:28",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:5dc731edf9f1b800873a9692546918d2dfd07079/-1:-1",
             "targetVariableName": "Font/line_height_web/para",
@@ -692,9 +612,7 @@
         "$value": 16,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:25",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:eac2c7af2ab1a8a970bbc783d02719f9d61b98c6/-1:-1",
             "targetVariableName": "Font/line_height_web/caption_2",
@@ -709,9 +627,7 @@
         "$value": 16,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:26",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:025de2db138d78632c822a83494914980e9775a0/-1:-1",
             "targetVariableName": "Font/line_height_web/caption_1",
@@ -726,9 +642,7 @@
         "$value": 12,
         "$extensions": {
           "com.figma.variableId": "VariableID:13:27",
-          "com.figma.scopes": [
-            "LINE_HEIGHT"
-          ],
+          "com.figma.scopes": ["LINE_HEIGHT"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:1d6d42f4430b286c77dc8cc1f18dbd7c16782018/-1:-1",
             "targetVariableName": "Font/line_height_web/overline",
@@ -745,9 +659,7 @@
         "$value": 0,
         "$extensions": {
           "com.figma.variableId": "VariableID:14:3",
-          "com.figma.scopes": [
-            "LETTER_SPACING"
-          ],
+          "com.figma.scopes": ["LETTER_SPACING"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:5dad020d0e02f85da2440d589770c926c4a576ac/-1:-1",
             "targetVariableName": "Font/letter_spacing/none",
@@ -762,9 +674,7 @@
         "$value": -1,
         "$extensions": {
           "com.figma.variableId": "VariableID:14:4",
-          "com.figma.scopes": [
-            "LETTER_SPACING"
-          ],
+          "com.figma.scopes": ["LETTER_SPACING"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:ed6276d2e8dd42a54499ac9fe10f20b3f65b9062/-1:-1",
             "targetVariableName": "Font/letter_spacing/xs",
@@ -779,9 +689,7 @@
         "$value": -3,
         "$extensions": {
           "com.figma.variableId": "VariableID:14:5",
-          "com.figma.scopes": [
-            "LETTER_SPACING"
-          ],
+          "com.figma.scopes": ["LETTER_SPACING"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:4bf0886d82f6bb04b19b4aa39ad28593d27f5f7b/-1:-1",
             "targetVariableName": "Font/letter_spacing/sm",
@@ -796,9 +704,7 @@
         "$value": -5,
         "$extensions": {
           "com.figma.variableId": "VariableID:14:6",
-          "com.figma.scopes": [
-            "LETTER_SPACING"
-          ],
+          "com.figma.scopes": ["LETTER_SPACING"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:a00f52a884274344dd5a8073e51cd2d004d83817/-1:-1",
             "targetVariableName": "Font/letter_spacing/md",
@@ -813,9 +719,7 @@
         "$value": -7,
         "$extensions": {
           "com.figma.variableId": "VariableID:14:7",
-          "com.figma.scopes": [
-            "LETTER_SPACING"
-          ],
+          "com.figma.scopes": ["LETTER_SPACING"],
           "com.figma.aliasData": {
             "targetVariableId": "VariableID:e437e9c1227f82da8a03c29cc76c97611bb70194/-1:-1",
             "targetVariableName": "Font/letter_spacing/lg",
@@ -833,9 +737,7 @@
           "$value": 400,
           "$extensions": {
             "com.figma.variableId": "VariableID:15:49",
-            "com.figma.scopes": [
-              "FONT_STYLE"
-            ],
+            "com.figma.scopes": ["FONT_STYLE"],
             "com.figma.aliasData": {
               "targetVariableId": "VariableID:94a5841db3104f0f4eb67f27d07e68d5a05b5f21/-1:-1",
               "targetVariableName": "Font/display_weight/normal",
@@ -850,9 +752,7 @@
           "$value": 500,
           "$extensions": {
             "com.figma.variableId": "VariableID:15:68",
-            "com.figma.scopes": [
-              "FONT_STYLE"
-            ],
+            "com.figma.scopes": ["FONT_STYLE"],
             "com.figma.aliasData": {
               "targetVariableId": "VariableID:4b3fab9033f04e55a12fd6775153728f1e0395da/-1:-1",
               "targetVariableName": "Font/display_weight/medium",
@@ -867,9 +767,7 @@
           "$value": 600,
           "$extensions": {
             "com.figma.variableId": "VariableID:15:69",
-            "com.figma.scopes": [
-              "FONT_STYLE"
-            ],
+            "com.figma.scopes": ["FONT_STYLE"],
             "com.figma.aliasData": {
               "targetVariableId": "VariableID:57cc9518bc85d50f2ceb6f8fe492a7f6f5829159/-1:-1",
               "targetVariableName": "Font/display_weight/semibold",
@@ -884,9 +782,7 @@
           "$value": 700,
           "$extensions": {
             "com.figma.variableId": "VariableID:15:70",
-            "com.figma.scopes": [
-              "FONT_STYLE"
-            ],
+            "com.figma.scopes": ["FONT_STYLE"],
             "com.figma.aliasData": {
               "targetVariableId": "VariableID:541132566846c66e1d582a735d8d30755676d9bf/-1:-1",
               "targetVariableName": "Font/display_weight/bold",
@@ -903,9 +799,7 @@
           "$value": 500,
           "$extensions": {
             "com.figma.variableId": "VariableID:15:75",
-            "com.figma.scopes": [
-              "FONT_STYLE"
-            ],
+            "com.figma.scopes": ["FONT_STYLE"],
             "com.figma.aliasData": {
               "targetVariableId": "VariableID:789f8f20c5a0eb2215bbaeaa134aef8b5b0b05ca/-1:-1",
               "targetVariableName": "Font/body_weight/normal",
@@ -920,9 +814,7 @@
           "$value": 600,
           "$extensions": {
             "com.figma.variableId": "VariableID:15:76",
-            "com.figma.scopes": [
-              "FONT_STYLE"
-            ],
+            "com.figma.scopes": ["FONT_STYLE"],
             "com.figma.aliasData": {
               "targetVariableId": "VariableID:947b29de3985ab6c751457b74c8f6e00e7f4c765/-1:-1",
               "targetVariableName": "Font/body_weight/medium",
@@ -937,9 +829,7 @@
           "$value": 700,
           "$extensions": {
             "com.figma.variableId": "VariableID:15:77",
-            "com.figma.scopes": [
-              "FONT_STYLE"
-            ],
+            "com.figma.scopes": ["FONT_STYLE"],
             "com.figma.aliasData": {
               "targetVariableId": "VariableID:22b066213155de794dbd89eb9624860f08710b03/-1:-1",
               "targetVariableName": "Font/body_weight/semibold",
@@ -954,9 +844,7 @@
           "$value": 800,
           "$extensions": {
             "com.figma.variableId": "VariableID:15:78",
-            "com.figma.scopes": [
-              "FONT_STYLE"
-            ],
+            "com.figma.scopes": ["FONT_STYLE"],
             "com.figma.aliasData": {
               "targetVariableId": "VariableID:cd283a3f2ee65fe8c75c9655b109700d009440c3/-1:-1",
               "targetVariableName": "Font/body_weight/bold",
